@@ -22,3 +22,48 @@ At the moment, the library implements a fairly convenient and clear system of pa
 </ul>
 
 For this library you can write your own low-level transport using a_client and a_server as absractions(btw, here is my <a href = "https://github.com/enoreex/win_sockets">implementation</a> for windows). Maybe someday I will create several such solutions for different platforms.
+
+Client:
+
+```cpp
+void start()
+{
+	client.connect<win_udp_client>(end_point("127.0.0.1", 7777), end_point(0, 0));
+	std::thread tick_t([&]() { while (true) client.update(); });
+
+	client.connected_callback = [this, &client]()
+	{
+		ice_data::write data;
+
+		data.add_string("Hello World!");
+
+		client.send_reliable(data);
+	};
+
+	tick_t.join();
+}
+```
+
+Server:
+
+```cpp
+void start()
+{
+	rudp_server server;
+	server.try_start<win_udp_server>(end_point(0, 7777));
+	std::thread tick_t([&]() { while (true) server.update(); });
+
+	server.external_data_callback = [this](rudp_connection& c, ice_data::read& d) 
+	{
+		handle(c, d); 
+	};
+
+	tick_t.join();
+}
+
+void handle(rudp_connection& c, ice_data::read& data)
+{
+	std::cout << c.get_remote_point().get_port_str() << ": " << data.get_string() << "\n";
+}
+```
+
