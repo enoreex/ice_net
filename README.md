@@ -21,3 +21,4 @@ At the moment, the library implements a fairly convenient and clear system of pa
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
 </ul>
 
+For this library you can write your own low-level transport using a_client and a_server as absractions(btw, here is my <a href = "https://github.com/enoreex/win_sockets">implementation</a> for windows). Maybe someday I will create several such solutions for different platforms.
