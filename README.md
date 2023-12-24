@@ -23,7 +23,9 @@ At the moment, the library implements a fairly convenient and clear system of pa
 
 For this library you can write your own low-level transport using a_client and a_server as absractions(btw, here is my <a href = "https://github.com/enoreex/win_sockets">implementation</a> for windows). Maybe someday I will create several such solutions for different platforms.
 
-Client:
+<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Usage</h2>
+
+<h3>Client:</h3>h3
 
 ```cpp
 void start()
@@ -45,7 +47,7 @@ void start()
 }
 ```
 
-Server:
+<h3>Server:</h3>
 
 ```cpp
 void start()
