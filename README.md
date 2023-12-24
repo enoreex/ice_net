@@ -28,6 +28,7 @@ Client:
 ```cpp
 void start()
 {
+	rudp_client client;
 	client.connect<win_udp_client>(end_point("127.0.0.1", 7777), end_point(0, 0));
 	std::thread tick_t([&]() { while (true) client.update(); });
 
