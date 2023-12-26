@@ -67,8 +67,6 @@ public:
 
 	public:
 
-		char* get_buffer(unsigned short size);
-
 		char get_int8();
 
 		short get_int16();
@@ -76,6 +74,8 @@ public:
 		std::string get_string();
 
 	public:
+
+		char* get_buffer();
 
 		unsigned short get_buffer_size();
 	};

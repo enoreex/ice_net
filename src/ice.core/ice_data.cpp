@@ -62,19 +62,6 @@ char ice_data::read::get_flag()
     return data[0];
 }
 
-char* ice_data::read::get_buffer(unsigned short size)
-{
-    if (read_position + size >= data.size() - 1) return nullptr;
-
-    char* result = new char[size];
-
-    for (int i = 0; i < size; i++) result[i] = data[read_position + i + 1];
-
-    read_position += size;
-
-    return result;
-}
-
 char ice_data::read::get_int8()
 {
     if (read_position + 1 > data.size() - 1) return 0;
@@ -107,6 +94,11 @@ std::string ice_data::read::get_string()
     read_position += size;
 
     return result;
+}
+
+char* ice_data::read::get_buffer()
+{
+    return data.data();
 }
 
 unsigned short ice_data::read::get_buffer_size()
