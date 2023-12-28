@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.8)
 project(ice_net)
 
 add_library(ice_net STATIC 
-    "src/ice_net.cpp"
+    "src/ice_net.h"
 
     "src/ice.core/ice_data.h"
     "src/ice.core/ice_data.cpp"
@@ -17,12 +17,10 @@ add_library(ice_net STATIC
     "src/ice.rudp/common/transport/end_point.h" 
     "src/ice.rudp/common/transport/end_point.cpp" 
 
-
     "src/ice.rudp/common/rudp.h" 
     "src/ice.rudp/common/rudp.cpp" 
     "src/ice.rudp/common/rudp_peer.h"
     "src/ice.rudp/common/rudp_peer.cpp" 
-
 
     "src/ice.rudp/rudp_client.h" 
     "src/ice.rudp/rudp_client.cpp"
