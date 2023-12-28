@@ -28,8 +28,6 @@ add_library(ice_net STATIC
     "src/ice.rudp/rudp_connection.cpp"
     "src/ice.rudp/rudp_server.h" 
     "src/ice.rudp/rudp_server.cpp"
-
-
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
