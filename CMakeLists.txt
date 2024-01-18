@@ -4,6 +4,7 @@ project(ice_net)
 
 add_library(ice_net STATIC 
     "src/ice_net.h"
+    "src/ice_net.cpp"
 
     "src/ice.core/ice_data.h"
     "src/ice.core/ice_data.cpp"
