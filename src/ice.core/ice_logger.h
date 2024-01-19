@@ -18,8 +18,6 @@ private:
 
 public:
 
-    using LOG_LISTENER_TYPE = std::function<void(std::string&)>;
-
     static LOG_LISTENER_TYPE log_listener;
 
     static LOG_LISTENER_TYPE log_error_listener;
