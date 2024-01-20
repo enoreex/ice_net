@@ -1,7 +1,6 @@
 #include "end_point.h"
 
 end_point::end_point(std::string address_str, unsigned short port)
-
 {
 	set_address(address_str);
 	set_port(port);
