@@ -200,6 +200,28 @@ void rudp_server::connection_callback_disconnect(end_point& remote_point)
 	try_remove_connection(remote_point);
 }
 
+void rudp_server::connection_send_unreliable(end_point& ep, ice_data::write& data)
+{
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	auto it = connections.find(ep);
+
+	if (it == connections.end()) return;
+
+	it->second->send_unreliable(data);
+}
+
+void rudp_server::connection_send_reliable(end_point& ep, ice_data::write& data)
+{
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	auto it = connections.find(ep);
+
+	if (it == connections.end()) return;
+
+	it->second->send_reliable(data);
+}
+
 inline void rudp_server::ext_connection_added(rudp_connection& c)
 {
 	if (connection_added_callback) connection_added_callback(c);

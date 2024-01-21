@@ -88,6 +88,12 @@ private:
 
 	void connection_callback_disconnect(end_point& remote_point);
 
+public:
+
+	void connection_send_unreliable(end_point& ep, ice_data::write& data);
+
+	void connection_send_reliable(end_point& ep, ice_data::write& data);
+
 private:
 
 	inline void ext_connection_added(rudp_connection& c);
