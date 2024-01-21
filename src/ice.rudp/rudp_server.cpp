@@ -16,14 +16,22 @@ void rudp_server::update()
 	receive();
 }
 
-template<class T>
 bool rudp_server::try_start(end_point local_point)
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	if (socket == nullptr)
+	{
+		ice_logger::log_error("server-start", "you cannot start when the socket is null!");
+
+		return;
+	}
 
 	if (current_state == connected) return false;
 
-	socket = new T();
+	r_lock.unlock();
+
+	std::unique_lock<std::shared_mutex> w_lock(mutex);
 
 	auto result = socket->start(local_point);
 

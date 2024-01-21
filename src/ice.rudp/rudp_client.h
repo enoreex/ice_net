@@ -17,9 +17,9 @@
 class rudp_client final : public rudp_peer
 {
 
-private:
+public:
 
-	a_client* socket;
+	a_client* socket = nullptr;
 
 public:
 
@@ -55,7 +55,6 @@ public:
 
 public:
 
-	template<class T>
 	void connect(end_point remote_point, end_point local_point);
 
 	void connect_attempt();

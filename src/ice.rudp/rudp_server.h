@@ -28,9 +28,9 @@ private:
 
 	server_state current_state = disconnected;
 
-private:
+public:
 
-	a_server* socket;
+	a_server* socket = nullptr;
 
 private:
 
@@ -66,7 +66,6 @@ public:
 
 public:
 
-	template<class T>
 	bool try_start(end_point local_point);
 
 private:

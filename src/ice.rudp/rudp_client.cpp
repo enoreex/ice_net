@@ -21,10 +21,16 @@ void rudp_client::update()
 	receive();
 }
 
-template<class T>
 void rudp_client::connect(end_point remote_point, end_point local_point)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	if (socket == nullptr)
+	{
+		ice_logger::log_error("client-connect", "you cannot connect when the socket is null!");
+
+		return;
+	}
 
 	if (current_state != disconnected) return;
 
@@ -32,7 +38,6 @@ void rudp_client::connect(end_point remote_point, end_point local_point)
 
 	std::unique_lock<std::shared_mutex> w_lock(mutex);
 
-	socket = new T();
 	bool result = socket->connect(remote_point, local_point);
 
 	if (result == false) return;
@@ -185,10 +190,6 @@ void rudp_client::disconnect()
 	r_lock.unlock();
 
 	std::unique_lock<std::shared_mutex> w_lock(mutex);
-
-	delete socket;
-
-	socket = nullptr;
 
 	w_lock.unlock();
 
