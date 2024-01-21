@@ -31,6 +31,8 @@ For this library you can write your own low-level transport using a_client and a
 void start()
 {
 	rudp_client client;
+	client.socket = new win_udp_client;
+
 	client.connected_callback = [this, &client]()
 	{
 		ice_data::write data;
@@ -40,7 +42,7 @@ void start()
 		client.send_reliable(data);
 	};
 
-	client.connect<win_udp_client>(end_point("127.0.0.1", 7777), end_point(0, 0));
+	client.connect(end_point("127.0.0.1", 7777), end_point(0, 0));
 
 	std::thread tick_t([&]() { while (true) client.update(); });
 	tick_t.join();
@@ -53,7 +55,8 @@ void start()
 void start()
 {
 	rudp_server server;
-	server.try_start<win_udp_server>(end_point(0, 7777));
+	server.socket = new win_udp_server;
+	server.try_start(end_point(0, 7777));
 	std::thread tick_t([&]() { while (true) server.update(); });
 
 	server.external_data_callback = [this](rudp_connection& c, ice_data::read& d) 
