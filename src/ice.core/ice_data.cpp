@@ -101,7 +101,17 @@ char* ice_data::read::get_buffer()
     return data.data();
 }
 
+char* ice_data::read::get_buffer_remaining()
+{
+    return data.data() + read_position + 1;
+}
+
 unsigned short ice_data::read::get_buffer_size()
 {
     return static_cast<unsigned short>(data.size());
+}
+
+unsigned short ice_data::read::get_buffer_size_remaining()
+{
+    return static_cast<unsigned short>(data.size()) - read_position - 1;
 }
