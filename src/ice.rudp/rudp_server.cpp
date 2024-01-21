@@ -24,7 +24,7 @@ bool rudp_server::try_start(end_point local_point)
 	{
 		ice_logger::log_error("server-start", "you cannot start when the socket is null!");
 
-		return;
+		return false;
 	}
 
 	if (current_state == connected) return false;
