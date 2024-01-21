@@ -77,7 +77,11 @@ public:
 
 		char* get_buffer();
 
+		char* get_buffer_remaining();
+
 		unsigned short get_buffer_size();
+
+		unsigned short get_buffer_size_remaining();
 	};
 };
 
