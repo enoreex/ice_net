@@ -257,7 +257,5 @@ void rudp_server::stop()
 	connections.clear();
 	connections_arr.clear();
 
-	delete socket;
-
 	ice_logger::log("server-stop", "closed!");
 }
