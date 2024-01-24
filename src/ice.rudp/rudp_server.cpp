@@ -60,7 +60,7 @@ void rudp_server::receive()
 
 	rudp_connection* connection = nullptr;
 
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	r_lock.lock();
 
 	try_get_connection(connection, result.recv_point);
 
