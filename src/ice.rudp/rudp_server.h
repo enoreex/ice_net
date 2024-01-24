@@ -80,6 +80,10 @@ private:
 
 	bool try_remove_connection(end_point& remote_point);
 
+public:
+
+	void remove_connection(end_point& remote_point);
+
 private:
 
 	void connection_callback_handle(rudp_connection& connection, ice_data::read& data);
@@ -90,9 +94,9 @@ private:
 
 public:
 
-	void connection_send_unreliable(end_point& ep, ice_data::write& data);
+	void send_unreliable(end_point& ep, ice_data::write& data);
 
-	void connection_send_reliable(end_point& ep, ice_data::write& data);
+	void send_reliable(end_point& ep, ice_data::write& data);
 
 private:
 

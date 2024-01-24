@@ -60,7 +60,11 @@ void rudp_server::receive()
 
 	rudp_connection* connection = nullptr;
 
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
 	try_get_connection(connection, result.recv_point);
+
+	r_lock.unlock();
 
 	if (raw_packet_id == rudp::connect_request && connection == nullptr)
 		if (try_add_connection(connection, result.recv_point) == false) return;
@@ -74,8 +78,6 @@ void rudp_server::receive()
 
 bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& remote_point)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
-
 	auto it = connections.find(remote_point);
 
 	if (it == connections.end()) return false;
@@ -151,9 +153,9 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 	try
 	{
-		if (try_get_connection(connection, remote_point) == false) return false;
-
 		std::unique_lock<std::shared_mutex> w_lock(mutex);
+
+		if (try_get_connection(connection, remote_point) == false) return false;
 
 		connections.erase(remote_point);
 
@@ -185,6 +187,11 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 }
 
+void rudp_server::remove_connection(end_point& remote_point)
+{
+	try_remove_connection(remote_point);
+}
+
 void rudp_server::connection_callback_handle(rudp_connection& connection, ice_data::read& data)
 {
 	external_data_callback(connection, data);
@@ -200,7 +207,7 @@ void rudp_server::connection_callback_disconnect(end_point& remote_point)
 	try_remove_connection(remote_point);
 }
 
-void rudp_server::connection_send_unreliable(end_point& ep, ice_data::write& data)
+void rudp_server::send_unreliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
@@ -211,7 +218,7 @@ void rudp_server::connection_send_unreliable(end_point& ep, ice_data::write& dat
 	it->second->send_unreliable(data);
 }
 
-void rudp_server::connection_send_reliable(end_point& ep, ice_data::write& data)
+void rudp_server::send_reliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
