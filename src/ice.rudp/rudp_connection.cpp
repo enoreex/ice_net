@@ -17,6 +17,13 @@ end_point rudp_connection::get_remote_point()
 	return remote_point;
 }
 
+const end_point* rudp_connection::get_remote_point_ptr()
+{
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	return &remote_point;
+}
+
 void rudp_connection::update()
 {
 	if (!scheduler.empty()) scheduler.execute();
