@@ -82,7 +82,7 @@ private:
 
 public:
 
-	void remove_connection(end_point& remote_point);
+	void remove_connection(rudp_connection*& connection);
 
 private:
 

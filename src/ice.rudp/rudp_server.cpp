@@ -187,8 +187,18 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 }
 
-void rudp_server::remove_connection(end_point& remote_point)
+void rudp_server::remove_connection(rudp_connection*& connection)
 {
+	std::unique_lock<std::shared_mutex> w_lock(mutex);
+
+	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
+
+	if (it == connections_arr.end()) return;
+
+	auto remote_point = connection->get_remote_point();
+
+	w_lock.unlock();
+
 	try_remove_connection(remote_point);
 }
 
