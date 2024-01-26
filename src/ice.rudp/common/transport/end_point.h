@@ -38,15 +38,15 @@ public:
 
 public:
 
-	unsigned long get_address();
+	unsigned const long get_address();
 
-	unsigned short get_port();
+	unsigned const short get_port();
 
 public:
 
-	std::string get_address_str();
+	std::string const get_address_str();
 
-	std::string get_port_str();
+	std::string const get_port_str();
 
 public:
 
