@@ -46,17 +46,17 @@ bool end_point::set_port(std::string port_str)
 	return true;
 }
 
-unsigned const long end_point::get_address()
+unsigned long end_point::get_address()
 {
 	return address;
 }
 
-unsigned const short end_point::get_port()
+unsigned short end_point::get_port()
 {
 	return port;
 }
 
-std::string const end_point::get_address_str()
+std::string end_point::get_address_str()
 {
 	std::string result = std::string();
 
@@ -68,7 +68,7 @@ std::string const end_point::get_address_str()
 	return result;
 }
 
-std::string const end_point::get_port_str()
+std::string end_point::get_port_str()
 {
 	std::string result = std::string();
 
