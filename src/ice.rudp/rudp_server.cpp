@@ -46,13 +46,13 @@ bool rudp_server::try_start(end_point local_point)
 
 void rudp_server::receive()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_mutex> r_sock_lock(mutex);
 
 	if (socket->receive_available() == false) return;
 
 	auto result = socket->receive();
 
-	r_lock.unlock();
+	r_sock_lock.unlock();
 
 	if (result.recv_arr == nullptr) return;
 
@@ -60,34 +60,38 @@ void rudp_server::receive()
 
 	rudp_connection* connection = nullptr;
 
-	r_lock.lock();
+	std::shared_lock<std::shared_mutex> r_get_lock(mutex);
 
 	try_get_connection(connection, result.recv_point);
 
 	if (raw_packet_id == rudp::connect_request && connection == nullptr)
 	{
-		r_lock.unlock();
+		r_get_lock.unlock();
+
+		std::unique_lock<std::shared_mutex> w_add_lock(mutex);
 
 		if (try_add_connection(result.recv_point) == true)
 		{
-			r_lock.lock();
-
 			try_get_connection(connection, result.recv_point);
 
-			if (connection)
-			{
-				r_lock.unlock();
+			if (connection == nullptr) return;
+			
+			ice_data::read data(result.recv_arr, result.recv_size);
 
-				ext_connection_added(*connection);
-			}
+			connection->handle(data);
+
+			w_add_lock.unlock();
+
+			std::shared_lock<std::shared_mutex> r_ext_lock(mutex);
+
+			try_get_connection(connection, result.recv_point);
+			
+			if (connection) ext_connection_added(*connection);
+
+			r_ext_lock.unlock();
 		}
-	}
 
-	if (raw_packet_id == rudp::connect_request)
-	{
-		r_lock.lock();
-
-		try_get_connection(connection, result.recv_point);
+		return;
 	}
 
 	if (connection == nullptr) return;
@@ -110,8 +114,6 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 
 bool rudp_server::try_add_connection(end_point& remote_point)
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex, std::defer_lock);
-
 	bool predicate_result;
 
 	try
@@ -141,12 +143,8 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 		connection = new rudp_connection(cch, ccs, ccd);
 		connection->connect(remote_point);
 
-		w_lock.lock();
-
 		connections.insert({ remote_point, connection });
 		connections_arr.push_back(connection);
-
-		w_lock.unlock();
 
 		ice_logger::log("connection added", ("connection added! remote ep: [" +
 			remote_point.get_address_str() + ":" +
