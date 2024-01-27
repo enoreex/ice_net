@@ -76,13 +76,13 @@ private:
 
 	bool try_get_connection(rudp_connection*& connection, end_point& remote_point);
 
-	bool try_add_connection(rudp_connection*& connection, end_point& remote_point);
+	bool try_add_connection(end_point& remote_point);
 
 	bool try_remove_connection(end_point& remote_point);
 
 public:
 
-	void remove_connection(rudp_connection*& connection);
+	bool try_remove_connection(rudp_connection*& connection);
 
 private:
 

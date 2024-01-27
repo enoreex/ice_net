@@ -67,7 +67,18 @@ void rudp_server::receive()
 	r_lock.unlock();
 
 	if (raw_packet_id == rudp::connect_request && connection == nullptr)
-		if (try_add_connection(connection, result.recv_point) == false) return;
+	{
+		if (try_add_connection(result.recv_point) == true)
+		{
+			std::unique_lock<std::shared_mutex> w_lock(mutex);
+			
+			try_get_connection(connection, result.recv_point);
+
+			if (connection) ext_connection_added(*connection);
+
+			w_lock.unlock();
+		}
+	}
 
 	if (connection == nullptr) return;
 
@@ -87,7 +98,7 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 	return connection != nullptr;
 }
 
-bool rudp_server::try_add_connection(rudp_connection*& connection, end_point& remote_point)
+bool rudp_server::try_add_connection(end_point& remote_point)
 {
 	std::unique_lock<std::shared_mutex> w_lock(mutex, std::defer_lock);
 
@@ -113,6 +124,8 @@ bool rudp_server::try_add_connection(rudp_connection*& connection, end_point& re
 	const auto ccs = [this](end_point& e, ice_data::write& d) { connection_callback_send(e, d); };
 	const auto ccd = [this](end_point& c) { connection_callback_disconnect(c); };
 
+	rudp_connection* connection = nullptr;
+
 	try
 	{
 		connection = new rudp_connection(cch, ccs, ccd);
@@ -128,8 +141,6 @@ bool rudp_server::try_add_connection(rudp_connection*& connection, end_point& re
 		ice_logger::log("connection added", ("connection added! remote ep: [" +
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
-
-		ext_connection_added(*connection);
 
 		return true;
 	}
@@ -187,19 +198,19 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 }
 
-void rudp_server::remove_connection(rudp_connection*& connection)
+bool rudp_server::try_remove_connection(rudp_connection*& connection)
 {
 	std::unique_lock<std::shared_mutex> w_lock(mutex);
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
-	if (it == connections_arr.end()) return;
+	if (it == connections_arr.end()) return false;
 
 	auto remote_point = connection->get_remote_point();
 
 	w_lock.unlock();
 
-	try_remove_connection(remote_point);
+	return try_remove_connection(remote_point);
 }
 
 void rudp_server::connection_callback_handle(rudp_connection& connection, ice_data::read& data)
