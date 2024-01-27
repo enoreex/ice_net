@@ -74,8 +74,20 @@ void rudp_server::receive()
 
 			try_get_connection(connection, result.recv_point);
 
-			if (connection) ext_connection_added(*connection);
+			if (connection)
+			{
+				r_lock.unlock();
+
+				ext_connection_added(*connection);
+			}
 		}
+	}
+
+	if (raw_packet_id == rudp::connect_request)
+	{
+		r_lock.lock();
+
+		try_get_connection(connection, result.recv_point);
 	}
 
 	if (connection == nullptr) return;
