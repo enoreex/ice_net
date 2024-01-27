@@ -227,7 +227,7 @@ end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& conne
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
-	if (it == connections_arr.end()) return;
+	if (it == connections_arr.end()) return end_point(0, 0);
 
 	auto remote_point = connection->get_remote_point();
 
@@ -240,7 +240,7 @@ const end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connect
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
-	if (it == connections_arr.end()) return;
+	if (it == connections_arr.end()) return nullptr;
 
 	auto remote_point = connection->get_remote_point_ptr();
 
