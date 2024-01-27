@@ -80,15 +80,7 @@ void rudp_server::receive()
 
 			connection->handle(data);
 
-			r_add_lock.unlock();
-
-			std::shared_lock<std::shared_mutex> r_get_ext_lock(mutex);
-
-			try_get_connection(connection, result.recv_point);
-			
-			r_get_ext_lock.unlock();
-
-			if (connection) ext_connection_added(*connection);
+			ext_connection_added(*connection);
 		}
 
 		return;
