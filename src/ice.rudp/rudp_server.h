@@ -102,7 +102,7 @@ private:
 
 	inline void ext_connection_added(rudp_connection& c);
 
-	inline void ext_connection_removwd(rudp_connection& c);
+	inline void ext_connection_removed(rudp_connection& c);
 
 	inline void ext_data_handled(rudp_connection& c, ice_data::read& d);
 

@@ -64,23 +64,19 @@ void rudp_server::receive()
 
 	try_get_connection(connection, result.recv_point);
 
-	r_lock.unlock();
-
 	if (raw_packet_id == rudp::connect_request && connection == nullptr)
 	{
+		r_lock.unlock();
+
 		if (try_add_connection(result.recv_point) == true)
 		{
-			std::unique_lock<std::shared_mutex> w_lock(mutex);
-			
+			r_lock.lock();
+
 			try_get_connection(connection, result.recv_point);
 
 			if (connection) ext_connection_added(*connection);
-
-			w_lock.unlock();
 		}
 	}
-
-	if (connection == nullptr) return;
 
 	ice_data::read data(result.recv_arr, result.recv_size);
 
@@ -179,7 +175,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
 
-		ext_connection_removwd(*connection);
+		ext_connection_removed(*connection);
 
 		delete connection;
 
@@ -200,7 +196,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 bool rudp_server::try_remove_connection(rudp_connection*& connection)
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
@@ -208,7 +204,7 @@ bool rudp_server::try_remove_connection(rudp_connection*& connection)
 
 	auto remote_point = connection->get_remote_point();
 
-	w_lock.unlock();
+	r_lock.unlock();
 
 	return try_remove_connection(remote_point);
 }
@@ -255,7 +251,7 @@ inline void rudp_server::ext_connection_added(rudp_connection& c)
 	if (connection_added_callback) connection_added_callback(c);
 }
 
-inline void rudp_server::ext_connection_removwd(rudp_connection& c)
+inline void rudp_server::ext_connection_removed(rudp_connection& c)
 {
 	if (connection_removed_callback) connection_removed_callback(c);
 }
