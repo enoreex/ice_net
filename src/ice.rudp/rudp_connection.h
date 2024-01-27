@@ -45,7 +45,7 @@ private:
 
 	SERV_C_D serv_callback_disconnect;
 
-public:
+private:
 
 	end_point get_remote_point();
 
@@ -77,7 +77,7 @@ private:
 
 	void send_connect_response();
 
-public:
+private:
 
 	void disconnect() override;
 };

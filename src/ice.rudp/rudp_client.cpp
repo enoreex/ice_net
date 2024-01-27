@@ -1,5 +1,10 @@
 #include "rudp_client.h"
 
+unsigned short rudp_client::get_ping()
+{
+	return rudp_peer::get_ping();
+}
+
 end_point rudp_client::get_local_point()
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
@@ -172,6 +177,13 @@ void rudp_client::ch_send(ice_data::write& data)
 	if (current_state == disconnected) return;
 
 	socket->send(data.get_buffer(), data.get_buffer_size());
+}
+
+void rudp_client::send(ice_data::write& data, bool reliable = false)
+{
+	reliable == true ?
+		send_reliable(data) : 
+		send_unreliable(data);
 }
 
 void rudp_client::send_connect_request()

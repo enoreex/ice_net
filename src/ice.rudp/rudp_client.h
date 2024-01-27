@@ -45,6 +45,10 @@ private:
 
 public:
 
+	unsigned short get_ping();
+
+public:
+
 	end_point get_local_point();
 
 	end_point get_remote_point();
@@ -76,6 +80,10 @@ private:
 	void ch_handle(ice_data::read& data) override;
 
 	void ch_send(ice_data::write& data) override;
+
+public:
+
+	void send(ice_data::write& data, bool reliable = false);
 
 private:
 

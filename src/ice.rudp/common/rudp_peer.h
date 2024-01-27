@@ -15,7 +15,7 @@
 class rudp_peer
 {
 
-public:
+protected:
 
 	virtual ~rudp_peer();
 	
@@ -50,7 +50,7 @@ private:
 
 	unsigned short get_next_packet_id();
 
-public:
+protected:
 
 	unsigned short get_ping();
 
@@ -119,7 +119,7 @@ private:
 
 	void send_heartbeat_response();
 
-public:
+protected:
 
 	void send_unreliable(ice_data::write& data);
 
@@ -139,10 +139,9 @@ private:
 
 	void stop_disconnect_timer();
 
-public:
+protected:
 
 	virtual void disconnect() = 0;
-
 };
 
 #endif

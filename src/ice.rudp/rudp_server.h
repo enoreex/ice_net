@@ -82,7 +82,11 @@ private:
 
 public:
 
-	bool try_remove_connection(rudp_connection*& connection);
+	void connection_internal_disconnect(rudp_connection*& connection);
+
+	const end_point connection_internal_get_remote_ep(rudp_connection*& connection);
+
+	const end_point* connection_internal_get_remote_ep_ptr(rudp_connection*& connection);
 
 private:
 

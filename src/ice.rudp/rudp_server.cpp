@@ -68,10 +68,10 @@ void rudp_server::receive()
 	{
 		r_get_lock.unlock();
 
-		std::unique_lock<std::shared_mutex> w_add_lock(mutex);
-
 		if (try_add_connection(result.recv_point) == true)
 		{
+			std::shared_lock<std::shared_mutex> r_add_lock(mutex);
+
 			try_get_connection(connection, result.recv_point);
 
 			if (connection == nullptr) return;
@@ -80,15 +80,15 @@ void rudp_server::receive()
 
 			connection->handle(data);
 
-			w_add_lock.unlock();
+			r_add_lock.unlock();
 
-			std::shared_lock<std::shared_mutex> r_ext_lock(mutex);
+			std::shared_lock<std::shared_mutex> r_get_ext_lock(mutex);
 
 			try_get_connection(connection, result.recv_point);
 			
-			if (connection) ext_connection_added(*connection);
+			r_get_ext_lock.unlock();
 
-			r_ext_lock.unlock();
+			if (connection) ext_connection_added(*connection);
 		}
 
 		return;
@@ -114,6 +114,8 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 
 bool rudp_server::try_add_connection(end_point& remote_point)
 {
+	std::unique_lock<std::shared_mutex> w_lock(mutex);
+
 	bool predicate_result;
 
 	try
@@ -181,8 +183,6 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 		auto it = std::remove(connections_arr.begin(), connections_arr.end(), connection);
 		connections_arr.erase(it, connections_arr.end());
 
-		w_lock.unlock();
-
 		ice_logger::log("connection removed", ("connection removed! remote ep: [" +
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
@@ -206,19 +206,45 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 }
 
-bool rudp_server::try_remove_connection(rudp_connection*& connection)
+void rudp_server::connection_internal_disconnect(rudp_connection*& connection)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
-	if (it == connections_arr.end()) return false;
+	if (it == connections_arr.end()) return;
 
 	auto remote_point = connection->get_remote_point();
 
 	r_lock.unlock();
 
-	return try_remove_connection(remote_point);
+	try_remove_connection(remote_point);
+}
+
+const end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& connection)
+{
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
+
+	if (it == connections_arr.end()) return;
+
+	auto remote_point = connection->get_remote_point();
+
+	return remote_point;
+}
+
+const end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connection*& connection)
+{
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
+
+	if (it == connections_arr.end()) return;
+
+	auto remote_point = connection->get_remote_point_ptr();
+
+	return remote_point;
 }
 
 void rudp_server::connection_callback_handle(rudp_connection& connection, ice_data::read& data)
