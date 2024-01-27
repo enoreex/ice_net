@@ -78,6 +78,8 @@ void rudp_server::receive()
 		}
 	}
 
+	if (connection == nullptr) return;
+
 	ice_data::read data(result.recv_arr, result.recv_size);
 
 	connection->handle(data);
