@@ -46,13 +46,13 @@ bool rudp_server::try_start(end_point local_point)
 
 void rudp_server::receive()
 {
-	std::shared_lock<std::shared_mutex> r_sock_lock(mutex);
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
 	if (socket->receive_available() == false) return;
 
 	auto result = socket->receive();
 
-	r_sock_lock.unlock();
+	r_lock.unlock();
 
 	if (result.recv_arr == nullptr) return;
 
@@ -60,7 +60,7 @@ void rudp_server::receive()
 
 	rudp_connection* connection = nullptr;
 
-	std::shared_lock<std::shared_mutex> r_get_lock(mutex);
+	r_lock.lock();
 
 	try_get_connection(connection, result.recv_point);
 
@@ -73,15 +73,15 @@ void rudp_server::receive()
 		return;
 	}
 
-	r_get_lock.unlock();
+	r_lock.unlock();
 
 	if (!(raw_packet_id == rudp::connect_request && connection == nullptr)) return;
-
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
 
 	bool add_result = try_add_connection(result.recv_point);
 
 	if (add_result == false) return;
+
+	r_lock.lock();
 
 	try_get_connection(connection, result.recv_point);
 
@@ -91,7 +91,7 @@ void rudp_server::receive()
 
 	connection->handle(data);
 
-	w_lock.unlock();
+	r_lock.unlock();
 
 	ext_connection_added(*connection);
 }
@@ -109,6 +109,8 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 
 bool rudp_server::try_add_connection(end_point& remote_point)
 {
+	std::unique_lock<std::shared_mutex> w_lock(mutex, std::defer_lock);
+
 	bool predicate_result;
 
 	try
@@ -138,8 +140,12 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 		connection = new rudp_connection(cch, ccs, ccd);
 		connection->connect(remote_point);
 
+		w_lock.lock();
+
 		connections.insert({ remote_point, connection });
 		connections_arr.push_back(connection);
+
+		w_lock.unlock();
 
 		ice_logger::log("connection added", ("connection added! remote ep: [" +
 			remote_point.get_address_str() + ":" +

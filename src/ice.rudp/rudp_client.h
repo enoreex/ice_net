@@ -83,7 +83,9 @@ private:
 
 public:
 
-	void send(ice_data::write& data, bool reliable = false);
+	void send_unreliable(ice_data::write& data);
+
+	void send_reliable(ice_data::write& data);
 
 private:
 

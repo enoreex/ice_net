@@ -179,11 +179,14 @@ void rudp_client::ch_send(ice_data::write& data)
 	socket->send(data.get_buffer(), data.get_buffer_size());
 }
 
-void rudp_client::send(ice_data::write& data, bool reliable)
+void rudp_client::send_unreliable(ice_data::write& data)
 {
-	reliable == true ?
-		send_reliable(data) : 
-		send_unreliable(data);
+	rudp_peer::send_unreliable(data);
+}
+
+void rudp_client::send_reliable(ice_data::write& data)
+{
+	rudp_peer::send_reliable(data);
 }
 
 void rudp_client::send_connect_request()
