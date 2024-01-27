@@ -221,7 +221,7 @@ void rudp_server::connection_internal_disconnect(rudp_connection*& connection)
 	try_remove_connection(remote_point);
 }
 
-const end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& connection)
+end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& connection)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
