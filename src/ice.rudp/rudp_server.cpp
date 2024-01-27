@@ -64,9 +64,17 @@ void rudp_server::receive()
 
 	try_get_connection(connection, result.recv_point);
 
+	if (connection != nullptr)
+	{
+		ice_data::read data(result.recv_arr, result.recv_size);
+
+		connection->handle(data);
+	}
+
+	r_get_lock.unlock();
+
 	if (raw_packet_id == rudp::connect_request && connection == nullptr)
 	{
-		r_get_lock.unlock();
 
 		if (try_add_connection(result.recv_point) == true)
 		{
@@ -80,17 +88,11 @@ void rudp_server::receive()
 
 			connection->handle(data);
 
+			r_add_lock.unlock();
+
 			ext_connection_added(*connection);
 		}
-
-		return;
 	}
-
-	if (connection == nullptr) return;
-
-	ice_data::read data(result.recv_arr, result.recv_size);
-
-	connection->handle(data);
 }
 
 bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& remote_point)
