@@ -69,30 +69,31 @@ void rudp_server::receive()
 		ice_data::read data(result.recv_arr, result.recv_size);
 
 		connection->handle(data);
+
+		return;
 	}
 
 	r_get_lock.unlock();
 
-	if (raw_packet_id == rudp::connect_request && connection == nullptr)
-	{
+	if (!(raw_packet_id == rudp::connect_request && connection == nullptr)) return;
 
-		if (try_add_connection(result.recv_point) == true)
-		{
-			std::shared_lock<std::shared_mutex> r_add_lock(mutex);
+	std::unique_lock<std::shared_mutex> w_lock(mutex);
 
-			try_get_connection(connection, result.recv_point);
+	bool add_result = try_add_connection(result.recv_point);
 
-			if (connection == nullptr) return;
-			
-			ice_data::read data(result.recv_arr, result.recv_size);
+	if (add_result == false) return;
 
-			connection->handle(data);
+	try_get_connection(connection, result.recv_point);
 
-			r_add_lock.unlock();
+	if (connection == nullptr) return;
 
-			ext_connection_added(*connection);
-		}
-	}
+	ice_data::read data(result.recv_arr, result.recv_size);
+
+	connection->handle(data);
+
+	w_lock.unlock();
+
+	ext_connection_added(*connection);
 }
 
 bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& remote_point)
@@ -108,8 +109,6 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 
 bool rudp_server::try_add_connection(end_point& remote_point)
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
-
 	bool predicate_result;
 
 	try
