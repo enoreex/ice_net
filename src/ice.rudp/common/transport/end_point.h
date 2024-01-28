@@ -60,6 +60,8 @@ public:
 
 public:
 
+	bool operator==(const end_point& other) const;
+
 	end_point& operator=(const end_point& other);
 
 	std::size_t operator()(const end_point& ep) const;
