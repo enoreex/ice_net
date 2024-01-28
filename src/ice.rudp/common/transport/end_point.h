@@ -18,8 +18,6 @@ public:
 		unsigned long address,
 		unsigned short port);
 
-	end_point(const end_point& other);
-
 private:
 
 	unsigned long address;
@@ -59,8 +57,6 @@ public:
 	bool operator ==(const end_point& other);
 
 public:
-
-	end_point& operator=(const end_point& other);
 
 	std::size_t operator()(const end_point& ep) const;
 };

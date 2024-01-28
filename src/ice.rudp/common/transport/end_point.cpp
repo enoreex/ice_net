@@ -12,12 +12,6 @@ end_point::end_point(unsigned long address, unsigned short port)
 	set_port(port);
 }
 
-end_point::end_point(const end_point& other)
-{
-	set_address(other.address);
-	set_port(other.port);
-}
-
 void end_point::set_address(unsigned long address)
 {
 	this->address = address;
@@ -92,14 +86,6 @@ void end_point::reset()
 bool end_point::operator==(const end_point& other)
 {
 	return (other.address == this->address && other.port == this->port);
-}
-
-end_point& end_point::operator=(const end_point& other)
-{
-	if (this == &other) return *this;
-
-	address = other.address;
-	port = other.port;
 }
 
 std::size_t end_point::operator()(const end_point& ep) const
