@@ -56,9 +56,7 @@ public:
 
 	bool operator ==(const end_point& other);
 
-public:
-
-	std::size_t operator()(const end_point& ep) const;
+	bool operator <(const end_point& other) const;
 };
 
 #endif

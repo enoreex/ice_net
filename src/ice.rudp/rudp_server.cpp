@@ -98,9 +98,9 @@ void rudp_server::receive()
 
 bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& remote_point)
 {
-	auto it = connections_map.find(remote_point);
+	auto it = connections.find(remote_point);
 
-	if (it == connections_map.end()) return false;
+	if (it == connections.end()) return false;
 
 	connection = it->second;
 
@@ -142,7 +142,7 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 
 		w_lock.lock();
 
-		connections_map.insert({ remote_point, connection });
+		connections.insert({ remote_point, connection });
 		connections_arr.push_back(connection);
 
 		w_lock.unlock();
@@ -177,7 +177,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 		if (try_get_connection(connection, remote_point) == false) return false;
 
-		connections_map.erase(remote_point);
+		connections.erase(remote_point);
 
 		auto it = std::remove(connections_arr.begin(), connections_arr.end(), connection);
 		connections_arr.erase(it, connections_arr.end());
@@ -265,9 +265,9 @@ void rudp_server::send_unreliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
-	auto it = connections_map.find(ep);
+	auto it = connections.find(ep);
 
-	if (it == connections_map.end()) return;
+	if (it == connections.end()) return;
 
 	it->second->send_unreliable(data);
 }
@@ -276,9 +276,9 @@ void rudp_server::send_reliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
 
-	auto it = connections_map.find(ep);
+	auto it = connections.find(ep);
 
-	if (it == connections_map.end()) return;
+	if (it == connections.end()) return;
 
 	it->second->send_reliable(data);
 }
@@ -315,7 +315,7 @@ void rudp_server::stop()
 
 	current_state = disconnected;
 
-	connections_map.clear();
+	connections.clear();
 	connections_arr.clear();
 
 	ice_logger::log("server-stop", "closed!");
