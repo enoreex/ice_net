@@ -94,11 +94,6 @@ bool end_point::operator==(const end_point& other)
 	return (other.address == this->address && other.port == this->port);
 }
 
-bool end_point::operator==(const end_point& other) const
-{
-	return address == other.address && port == other.port;
-}
-
 end_point& end_point::operator=(const end_point& other)
 {
 	if (this == &other) return *this;
