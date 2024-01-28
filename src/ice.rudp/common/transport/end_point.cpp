@@ -88,7 +88,7 @@ bool end_point::operator==(const end_point& other)
 	return (other.address == this->address && other.port == this->port);
 }
 
-bool end_point::operator<(const end_point& other) const
+std::size_t end_point::operator()(const end_point& ep) const
 {
-	return (this->address < other.address) || ((this->address == other.address) && (this->port < other.port));
+	return ((static_cast<std::size_t>(address)) << 32) | ((static_cast<std::size_t>(port)) << 16);
 }

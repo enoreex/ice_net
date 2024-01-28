@@ -34,7 +34,7 @@ public:
 
 private:
 
-	std::map<end_point, rudp_connection*> connections;
+	std::unordered_map<end_point, rudp_connection*> connections_map;
 
 	std::vector<rudp_connection*> connections_arr;
 
