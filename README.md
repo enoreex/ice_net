@@ -21,9 +21,9 @@ At the moment, the library implements a fairly convenient and clear system of pa
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
 </ul>
 
-For this library you can write your own low-level transport using a_client and a_server as absractions(btw, here is my <a href = "https://github.com/enoreex/win_sockets">implementation</a> for windows). Maybe someday I will create several such solutions for different platforms.
+For this library you can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
 
-<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Usage</h2>
+<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Simplest example</h2>
 
 <h3>Client:</h3>
 
@@ -56,14 +56,15 @@ void start()
 {
 	rudp_server server;
 	server.socket = new win_udp_server;
-	server.try_start(end_point(0, 7777));
-	std::thread tick_t([&]() { while (true) server.update(); });
 
 	server.external_data_callback = [this](rudp_connection& c, ice_data::read& d) 
 	{
 		handle(c, d); 
 	};
 
+	server.try_start(end_point(0, 7777));
+
+	std::thread tick_t([&]() { while (true) server.update(); });
 	tick_t.join();
 }
 
