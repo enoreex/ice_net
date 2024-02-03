@@ -44,7 +44,7 @@ You may have noticed that library included folders with an ending .lib and .dll
 
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of .dll is less than that of .lib </li>
-  <li style="font-size: smaller;">The dll can be used even in C#, and EVEN in Unity (maybe I'll create a wrap to make it easy to use)</li>
+  <li style="font-size: smaller;">The .dll can be used even in C#, and EVEN in Unity (maybe I'll create a wrap to make it easy to use)</li>
 </ul>
 
 ```
