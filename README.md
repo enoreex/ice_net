@@ -23,13 +23,14 @@ At the moment, the library implements a fairly convenient and clear system of pa
 
 For this library you can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
 
-<h3>(.lib) or (.dll)</h3>
+<h3>CMake (.lib) or (.dll): </h3>
 
 Included are folders with an ending
 
-!If you are using C++ then i recomend .lib
-
-!If you are using C#(P/Invoke) for example, then i recommend .dll
+<ul>
+  <li style="font-size: smaller;>If you are using C++ then i recomend .lib</li>
+  <li style="font-size: smaller;>If you are using C#(P/Invoke) for example, then i recommend .dll</li>
+</ul>
 
 .lib:
 <ul>
