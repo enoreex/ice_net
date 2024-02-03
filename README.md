@@ -25,7 +25,7 @@ If you know enough about CMake, you can even write your own low-level transport 
 
 <h3>CMake (.lib) or (.dll): </h3>
 
-You may have noticed that library included folders with an ending .lib and .dll
+You may have noticed that library included folders with an ending (.lib) and (.dll)
 
 <ul>
   <li style="font-size: smaller;">If you are using C++ then i recomend .lib</li>
@@ -37,15 +37,13 @@ You may have noticed that library included folders with an ending .lib and .dll
 <ul>
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
   <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
-  <li style="font-size: smaller;">.lib libraries are very easy to use, no limitations.</li>
+  <li style="font-size: smaller;">(.lib) libraries are very easy to use, no limitations.</li>
 </ul>
 
 <h3>(.dll): </h3>
 
 <ul>
-  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of .dll is less than that of .lib </li>
-  <li style="font-size: smaller;">The .dll can be used even in C#, and EVEN in Unity (maybe I'll create a wrap to make it easy to use)</li>
+  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of .dll is less than that of (.lib).</li>
+  <li style="font-size: smaller;">The (.dll) can be used even in C#(P/Invoke), and EVEN in Unity (I'll create a wrap to make it easy to use).</li>
+  <li style="font-size: smaller;">Even in C++ (.dll) files are a bit of a nuisance.</li>
 </ul>
-
-```
-
