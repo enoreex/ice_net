@@ -84,6 +84,8 @@ public:
 
 	void connection_internal_disconnect(rudp_connection*& connection);
 
+	unsigned short connection_internal_get_ping(rudp_connection*& connection);
+
 	end_point connection_internal_get_remote_ep(rudp_connection*& connection);
 
 	const end_point* connection_internal_get_remote_ep_ptr(rudp_connection*& connection);

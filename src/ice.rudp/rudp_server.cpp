@@ -220,6 +220,17 @@ void rudp_server::connection_internal_disconnect(rudp_connection*& connection)
 	try_remove_connection(remote_point);
 }
 
+unsigned short rudp_server::connection_internal_get_ping(rudp_connection*& connection)
+{
+	std::shared_lock<std::shared_mutex> r_lock(mutex);
+
+	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
+
+	if (it == connections_arr.end()) return 0;
+
+	return connection->get_ping();
+}
+
 end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& connection)
 {
 	std::shared_lock<std::shared_mutex> r_lock(mutex);
