@@ -28,8 +28,8 @@ If you know enough about CMake, you can even write your own low-level transport 
 You may have noticed that library included folders with an ending (.lib) and (.dll)
 
 <ul>
-  <li style="font-size: smaller;">If you are using C++ then i recomend .lib</li>
-  <li style="font-size: smaller;">If you are using C#(P/Invoke) for example, then i recommend .dll</li>
+  <li style="font-size: smaller;">If you are using C++ then i recomend (.lib).</li>
+  <li style="font-size: smaller;">If you are using C#(P/Invoke) for example, then i recommend (.dll).</li>
 </ul>
 
 <h3>(.lib): </h3>
