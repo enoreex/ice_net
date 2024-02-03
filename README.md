@@ -23,6 +23,19 @@ At the moment, the library implements a fairly convenient and clear system of pa
 
 For this library you can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
 
+<h3>(.lib) or (.dll)</h3>
+
+Included are folders with an ending
+
+!If you are using C++ then i recomend .lib
+
+!If you are using C#(P/Invoke) for example, then i recommend .dll
+
+.lib:
+<ul>
+  <li style="font-size: smaller;></li>
+</ul>
+
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Simplest example</h2>
 
 <h3>Client:</h3>
