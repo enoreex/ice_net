@@ -21,7 +21,7 @@ At the moment, the library implements a fairly convenient and clear system of pa
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
 </ul>
 
-For this library you can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
+If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
 
 <h3>CMake (.lib) or (.dll): </h3>
 
