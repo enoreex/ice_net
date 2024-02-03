@@ -17,8 +17,8 @@
 #include "../ice.rudp/rudp_connection.h"
 #include "../ice.rudp/rudp_server.h"
 
-#include "../win_sock/win_udp_client.h"
-#include "../win_sock/win_udp_server.h"
+#include "../ice.sock/win_udp_client.h"
+#include "../ice.sock/win_udp_server.h"
 
 
 
