@@ -30,10 +30,10 @@ For this library you can write your own low-level transport using a_client and a
 ```cpp
 void start()
 {
-	rudp_client client;
-	client.socket = new win_udp_client;
+	rudp_client client; //creating client
+	client.socket = new win_udp_client; //winsock as transport
 
-	client.connected_callback = [this, &client]()
+	client.connected_callback = [this, &client]() //will be executed when client connected
 	{
 		ice_data::write data;
 
@@ -42,9 +42,9 @@ void start()
 		client.send_reliable(data);
 	};
 
-	client.connect(end_point("127.0.0.1", 7777), end_point(0, 0));
+	client.connect(end_point("127.0.0.1", 7777), end_point(0, 0)); //connecting... (0, 0) - means auto ip + port
 
-	std::thread tick_t([&]() { while (true) client.update(); });
+	std::thread tick_t([&]() { while (true) client.update(); }); //will be bad without update(). more often is better.
 	tick_t.join();
 }
 ```
@@ -54,17 +54,17 @@ void start()
 ```cpp
 void start()
 {
-	rudp_server server;
-	server.socket = new win_udp_server;
+	rudp_server server; //creating server
+	server.socket = new win_udp_server; //winsock as transport
 
-	server.external_data_callback = [this](rudp_connection& c, ice_data::read& d) 
+	server.external_data_callback = [this](rudp_connection& c, ice_data::read& d) //will be executed when packet handled
 	{
 		handle(c, d); 
 	};
 
-	server.try_start(end_point(0, 7777));
+	server.try_start(end_point(0, 7777)); //starting... (0, 7777) - means auto ip + 7777
 
-	std::thread tick_t([&]() { while (true) server.update(); });
+	std::thread tick_t([&]() { while (true) server.update(); }); //will be bad without update(). more often is better.
 	tick_t.join();
 }
 
