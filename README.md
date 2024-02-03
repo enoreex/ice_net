@@ -21,55 +21,29 @@ At the moment, the library implements a fairly convenient and clear system of pa
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
 </ul>
 
-For this library you can write your own low-level transport using a_client and a_server as absractions(btw, here is my <a href = "https://github.com/enoreex/win_sockets">implementation</a> for windows). Maybe someday I will create several such solutions for different platforms.
+If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
 
-<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Usage</h2>
+<h3>CMake (.lib) or (.dll): </h3>
 
-<h3>Client:</h3>
+You may have noticed that library included folders with an ending (.lib) and (.dll)
 
-```cpp
-void start()
-{
-	rudp_client client;
-	client.socket = new win_udp_client;
+<ul>
+  <li style="font-size: smaller;">If you are using C++ then i recomend (.lib).</li>
+  <li style="font-size: smaller;">If you are using C#(P/Invoke) for example, then i recommend (.dll).</li>
+</ul>
 
-	client.connected_callback = [this, &client]()
-	{
-		ice_data::write data;
+<h3>(.lib): </h3>
 
-		data.add_string("Hello World!");
+<ul>
+  <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
+  <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
+  <li style="font-size: smaller;">(.lib) libraries are very easy to use, no limitations.</li>
+</ul>
 
-		client.send_reliable(data);
-	};
+<h3>(.dll): </h3>
 
-	client.connect(end_point("127.0.0.1", 7777), end_point(0, 0));
-
-	std::thread tick_t([&]() { while (true) client.update(); });
-	tick_t.join();
-}
-```
-
-<h3>Server:</h3>
-
-```cpp
-void start()
-{
-	rudp_server server;
-	server.socket = new win_udp_server;
-	server.try_start(end_point(0, 7777));
-	std::thread tick_t([&]() { while (true) server.update(); });
-
-	server.external_data_callback = [this](rudp_connection& c, ice_data::read& d) 
-	{
-		handle(c, d); 
-	};
-
-	tick_t.join();
-}
-
-void handle(rudp_connection& c, ice_data::read& data)
-{
-	std::cout << c.get_remote_point().get_port_str() << ": " << data.get_string() << "\n";
-}
-```
-
+<ul>
+  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of .dll is less than that of (.lib).</li>
+  <li style="font-size: smaller;">The (.dll) can be used even in C#(P/Invoke), and EVEN in Unity (I'll create a wrap to make it easy to use).</li>
+  <li style="font-size: smaller;">Even in C++ (.dll) files are a bit of a nuisance.</li>
+</ul>
