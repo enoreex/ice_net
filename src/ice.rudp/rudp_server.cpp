@@ -186,6 +186,8 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
 
+		w_lock.unlock();
+
 		ext_connection_removed(*connection);
 
 		delete connection;
