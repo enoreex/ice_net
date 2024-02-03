@@ -25,7 +25,7 @@ For this library you can write your own low-level transport using a_client and a
 
 <h3>CMake (.lib) or (.dll): </h3>
 
-Included are folders with an ending
+Included are folders with an ending .lib and .dll
 
 <ul>
   <li style="font-size: smaller;">If you are using C++ then i recomend .lib</li>
