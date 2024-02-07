@@ -12,14 +12,14 @@ rudp_connection::rudp_connection(
 
 end_point rudp_connection::get_remote_point()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	return remote_point;
 }
 
 const end_point* rudp_connection::get_remote_point_ptr()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	return &remote_point;
 }
@@ -31,7 +31,7 @@ void rudp_connection::update()
 
 void rudp_connection::connect(end_point remote_point)
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	this->current_state = connected;
 
@@ -44,7 +44,7 @@ void rudp_connection::connect(end_point remote_point)
 
 void rudp_connection::handle(ice_data::read& data)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == disconnected) return;
 
@@ -97,7 +97,7 @@ void rudp_connection::ch_handle(ice_data::read& data)
 
 void rudp_connection::ch_send(ice_data::write& data)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state != disconnected) serv_callback_send(remote_point, data);
 }
@@ -111,7 +111,7 @@ void rudp_connection::send_connect_response()
 
 void rudp_connection::disconnect()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == disconnected) return;
 

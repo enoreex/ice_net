@@ -1,31 +1,50 @@
 #pragma once
 
+#ifdef _WIN32
+
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
 
+#else
+
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+
+typedef int SOCKET;
+
+#endif
+
 #include "..\ice.rudp\common\transport\a_server.h"
+
+#ifdef _WIN32
 
 #pragma comment(lib, "ws2_32.lib")
 
-class win_udp_server final : public a_server
+#endif
+
+class udp_server final : public a_server
 {
 
 private:
 
-    SOCKET sock = INVALID_SOCKET;
+    SOCKET sock = 0;
 
     sockaddr_in local_in = sockaddr_in();
 
 public:
 
-    ~win_udp_server();
+    ~udp_server();
 
 public:
 
     end_point get_local_point() override;
 
-    bool start(end_point& local_point);
+    bool start(end_point& local_point) override;
 
     bool receive_available() override;
 

@@ -29,7 +29,7 @@ void logger_set_error(void(*action)(const char*))
 rudp_client* create_client()
 {
 	rudp_client* client = new rudp_client;
-	client->socket = new win_udp_client;
+	client->socket = new udp_client;
 
 	return client;
 }
@@ -37,7 +37,7 @@ rudp_client* create_client()
 rudp_server* create_server()
 {
 	rudp_server* server = new rudp_server;
-	server->socket = new win_udp_server;
+	server->socket = new udp_server;
 
 	return server;
 }

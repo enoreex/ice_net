@@ -54,7 +54,7 @@ public:
 
 private:
 
-	std::shared_mutex mutex;
+	std::shared_timed_mutex mutex;
 
 public:
 
@@ -83,8 +83,6 @@ private:
 public:
 
 	void connection_internal_disconnect(rudp_connection*& connection);
-
-	unsigned short connection_internal_get_ping(rudp_connection*& connection);
 
 	end_point connection_internal_get_remote_ep(rudp_connection*& connection);
 

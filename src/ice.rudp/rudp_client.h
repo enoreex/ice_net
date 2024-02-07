@@ -45,10 +45,6 @@ private:
 
 public:
 
-	unsigned short get_ping();
-
-public:
-
 	end_point get_local_point();
 
 	end_point get_remote_point();

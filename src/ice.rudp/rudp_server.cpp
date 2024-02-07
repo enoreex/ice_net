@@ -2,7 +2,7 @@
 
 end_point rudp_server::get_local_point()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	return socket->get_local_point();
 }
@@ -18,7 +18,7 @@ void rudp_server::update()
 
 bool rudp_server::try_start(end_point local_point)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (socket == nullptr)
 	{
@@ -31,7 +31,7 @@ bool rudp_server::try_start(end_point local_point)
 
 	r_lock.unlock();
 
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	auto result = socket->start(local_point);
 
@@ -46,7 +46,7 @@ bool rudp_server::try_start(end_point local_point)
 
 void rudp_server::receive()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (socket->receive_available() == false) return;
 
@@ -109,7 +109,7 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 
 bool rudp_server::try_add_connection(end_point& remote_point)
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex, std::defer_lock);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex, std::defer_lock);
 
 	bool predicate_result;
 
@@ -173,7 +173,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 	try
 	{
-		std::unique_lock<std::shared_mutex> w_lock(mutex);
+		std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 		if (try_get_connection(connection, remote_point) == false) return false;
 
@@ -209,7 +209,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 void rudp_server::connection_internal_disconnect(rudp_connection*& connection)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
@@ -222,20 +222,9 @@ void rudp_server::connection_internal_disconnect(rudp_connection*& connection)
 	try_remove_connection(remote_point);
 }
 
-unsigned short rudp_server::connection_internal_get_ping(rudp_connection*& connection)
-{
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
-
-	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
-
-	if (it == connections_arr.end()) return 0;
-
-	return connection->get_ping();
-}
-
 end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& connection)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
@@ -248,7 +237,7 @@ end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& conne
 
 const end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connection*& connection)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
@@ -261,7 +250,7 @@ const end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connect
 
 void rudp_server::connection_callback_handle(rudp_connection& connection, ice_data::read& data)
 {
-	external_data_callback(connection, data);
+	ext_data_handled(connection, data);
 }
 
 void rudp_server::connection_callback_send(end_point& remote_point, ice_data::write& data)
@@ -276,7 +265,7 @@ void rudp_server::connection_callback_disconnect(end_point& remote_point)
 
 void rudp_server::send_unreliable(end_point& ep, ice_data::write& data)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	auto it = connections.find(ep);
 
@@ -287,7 +276,7 @@ void rudp_server::send_unreliable(end_point& ep, ice_data::write& data)
 
 void rudp_server::send_reliable(end_point& ep, ice_data::write& data)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	auto it = connections.find(ep);
 
@@ -313,7 +302,7 @@ inline void rudp_server::ext_data_handled(rudp_connection& c, ice_data::read& d)
 
 void rudp_server::send(end_point& remote_point, ice_data::write& data)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == disconnected) return;
 
@@ -322,7 +311,7 @@ void rudp_server::send(end_point& remote_point, ice_data::write& data)
 
 void rudp_server::stop()
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	if (current_state == disconnected || !socket) return;
 

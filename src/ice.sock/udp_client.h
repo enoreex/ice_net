@@ -1,24 +1,44 @@
 #pragma once
 
+#ifdef _WIN32
+
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
 
+#else
+
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+
+typedef int SOCKET;
+
+#endif
+
 #include "..\ice.rudp\common\transport\a_client.h"
+
+#ifdef _WIN32
 
 #pragma comment(lib, "ws2_32.lib")
 
-class win_udp_client final : public a_client
+#endif
+
+class udp_client final : public a_client
 {
+
 private:
 
-    SOCKET sock = INVALID_SOCKET;
+    SOCKET sock = 0;
     sockaddr_in local_in = sockaddr_in();
     sockaddr_in remote_in = sockaddr_in();
 
 public:
 
-    ~win_udp_client();
+    ~udp_client();
 
 public:
 

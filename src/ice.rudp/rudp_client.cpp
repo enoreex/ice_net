@@ -1,20 +1,15 @@
 #include "rudp_client.h"
 
-unsigned short rudp_client::get_ping()
-{
-	return rudp_peer::get_ping();
-}
-
 end_point rudp_client::get_local_point()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	return socket->get_local_point();
 }
 
 end_point rudp_client::get_remote_point()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	return socket->get_remote_point();
 }
@@ -28,7 +23,7 @@ void rudp_client::update()
 
 void rudp_client::connect(end_point remote_point, end_point local_point)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (socket == nullptr)
 	{
@@ -41,7 +36,7 @@ void rudp_client::connect(end_point remote_point, end_point local_point)
 
 	r_lock.unlock();
 
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	bool result = socket->connect(remote_point, local_point);
 
@@ -62,7 +57,7 @@ void rudp_client::connect(end_point remote_point, end_point local_point)
 
 void rudp_client::connect_attempt()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state != connecting) return;
 
@@ -79,7 +74,7 @@ void rudp_client::connect_attempt()
 
 	ice_logger::log("try-connect", ("trying to connect... attempt[" + std::to_string(connection_attempts) + "]!"));
 
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	++connection_attempts;
 
@@ -88,7 +83,7 @@ void rudp_client::connect_attempt()
 
 void rudp_client::receive()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == disconnected) return;
 
@@ -109,7 +104,7 @@ void rudp_client::handle(ice_data::read& data)
 {
 	char packet_id = data.get_flag();
 
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == connecting && packet_id != rudp::connect_response) return;
 
@@ -150,7 +145,7 @@ void rudp_client::handle(ice_data::read& data)
 
 void rudp_client::handle_connect_response()
 {
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	current_state = connected;
 
@@ -172,7 +167,7 @@ void rudp_client::ch_handle(ice_data::read& data)
 
 void rudp_client::ch_send(ice_data::write& data)
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == disconnected) return;
 
@@ -198,13 +193,13 @@ void rudp_client::send_connect_request()
 
 void rudp_client::disconnect()
 {
-	std::shared_lock<std::shared_mutex> r_lock(mutex);
+	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
 	if (current_state == disconnected) return;
 
 	r_lock.unlock();
 
-	std::unique_lock<std::shared_mutex> w_lock(mutex);
+	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	w_lock.unlock();
 

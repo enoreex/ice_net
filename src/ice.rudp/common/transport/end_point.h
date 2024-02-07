@@ -3,6 +3,8 @@
 #ifndef ICE_END_P
 #define ICE_END_P
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <string>
 
 struct end_point
@@ -47,10 +49,6 @@ public:
 	std::string get_address_str() const;
 
 	std::string get_port_str() const;
-
-public:
-
-	void reset();
 
 public:
 

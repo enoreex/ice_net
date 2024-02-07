@@ -26,7 +26,7 @@ bool end_point::set_address(std::string address_str)
 {
 	unsigned long octet_1, octet_2, octet_3, octet_4;
 
-	bool result = (sscanf_s(address_str.c_str(), "%u.%u.%u.%u", &octet_1, &octet_2, &octet_3, &octet_4) == 4);
+	bool result = (sscanf(address_str.c_str(), "%lu.%lu.%lu.%lu", &octet_1, &octet_2, &octet_3, &octet_4) == 4);
 
 	if (result == false) return false;
 
@@ -75,12 +75,6 @@ std::string end_point::get_port_str() const
 	result = std::to_string(port);
 
 	return result;
-}
-
-void end_point::reset()
-{
-	set_address(0);
-	set_port(0);
 }
 
 bool end_point::operator==(const end_point& other)

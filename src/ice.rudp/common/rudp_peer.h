@@ -44,15 +44,9 @@ private:
 
 private:
 
-	unsigned short get_smooth_rtt();
-
-	unsigned short get_resend_time() const;
+	unsigned short get_resend_time();
 
 	unsigned short get_next_packet_id();
-
-protected:
-
-	unsigned short get_ping();
 
 protected:
 
@@ -83,7 +77,7 @@ private:
 
 protected:
 	
-	std::shared_mutex mutex;
+	std::shared_timed_mutex mutex;
 
 protected:
 

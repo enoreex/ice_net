@@ -30,10 +30,10 @@ add_library(ice_net SHARED
     "../src/ice.rudp/rudp_server.h" 
     "../src/ice.rudp/rudp_server.cpp"
 
-    "../src/ice.sock/win_udp_client.h"
-    "../src/ice.sock/win_udp_client.cpp"
-    "../src/ice.sock/win_udp_server.h"
-    "../src/ice.sock/win_udp_server.cpp" 
+    "../src/ice.sock/udp_client.h"
+    "../src/ice.sock/udp_client.cpp"
+    "../src/ice.sock/udp_server.h"
+    "../src/ice.sock/udp_server.cpp" 
 )
 
 target_compile_definitions(ice_net PRIVATE ICE_NET_EXPORTS)
