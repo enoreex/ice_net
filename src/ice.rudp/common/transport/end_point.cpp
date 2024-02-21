@@ -77,12 +77,19 @@ std::string end_point::get_port_str() const
 	return result;
 }
 
+static_assert(sizeof(uint64_t) >= sizeof(end_point), "Hash(uint64) size must be greater or equal to the size of end_point!");
+
+long long end_point::get_hash() const noexcept
+{
+	long long result = 0;
+
+	result |= (static_cast<long long>(address)   );
+	result |= (static_cast<long long>(port) << 32);
+
+	return result;
+}
+
 bool end_point::operator==(const end_point& other)
 {
 	return (other.address == this->address && other.port == this->port);
-}
-
-bool end_point::operator<(const end_point& other) const
-{
-	return (this->address < other.address) || ((this->address == other.address) && (this->port < other.port));
 }

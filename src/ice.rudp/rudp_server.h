@@ -12,6 +12,7 @@
 #include "rudp_connection.h"
 
 #include <vector>
+#include <unordered_map>
 #include <functional>
 #include <shared_mutex>
 
@@ -34,7 +35,7 @@ public:
 
 private:
 
-	std::map<end_point, rudp_connection*> connections;
+	std::unordered_map<long long, rudp_connection*> connections;
 
 	std::vector<rudp_connection*> connections_arr;
 

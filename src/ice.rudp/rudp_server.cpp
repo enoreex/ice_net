@@ -98,7 +98,7 @@ void rudp_server::receive()
 
 bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& remote_point)
 {
-	auto it = connections.find(remote_point);
+	auto it = connections.find(remote_point.get_hash());
 
 	if (it == connections.end()) return false;
 
@@ -142,7 +142,7 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 
 		w_lock.lock();
 
-		connections.insert({ remote_point, connection });
+		connections[remote_point.get_hash()] = connection;
 		connections_arr.push_back(connection);
 
 		w_lock.unlock();
@@ -177,7 +177,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 
 		if (try_get_connection(connection, remote_point) == false) return false;
 
-		connections.erase(remote_point);
+		connections.erase(remote_point.get_hash());
 
 		auto it = std::remove(connections_arr.begin(), connections_arr.end(), connection);
 		connections_arr.erase(it, connections_arr.end());
@@ -267,7 +267,7 @@ void rudp_server::send_unreliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
-	auto it = connections.find(ep);
+	auto it = connections.find(ep.get_hash());
 
 	if (it == connections.end()) return;
 
@@ -278,7 +278,7 @@ void rudp_server::send_reliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
 
-	auto it = connections.find(ep);
+	auto it = connections.find(ep.get_hash());
 
 	if (it == connections.end()) return;
 
