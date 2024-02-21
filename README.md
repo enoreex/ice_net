@@ -27,12 +27,24 @@ If you know enough about CMake, you can even write your own low-level transport 
 You may have noticed that library included folders with an ending (.lib), (.dll), (.so)
 
 <h3>What to take: </h3>
-<ul>
-  <li style="font-size: smaller;">(Windows C++) - (.lib) or (.dll) or (.so)</li>
-  <li style="font-size: smaller;">(Windows C#) -            (.dll)         </li>
-  <li style="font-size: smaller;">(Android C#) -                      (.so)</li>
-  <li style="font-size: smaller;">(Unity C#) -              (.dll) or (.so)</li>
-</ul>
+<table>
+  <tr>
+    <td style="font-size: smaller;">(Windows C++)</td>
+    <td style="font-size: smaller;">(.lib) or (.dll) or (.so)</td>
+  </tr>
+  <tr>
+    <td style="font-size: smaller;">(Windows C#)</td>
+    <td style="font-size: smaller;">(.dll)</td>
+  </tr>
+  <tr>
+    <td style="font-size: smaller;">(Android C#)</td>
+    <td style="font-size: smaller;">(.so)</td>
+  </tr>
+  <tr>
+    <td style="font-size: smaller;">(Unity C#)</td>
+    <td style="font-size: smaller;">(.dll) or (.so)</td>
+  </tr>
+</table>
 
 <h3>(.lib): </h3>
 
