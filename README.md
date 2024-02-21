@@ -66,14 +66,15 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.dll) is less than that of (.lib).</li>
-  <li style="font-size: smaller;">The (.dll) can be used even in C#, and EVEN in Unity <strong>(Only Windows)</strong></li>
+  <li style="font-size: smaller;">The (.dll) can be used even in C#, and EVEN in Unity. <strong>(Only Windows)</strong></li>
 </ul>
 
 <h3>(.so): </h3>
 
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
-  <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity <strong>(Only Android)</strong></li>
+  <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity. <strong>(Only Android)</strong></li>
+  <li style="font-size: smaller;">If you want to build my lib with CMake using (.so), you need Android NDK. Or just download realease.</li>
 </ul>
 
 <h3>Work with Unity</h3>
