@@ -6,7 +6,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <string>
-#include <cstdint>
 
 struct end_point
 {
