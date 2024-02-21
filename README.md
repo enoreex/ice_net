@@ -14,22 +14,22 @@ At the moment, the library implements a fairly convenient and clear system of pa
 <h3>The library now has:</h3>
 
 <ul>
-  <li style="font-size: smaller;">Installation and support connections (RUDP functionality)</li>
-  <li style="font-size: smaller;">Handle/Send reliable packets (RUDP functionality)</li>
+  <li style="font-size: smaller;">Installation and support connections (RUDP functionality) - !!ITS NOT TCP!!</li>
+  <li style="font-size: smaller;">Handle/Send reliable packets (RUDP functionality) - !!ITS NOT TCP!!</li>
   <li style="font-size: smaller;">Convenient logging system</li>
   <li style="font-size: smaller;">Minimum thread safety system</li>
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
 </ul>
 
-If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_client and a_server as absractions(Btw, I use win-sockets for the example, they come with the library). Maybe someday I will create several such solutions for different platforms.
+If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_client and a_server as absractions(Btw, I already created useful examples, they come with the library).
 
-<h3>CMake (.lib) or (.dll): </h3>
+<h3>CMake (.lib) or (.dll) or (.so): </h3>
 
-You may have noticed that library included folders with an ending (.lib) and (.dll)
+You may have noticed that library included folders with an ending (.lib), (.dll), (.so)
 
 <ul>
   <li style="font-size: smaller;">If you are using C++ then i recomend (.lib).</li>
-  <li style="font-size: smaller;">If you are using C#(P/Invoke) for example, then i recommend (.dll).</li>
+  <li style="font-size: smaller;">If you are using C#(P/Invoke) for example, then i recommend Windows(.dll) or Android(.so).</li>
 </ul>
 
 <h3>(.lib): </h3>
@@ -40,10 +40,9 @@ You may have noticed that library included folders with an ending (.lib) and (.d
   <li style="font-size: smaller;">(.lib) libraries are very easy to use, no limitations.</li>
 </ul>
 
-<h3>(.dll): </h3>
+<h3>(.dll) and (.so): </h3>
 
 <ul>
-  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of .dll is less than that of (.lib).</li>
-  <li style="font-size: smaller;">The (.dll) can be used even in C#(P/Invoke), and EVEN in Unity (I'll create a wrap to make it easy to use).</li>
-  <li style="font-size: smaller;">Even in C++ (.dll) files are a bit of a nuisance.</li>
+  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.dll) and (.so) is less than that of (.lib).</li>
+  <li style="font-size: smaller;">The (.dll) and (.so) can be used even in C#(P/Invoke), and EVEN in Unity (I'll create a wrap to make it easy to use).</li>
 </ul>
