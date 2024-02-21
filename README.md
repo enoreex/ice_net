@@ -75,3 +75,6 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
   <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity <strong>(Only Android)</strong></li>
 </ul>
+
+<h3>Work with Unity</h3>
+
