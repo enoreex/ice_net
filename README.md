@@ -54,7 +54,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   </tr>
 </table>
 
-<h3>(.lib): </h3>
+<h3><a href = "https://github.com/enoreex/ice_net/releases/tag/lib">(.lib)</a>: </h3>
 
 <ul>
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
@@ -63,7 +63,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Windows!</i></li>
 </ul>
 
-<h3>(.dll): </h3>
+<h3><a href = "https://github.com/enoreex/ice_net/releases/tag/dll">(.dll)</a>: </h3>
 
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.dll) is less than that of (.lib).</li>
@@ -71,7 +71,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Windows!</i></li>
 </ul>
 
-<h3>(.so): </h3>
+<h3><a href = "https://github.com/enoreex/ice_net/releases/tag/so">(.so)</a>: </h3>
 
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
