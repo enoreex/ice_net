@@ -59,7 +59,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <ul>
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
   <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
-  <li style="font-size: smaller;">(.lib) libraries are very easy to use</li>
+  <li style="font-size: smaller;">(.lib) libraries are very easy to use <strong>(Only Windows)</strong></li>
 </ul>
 
 <h3>(.dll): </h3>
