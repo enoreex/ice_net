@@ -34,7 +34,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   </tr>
   <tr>
     <td style="font-size: smaller;">(Windows C#)</td>
-    <td style="font-size: smaller;">ㅤㅤㅤㅤ(.dll)</td>
+    <td style="font-size: smaller;">ㅤㅤㅤ(.dll)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Android C#)</td>
