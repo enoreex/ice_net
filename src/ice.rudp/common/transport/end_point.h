@@ -53,9 +53,11 @@ public:
 
 public:
 
-	bool operator ==(const end_point& other);
+	long long get_hash() const noexcept;
 
-	bool operator <(const end_point& other) const;
+public:
+
+	bool operator ==(const end_point& other);
 };
 
 #endif
