@@ -60,7 +60,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
   <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
   <li style="font-size: smaller;">(.lib) libraries are very easy to use. <strong>(Only Windows)</strong></li>
-  <li style="font-size: smaller;"><i>Build: you need C++ compiler and Windows!</i></li>
+  <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Windows!</i></li>
 </ul>
 
 <h3>(.dll): </h3>
@@ -68,7 +68,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.dll) is less than that of (.lib).</li>
   <li style="font-size: smaller;">The (.dll) can be used even in C#, and EVEN in Unity. <strong>(Only Windows)</strong></li>
-  <li style="font-size: smaller;"><i>Build: you need C++ compiler and Windows!</i></li>
+  <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Windows!</i></li>
 </ul>
 
 <h3>(.so): </h3>
@@ -77,7 +77,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
   <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity. <strong>(Only Android)</strong></li>
   <li style="font-size: smaller;">If you want to build my lib with CMake using (.so), you need Android NDK. Or just download realease.</li>
-  <li style="font-size: smaller;"><i>Build: you need C++ compiler and Android NDK!</i></li>
+  <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Android NDK!</i></li>
 </ul>
 
 <h3>Work with Unity</h3>
