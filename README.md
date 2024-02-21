@@ -29,9 +29,9 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <h3>What to take: </h3>
 <ul>
   <li style="font-size: smaller;">(Windows C++) - (.lib) or (.dll) or (.so)</li>
-  <li style="font-size: smaller;">(Windows C#) - (.dll)</li>
-  <li style="font-size: smaller;">(Android C#) - (.so)</li>
-  <li style="font-size: smaller;">(Unity C#) - (.dll) and (.so)</li>
+  <li style="font-size: smaller;">(Windows C#) -            (.dll)         </li>
+  <li style="font-size: smaller;">(Android C#) -                      (.so)</li>
+  <li style="font-size: smaller;">(Unity C#) -              (.dll) or (.so)</li>
 </ul>
 
 <h3>(.lib): </h3>
