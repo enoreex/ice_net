@@ -76,7 +76,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <ul>
   <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
   <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity. <strong>(Only Android)</strong></li>
-  <li style="font-size: smaller;">If you want to build my lib with CMake using (.so), you need Android NDK. Or just download realease.</li>
+  <li style="font-size: smaller;">If you want to build my lib with CMake using (.so), you need Android NDK. Or just <a href = "https://github.com/enoreex/ice_net/releases/tag/so">Download</a> realease.</li>
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Android NDK!</i></li>
 </ul>
 
