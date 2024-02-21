@@ -17,6 +17,7 @@ My convoluted implementation of a reliable protocol. If this is to be used, it s
   <li style="font-size: smaller;">Convenient logging system</li>
   <li style="font-size: smaller;">Minimum thread safety system</li>
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
+  <li style="font-size: smaller;">The library is cross-platform</li>
 </ul>
 
 If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_client and a_server as absractions(Btw, I already created useful examples, they come with the library).
@@ -27,8 +28,10 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 
 <h3>What to take: </h3>
 <ul>
-  <li style="font-size: smaller;">If you are using clear C++ then i recomend (.lib) (You can also take (.dll) or (.so), but it will be more difficult to work)</li>
-  <li style="font-size: smaller;">If you are using C#(P/Invoke) or Android NDK for example, then i recommend Windows(.dll) or Android(.so).</li>
+  <li style="font-size: smaller;">(Windows C++) - (.lib) or (.dll) or (.so)</li>
+  <li style="font-size: smaller;">(Windows C#) - (.dll) !!!USE MY WRAP FOR C#!!!</li>
+  <li style="font-size: smaller;">(Android C#) - (.so)  !!!USE MY WRAP FOR C#!!!</li>
+  <li style="font-size: smaller;">(Unity C#) - (.dll) + (.so) - use both for crossplatforming. !!!USE MY WRAP FOR UNITY!!!</li>
 </ul>
 
 <h3>(.lib): </h3>
