@@ -42,7 +42,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   </tr>
   <tr>
     <td style="font-size: smaller;">(Unity C#)</td>
-    <td style="font-size: smaller;">ㅤㅤㅤㅤㅤㅤ(.dll) or (.so)</td>
+    <td style="font-size: smaller;">ㅤㅤ (.dll) (.so)</td>
   </tr>
 </table>
 
