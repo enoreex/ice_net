@@ -34,15 +34,15 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   </tr>
   <tr>
     <td style="font-size: smaller;">(Windows C#)</td>
-    <td style="font-size: smaller;">(.dll)</td>
+    <td style="font-size: smaller;">ㅤㅤㅤㅤㅤㅤ(.dll)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Android C#)</td>
-    <td style="font-size: smaller;">(.so)</td>
+    <td style="font-size: smaller;">ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ(.so)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Unity C#)</td>
-    <td style="font-size: smaller;">(.dll) or (.so)</td>
+    <td style="font-size: smaller;">ㅤㅤㅤㅤㅤㅤ(.dll) or (.so)</td>
   </tr>
 </table>
 
