@@ -29,9 +29,9 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <h3>What to take: </h3>
 <ul>
   <li style="font-size: smaller;">(Windows C++) - (.lib) or (.dll) or (.so)</li>
-  <li style="font-size: smaller;">(Windows C#) - (.dll) !!!USE MY WRAP FOR C#!!!</li>
-  <li style="font-size: smaller;">(Android C#) - (.so)  !!!USE MY WRAP FOR C#!!!</li>
-  <li style="font-size: smaller;">(Unity C#) - (.dll) + (.so) - use both for crossplatforming. !!!USE MY WRAP FOR UNITY!!!</li>
+  <li style="font-size: smaller;">(Windows C#) - (.dll)</li>
+  <li style="font-size: smaller;">(Android C#) - (.so)</li>
+  <li style="font-size: smaller;">(Unity C#) - (.dll) and (.so)</li>
 </ul>
 
 <h3>(.lib): </h3>
