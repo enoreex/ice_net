@@ -85,6 +85,6 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Download</h2>
 
-(.Lib): <a href = "">Download</a>&#10
-(.Dll): <a href = "">Download</a>&#10
-(.So):  <a href = "">Download</a>&#10
+(.Lib): <a href = "">Download</a><p>&#10</p>
+(.Dll): <a href = "">Download</a>
+(.So):  <a href = "">Download</a>
