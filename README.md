@@ -80,7 +80,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Android NDK!</i></li>
 </ul>
 
-If you work in Unity, I recommend you to use (.so) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just Download my wrap for unity, in which I did this work.
+<i>If you work in Unity, I recommend you to use (.so) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just Download my wrap for unity, in which I did this work.</i>
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Download</h2>
 
