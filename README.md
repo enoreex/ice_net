@@ -7,9 +7,7 @@
 
 My convoluted implementation of a reliable protocol. If this is to be used, it should be used at most in a local network. This implementation is similar to my existing <a href = "https://github.com/enoreex/ICENet/">C# lib</a>
 
-<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>My future additions</h2>
-
-At the moment, the library implements a fairly convenient and clear system of package deserialization and deserialization. It has a convenient logging system.
+<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>About</h2>
 
 <h3>The library now has:</h3>
 
