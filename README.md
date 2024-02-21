@@ -25,9 +25,10 @@ If you know enough about CMake, you can even write your own low-level transport 
 
 You may have noticed that library included folders with an ending (.lib), (.dll), (.so)
 
+<h3>What to take: </h3>
 <ul>
   <li style="font-size: smaller;">If you are using C++ then i recomend (.lib).</li>
-  <li style="font-size: smaller;">If you are using C#(P/Invoke) for example, then i recommend Windows(.dll) or Android(.so).</li>
+  <li style="font-size: smaller;">If you are using C#(P/Invoke) or Android NDK for example, then i recommend Windows(.dll) or Android(.so).</li>
 </ul>
 
 <h3>(.lib): </h3>
