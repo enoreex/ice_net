@@ -85,6 +85,8 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Download</h2>
 
-(.lib): <a href = "">Download</a><p></p>
-(.dll): <a href = "">Download</a><p></p>
-(.so):  <a href = "">Download</a><p></p>
+(.lib): <a href = "https://github.com/enoreex/ice_net/releases/tag/lib">Download</a><p></p>
+(.dll): <a href = "https://github.com/enoreex/ice_net/releases/tag/dll">Download</a><p></p>
+(.so):  <a href = "https://github.com/enoreex/ice_net/releases/tag/so">Download</a><p></p>
+(C#):  <a href = "https://github.com/enoreex/ice_net/releases/tag/ice_net_cs">Download</a><p></p>
+(Unity):  <a href = "https://github.com/enoreex/ice_net/releases/tag/ice_net_unity">Download</a><p></p>
