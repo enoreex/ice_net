@@ -30,11 +30,11 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <table>
   <tr>
     <td style="font-size: smaller;">(Windows C++)</td>
-    <td style="font-size: smaller;">(.lib) or (.dll) or (.so)</td>
+    <td style="font-size: smaller;">(.lib) (.dll) (.so)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Windows C#)</td>
-    <td style="font-size: smaller;">ㅤㅤㅤ (.dll)</td>
+    <td style="font-size: smaller;">ㅤㅤㅤ(.dll)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Android C#)</td>
