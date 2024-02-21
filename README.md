@@ -27,7 +27,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 
 <h3>What to take: </h3>
 <ul>
-  <li style="font-size: smaller;">If you are using C++ then i recomend (.lib).</li>
+  <li style="font-size: smaller;">If you are using clear C++ then i recomend (.lib) (You can also take (.dll) or (.so), but it will be more difficult to work)</li>
   <li style="font-size: smaller;">If you are using C#(P/Invoke) or Android NDK for example, then i recommend Windows(.dll) or Android(.so).</li>
 </ul>
 
