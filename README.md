@@ -24,7 +24,7 @@ If you know enough about CMake, you can even write your own low-level transport 
 
 <h3>CMake (.lib) or (.dll) or (.so): </h3>
 
-You may have noticed that library included folders with an ending (.lib), (.dll), (.so)
+You may have noticed that library included folders with an ending (.lib), (.dll), (.so).. You can also use it in C#, but it little uncomfortable, so to make it easier, I created a wrap for C#, so you don’t have to work with the (.dll) and (.so) directly!
 
 <h3>What to take: </h3>
 <table>
