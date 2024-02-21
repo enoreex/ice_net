@@ -59,12 +59,19 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <ul>
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
   <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
-  <li style="font-size: smaller;">(.lib) libraries are very easy to use, no limitations.</li>
+  <li style="font-size: smaller;">(.lib) libraries are very easy to use</li>
 </ul>
 
-<h3>(.dll) and (.so): </h3>
+<h3>(.dll): </h3>
 
 <ul>
-  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.dll) and (.so) is less than that of (.lib).</li>
-  <li style="font-size: smaller;">The (.dll) and (.so) can be used even in C#(P/Invoke), and EVEN in Unity (I'll create a wrap to make it easy to use).</li>
+  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.dll) is less than that of (.lib).</li>
+  <li style="font-size: smaller;">The (.dll) can be used even in C#, and EVEN in Unity (Only Windows)</li>
+</ul>
+
+<h3>(.so): </h3>
+
+<ul>
+  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
+  <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity (Only Android)</li>
 </ul>
