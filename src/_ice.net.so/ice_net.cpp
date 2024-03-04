@@ -2,7 +2,7 @@
 
 
 
-void  logger_set_info(void(*action)(const char*))
+void logger_set_info(void(*action)(const char*))
 {
     if (action == nullptr)
     {
@@ -106,6 +106,40 @@ void server_set_handle(rudp_server* sock, void(*action)(rudp_server*, i_ARRAY, i
     {
         action(sock, data.get_buffer_remaining(), data.get_buffer_size_remaining(), &c);
     };
+}
+
+
+
+void client_set_reliable_packet_lost(rudp_client* sock, void(*action)(rudp_client*, i_ARRAY, i_USHORT, i_USHORT))
+{
+    if (sock == nullptr) return;
+
+    if (action == nullptr)
+    {
+        sock->reliable_packet_lost = nullptr;
+        return;
+    }
+
+    sock->reliable_packet_lost = [sock, action](i_ARRAY data, i_USHORT size, i_USHORT id)
+        {
+            action(sock, data, size, id);
+        };
+}
+
+void server_set_reliable_packet_lost(rudp_server* sock, void(*action)(rudp_server*, i_ARRAY, i_USHORT, i_USHORT, rudp_connection*))
+{
+    if (sock == nullptr) return;
+
+    if (action == nullptr)
+    {
+        sock->reliable_packet_lost = nullptr;
+        return;
+    }
+
+    sock->reliable_packet_lost = [sock, action](rudp_connection& c, i_ARRAY data, i_USHORT size, i_USHORT id)
+        {
+            action(sock, data, size, id, &c);
+        };
 }
 
 

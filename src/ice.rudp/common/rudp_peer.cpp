@@ -155,13 +155,13 @@ void rudp_peer::send_reliable(ice_data::write& data)
 
 	unsigned short packet_id = get_next_packet_id();
 
-	ice_data::write* reliable_data = new ice_data::write(data.get_buffer_size() - 1);
+	ice_data::write* reliable_data = new ice_data::write(data.get_buffer_size() - 1 + 3);
 
 	reliable_data->set_flag(rudp::reliable);
 
 	reliable_data->add_int16(packet_id);
 
-	reliable_data->add_buffer(reliable_arr, data.get_buffer_size());
+	reliable_data->add_buffer(reliable_arr, data.get_buffer_size() - 1);
 
 	pending_packet* packet = new pending_packet;
 
@@ -195,6 +195,8 @@ void rudp_peer::send_reliable_attempt(int packet_id)
 	if (packet->attempts >= rudp::max_resend_count)
 	{
 		ice_logger::log("reability", ("reliable packet[" + std::to_string(packet->packet_id) + "] was not handled!"));
+
+		ch_reliable_packet_lost(packet->data->get_buffer() + 3, packet->data->get_buffer_size() - 3, packet->packet_id);
 
 		std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 

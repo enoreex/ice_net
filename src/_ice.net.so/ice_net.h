@@ -61,6 +61,12 @@ ICE_NET_API void server_set_handle(rudp_server* sock, void(*action)(rudp_server*
 
 
 
+ICE_NET_API void client_set_reliable_packet_lost(rudp_client* sock, void(*action)(rudp_client*, i_ARRAY, i_USHORT, i_USHORT));
+
+ICE_NET_API void server_set_reliable_packet_lost(rudp_server* sock, void(*action)(rudp_server*, i_ARRAY, i_USHORT, i_USHORT, rudp_connection*));
+
+
+
 ICE_NET_API void client_set_connected(rudp_client* sock, void(*action)(rudp_client*));
 
 ICE_NET_API void client_set_disconnected(rudp_client* sock, void(*action)(rudp_client*));

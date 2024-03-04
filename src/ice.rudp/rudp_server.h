@@ -53,6 +53,10 @@ public:
 
 	std::function<void(rudp_connection&, ice_data::read&)> external_data_callback;
 
+public:
+
+	std::function<void(rudp_connection&, char*, unsigned short, unsigned short)> reliable_packet_lost;
+
 private:
 
 	std::shared_timed_mutex mutex;
@@ -97,6 +101,8 @@ private:
 
 	void connection_callback_disconnect(end_point& remote_point);
 
+	void connection_callback_reliable_packet_lost(rudp_connection& c, char* data, unsigned short size, unsigned short id) const;
+
 public:
 
 	void send_unreliable(end_point& ep, ice_data::write& data);
@@ -105,11 +111,11 @@ public:
 
 private:
 
-	inline void ext_connection_added(rudp_connection& c);
+	inline void ext_connection_added(rudp_connection& c) const;
 
-	inline void ext_connection_removed(rudp_connection& c);
+	inline void ext_connection_removed(rudp_connection& c) const;
 
-	inline void ext_data_handled(rudp_connection& c, ice_data::read& d);
+	inline void ext_data_handled(rudp_connection& c, ice_data::read& d) const;
 
 private:
 

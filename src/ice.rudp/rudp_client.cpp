@@ -167,11 +167,12 @@ void rudp_client::ch_handle(ice_data::read& data)
 
 void rudp_client::ch_send(ice_data::write& data)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
-	if (current_state == disconnected) return;
-
 	socket->send(data.get_buffer(), data.get_buffer_size());
+}
+
+void rudp_client::ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id)
+{
+	if (reliable_packet_lost) reliable_packet_lost(data, size, id);
 }
 
 void rudp_client::send_unreliable(ice_data::write& data)

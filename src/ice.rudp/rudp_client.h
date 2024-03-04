@@ -31,6 +31,10 @@ public:
 
 	std::function<void(ice_data::read&)> external_data_callback;
 
+public:
+
+	std::function<void(char*, unsigned short, unsigned short)> reliable_packet_lost;
+
 private:
 
 	const int max_connection_attempts = 3;
@@ -76,6 +80,8 @@ private:
 	void ch_handle(ice_data::read& data) override;
 
 	void ch_send(ice_data::write& data) override;
+
+	void ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id) override;
 
 public:
 

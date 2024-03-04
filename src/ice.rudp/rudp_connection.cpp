@@ -3,11 +3,13 @@
 rudp_connection::rudp_connection(
 	SERV_C_H sch,
 	SERV_C_S scs,
-	SERV_C_D scd)
+	SERV_C_D scd,
+	SERV_P_L rpl)
 {
 	this->serv_callback_handle = sch;
 	this->serv_callback_send = scs;
 	this->serv_callback_disconnect = scd;
+	this->serv_reliable_packet_lost = rpl;
 }
 
 end_point rudp_connection::get_remote_point()
@@ -97,9 +99,12 @@ void rudp_connection::ch_handle(ice_data::read& data)
 
 void rudp_connection::ch_send(ice_data::write& data)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
+	serv_callback_send(remote_point, data);
+}
 
-	if (current_state != disconnected) serv_callback_send(remote_point, data);
+void rudp_connection::ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id)
+{
+	serv_reliable_packet_lost(*this, data, size, id);
 }
 
 void rudp_connection::send_connect_response()

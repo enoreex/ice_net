@@ -132,12 +132,13 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 	const auto cch = [this](rudp_connection& c, ice_data::read& d) { connection_callback_handle(c, d); };
 	const auto ccs = [this](end_point& e, ice_data::write& d) { connection_callback_send(e, d); };
 	const auto ccd = [this](end_point& c) { connection_callback_disconnect(c); };
+	const auto rpl = [this](rudp_connection& c, char* m, unsigned short s, unsigned short id) { connection_callback_reliable_packet_lost(c, m, s, id); };
 
 	rudp_connection* connection = nullptr;
 
 	try
 	{
-		connection = new rudp_connection(cch, ccs, ccd);
+		connection = new rudp_connection(cch, ccs, ccd, rpl);
 		connection->connect(remote_point);
 
 		w_lock.lock();
@@ -263,6 +264,11 @@ void rudp_server::connection_callback_disconnect(end_point& remote_point)
 	try_remove_connection(remote_point);
 }
 
+void rudp_server::connection_callback_reliable_packet_lost(rudp_connection& c, char* data, unsigned short size, unsigned short id) const
+{
+	if(reliable_packet_lost) reliable_packet_lost(c, data, size, id);
+}
+
 void rudp_server::send_unreliable(end_point& ep, ice_data::write& data)
 {
 	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
@@ -285,17 +291,17 @@ void rudp_server::send_reliable(end_point& ep, ice_data::write& data)
 	it->second->send_reliable(data);
 }
 
-inline void rudp_server::ext_connection_added(rudp_connection& c)
+inline void rudp_server::ext_connection_added(rudp_connection& c) const
 {
 	if (connection_added_callback) connection_added_callback(c);
 }
 
-inline void rudp_server::ext_connection_removed(rudp_connection& c)
+inline void rudp_server::ext_connection_removed(rudp_connection& c) const
 {
 	if (connection_removed_callback) connection_removed_callback(c);
 }
 
-inline void rudp_server::ext_data_handled(rudp_connection& c, ice_data::read& d)
+inline void rudp_server::ext_data_handled(rudp_connection& c, ice_data::read& d) const
 {
 	if (external_data_callback) external_data_callback(c, d);
 }

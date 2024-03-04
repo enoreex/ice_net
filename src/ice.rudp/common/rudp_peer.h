@@ -107,6 +107,8 @@ protected:
 
 	virtual void ch_send(ice_data::write& data) = 0;
 
+	virtual void ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id) = 0;
+
 private:
 
 	void send_heartbeat_request();

@@ -26,12 +26,15 @@ private:
 
 	using SERV_C_D = std::function<void(end_point&)>;
 
+	using SERV_P_L = std::function<void(rudp_connection&, char*, unsigned short, unsigned short)>;
+
 private:
 
 	rudp_connection(
 		SERV_C_H sch,
 		SERV_C_S scs,
-		SERV_C_D scd);
+		SERV_C_D scd,
+		SERV_P_L rpl);
 
 private:
 
@@ -44,6 +47,8 @@ private:
 	SERV_C_S serv_callback_send;
 
 	SERV_C_D serv_callback_disconnect;
+
+	SERV_P_L serv_reliable_packet_lost;
 
 private:
 
@@ -72,6 +77,8 @@ private:
 	void ch_handle(ice_data::read& data) override;
 	
 	void ch_send(ice_data::write& data) override;
+
+	void ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id) override;
 
 private:
 
