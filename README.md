@@ -5,7 +5,7 @@
 
 <h1 align="center" tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>ICENet C++</h1>
 
-My convoluted implementation of a reliable protocol. If this is to be used, it should be used at most in a local network. This implementation is similar to my existing <a href = "https://github.com/enoreex/ICENet/">C# lib</a>
+My convoluted implementation of a reliable protocol. If this is to be used, it should be used at most in a local network.
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>About</h2>
 
@@ -82,11 +82,3 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Unity</h2>
 
 <i>If you work in <strong>Unity</strong>, I recommend you to use (.so) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just <a href = "https://github.com/enoreex/ice_net/releases/tag/ice_net_unity">Download</a> my wrap for unity, in which I did this work.</i>
-
-<h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Download</h2>
-
-(.lib): <a href = "https://github.com/enoreex/ice_net/releases/tag/lib">Download</a><p></p>
-(.dll): <a href = "https://github.com/enoreex/ice_net/releases/tag/dll">Download</a><p></p>
-(.so):  <a href = "https://github.com/enoreex/ice_net/releases/tag/so">Download</a><p></p>
-(C#):  <a href = "https://github.com/enoreex/ice_net/releases/tag/ice_net_cs">Download</a><p></p>
-(Unity):  <a href = "https://github.com/enoreex/ice_net/releases/tag/ice_net_unity">Download</a><p></p>
