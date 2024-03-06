@@ -19,6 +19,7 @@ typedef int SOCKET;
 
 #endif
 
+#include "..\ice.core\ice_logger.h"
 #include "..\ice.rudp\common\transport\a_client.h"
 
 #ifdef _WIN32
