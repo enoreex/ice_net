@@ -18,31 +18,68 @@ bool udp_server::start(end_point& local_point)
 #ifdef _WIN32
 
     WSADATA wsa;
-
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return false;
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    {
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("WSAStartup error", win_error_msg);
+        return false;
+    }
 
 #endif
 
     sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock == 0 || sock == -1) return false;
+    if (sock == 0 || sock == -1)
+    {
+
+#ifdef _WIN32
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("create socket error", win_error_msg);
+#else
+        ice_logger::log_error("create socket error", strerror(errno));
+#endif        
+        
+        return false;
+    }
 
     local_in.sin_family = AF_INET;
     local_in.sin_addr.s_addr = ntohl(local_point.get_address());
     local_in.sin_port = ntohs(local_point.get_port());
 
-    if (bind(sock, (sockaddr*)&local_in, sizeof(local_in)) == -1) return false;
+    if (bind(sock, (sockaddr*)&local_in, sizeof(local_in)) == -1)
+    {
+
+#ifdef _WIN32
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("bind error", win_error_msg);
+#else
+        ice_logger::log_error("bind error", strerror(errno));
+#endif
+
+#ifdef _WIN32
+        closesocket(sock);
+#else
+        close(sock);
+#endif
+
+        return false;
+    }
 
 #ifdef _WIN32
 
     int len = sizeof(local_in);
-
-    if (getsockname(sock, (sockaddr*)&local_in, &len) != 0) return false;
+    if (getsockname(sock, (sockaddr*)&local_in, &len) != 0)
+    {
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("getsockname error", win_error_msg);
+        closesocket(sock);
+        return false;
+    }
 
 #else
 
     socklen_t len = sizeof(local_in);
-
-    if (getsockname(sock, reinterpret_cast<sockaddr*>(&local_in), &len) != 0) return false;
+    if (getsockname(sock, reinterpret_cast<sockaddr*>(&local_in), &len) != 0)
+    {
+        ice_logger::log_error("getsockname error", strerror(errno));
+        close(sock);
+        return false;
+    }
 
 #endif
 
@@ -56,14 +93,23 @@ bool udp_server::receive_available()
 #ifdef _WIN32
 
     u_long arg = 0;
-
-    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR) return false;
-
-    else available_data = static_cast<int>(arg);
+    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR)
+    {
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("ioctlsocket error", win_error_msg);
+        return false;
+    }
+    else
+    {
+        available_data = static_cast<int>(arg);
+    }
 
 #else
 
-    if (ioctl(sock, FIONREAD, &available_data) == -1) return false;
+    if (ioctl(sock, FIONREAD, &available_data) == -1)
+    {
+        ice_logger::log_error("ioctl error", strerror(errno));
+        return false;
+    }
 
 #endif
 
@@ -87,14 +133,23 @@ a_server::recv_result udp_server::receive()
 #ifdef _WIN32
 
     u_long arg = 0;
-
-    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR) return result;
-
-    else available_data = static_cast<int>(arg);
+    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR)
+    {
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("ioctlsocket error", win_error_msg);
+        return result;
+    }
+    else
+    {
+        available_data = static_cast<int>(arg);
+    }
 
 #else
 
-    if (ioctl(sock, FIONREAD, &available_data) == -1) return result;
+    if (ioctl(sock, FIONREAD, &available_data) == -1)
+    {
+        ice_logger::log_error("ioctl error", strerror(errno));
+        return result;
+    }
 
 #endif
 
@@ -110,7 +165,7 @@ a_server::recv_result udp_server::receive()
     }
 
     result.recv_arr = recv_arr;
-    result.recv_size = (unsigned short)available_data;
+    result.recv_size = static_cast<unsigned short>(recv);
 
     result.recv_point.set_address(ntohl(client_in.sin_addr.s_addr));
     result.recv_point.set_port(ntohs(client_in.sin_port));
@@ -134,7 +189,17 @@ bool udp_server::send(char* data, unsigned short data_size, const end_point& rem
 
     int result = sendto(sock, data, data_size, 0, (sockaddr*)&client_in, client_address_size);
 
-    if (result == -1) return false;
+    if (result == -1)
+    {
+
+#ifdef _WIN32
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("sendto error", win_error_msg);
+#else
+        ice_logger::log_error("sendto error", strerror(errno));
+#endif
+
+        return false;
+    }
 
     return true;
 }

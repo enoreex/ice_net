@@ -5,6 +5,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <winsock2.h>
+#include <cstring>
 
 #else
 
@@ -36,6 +37,14 @@ private:
     SOCKET sock = 0;
     sockaddr_in local_in = sockaddr_in();
     sockaddr_in remote_in = sockaddr_in();
+
+#ifdef _WIN32
+
+private:
+
+    char win_error_msg[256];
+
+#endif
 
 public:
 
