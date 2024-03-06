@@ -35,7 +35,9 @@ bool rudp_server::try_start(end_point local_point)
 
 	auto result = socket->start(local_point);
 
-	if (result == true) current_state = connected;
+	if (result == false) return false;
+
+	current_state = connected;
 
 	ice_logger::log("server-start", ("socket created! local ep: [" +
 		socket->get_local_point().get_address_str() + ":" +
