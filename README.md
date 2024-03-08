@@ -5,7 +5,7 @@
 
 <h1 align="center" tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>ICENet C++</h1>
 
-My convoluted implementation of a reliable protocol. If this is to be used, it should be used at most in a local network.
+My convoluted implementation of a reliable protocol. If this is to be used, it should be used at most in a local network. Unfortunately, the library is not ready for multithreading yet. 
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>About</h2>
 
@@ -15,7 +15,6 @@ My convoluted implementation of a reliable protocol. If this is to be used, it s
   <li style="font-size: smaller;">Installation and support connections (RUDP functionality) - !!ITS NOT TCP!!</li>
   <li style="font-size: smaller;">Handle/Send reliable packets (RUDP functionality) - !!ITS NOT TCP!!</li>
   <li style="font-size: smaller;">Convenient logging system</li>
-  <li style="font-size: smaller;">Minimum thread safety system</li>
   <li style="font-size: smaller;">Ability to change the low-level transport</li>
   <li style="font-size: smaller;">The library is cross-platform</li>
 </ul>
