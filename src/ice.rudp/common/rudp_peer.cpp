@@ -43,15 +43,11 @@ void rudp_peer::rudp_stop()
 {
 	rudp_reset();
 
-	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
-
 	current_state = disconnected;
 }
 
 void rudp_peer::rudp_reset()
 {
-	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
-
 	for (auto& it : pending_packets) delete it.second;
 	pending_packets.clear();
 
@@ -88,8 +84,6 @@ void rudp_peer::handle_reliable(ice_data::read& data)
 
 void rudp_peer::handle_ack(ice_data::read& data)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	unsigned short packet_id = data.get_int16();
 
 	if (packet_id < 1) return;
@@ -98,17 +92,11 @@ void rudp_peer::handle_ack(ice_data::read& data)
 
 	if (pair == pending_packets.end()) return;
 
-	r_lock.unlock();
-
 	auto packet = pair->second;
-
-	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
 
 	scheduler.remove(packet->element);
 
 	pending_packets.erase(pair);
-
-	w_lock.unlock();
 
 	delete packet;
 }
@@ -132,11 +120,7 @@ void rudp_peer::send_heartbeat_response()
 
 void rudp_peer::send_unreliable(ice_data::write& data)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	if (current_state != connected) return;
-
-	r_lock.unlock();
 
 	data.set_flag(rudp::unreliable);
 	ch_send(data);
@@ -144,11 +128,7 @@ void rudp_peer::send_unreliable(ice_data::write& data)
 
 void rudp_peer::send_reliable(ice_data::write& data)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	if (current_state != connected) return;
-
-	r_lock.unlock();
 
 	char* reliable_arr = new char[data.get_buffer_size() - 1];
 	memcpy(reliable_arr, data.get_buffer() + 1, data.get_buffer_size() - 1);
@@ -165,11 +145,7 @@ void rudp_peer::send_reliable(ice_data::write& data)
 
 	pending_packet* packet = new pending_packet;
 
-	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
-
 	pending_packets.insert(std::make_pair(packet_id, packet));
-
-	w_lock.unlock();
 
 	packet->data = reliable_data;
 
@@ -180,15 +156,11 @@ void rudp_peer::send_reliable(ice_data::write& data)
 
 void rudp_peer::send_reliable_attempt(int packet_id)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	if (current_state != connected) return;
 
 	auto pair = pending_packets.find(packet_id);
 
 	if (pair == pending_packets.end()) return;
-
-	r_lock.unlock();
 
 	auto packet = pair->second;
 
@@ -198,11 +170,7 @@ void rudp_peer::send_reliable_attempt(int packet_id)
 
 		ch_reliable_packet_lost(packet->data->get_buffer() + 3, packet->data->get_buffer_size() - 3, packet->packet_id);
 
-		std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
-
 		pending_packets.erase(pair);
-
-		w_lock.unlock();
 
 		delete packet->data;
 
@@ -211,13 +179,9 @@ void rudp_peer::send_reliable_attempt(int packet_id)
 		return;
 	}
 
-	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
-
 	++packet->attempts;
 
 	packet->element = scheduler.add([this, packet_id]() { send_reliable_attempt(packet_id); }, get_resend_time());
-
-	w_lock.unlock();
 
 	ch_send(*packet->data);
 }

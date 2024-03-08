@@ -74,11 +74,7 @@ private:
 	};
 
 	std::map<unsigned short, pending_packet*> pending_packets;
-
-protected:
 	
-	std::shared_timed_mutex mutex;
-
 protected:
 
 	void rudp_init();

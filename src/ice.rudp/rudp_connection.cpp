@@ -14,15 +14,11 @@ rudp_connection::rudp_connection(
 
 end_point rudp_connection::get_remote_point()
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	return remote_point;
 }
 
 const end_point* rudp_connection::get_remote_point_ptr()
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	return &remote_point;
 }
 
@@ -33,24 +29,16 @@ void rudp_connection::update()
 
 void rudp_connection::connect(end_point remote_point)
 {
-	std::unique_lock<std::shared_timed_mutex> w_lock(mutex);
-
 	this->current_state = connected;
 
 	this->remote_point = remote_point;
-
-	w_lock.unlock();
 
 	rudp_peer::rudp_init();
 }
 
 void rudp_connection::handle(ice_data::read& data)
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	if (current_state == disconnected) return;
-
-	r_lock.unlock();
 
 	char packet_id = data.get_flag();
 
@@ -116,11 +104,7 @@ void rudp_connection::send_connect_response()
 
 void rudp_connection::disconnect()
 {
-	std::shared_lock<std::shared_timed_mutex> r_lock(mutex);
-
 	if (current_state == disconnected) return;
-
-	r_lock.unlock();
 
 	rudp_peer::rudp_stop();
 

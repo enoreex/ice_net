@@ -57,10 +57,6 @@ public:
 
 	std::function<void(rudp_connection&, char*, unsigned short, unsigned short)> reliable_packet_lost;
 
-private:
-
-	std::shared_timed_mutex mutex;
-
 public:
 
 	end_point get_local_point();
