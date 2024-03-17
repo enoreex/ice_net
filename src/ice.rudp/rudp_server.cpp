@@ -9,6 +9,8 @@ void rudp_server::update()
 {
 	if (current_state == disconnected) return;
 
+	if (!scheduler.empty()) scheduler.execute();
+
 	if (connections_arr.size() != 0) for (auto& c : connections_arr) c->update();
 
 	receive();
@@ -61,21 +63,77 @@ void rudp_server::receive()
 		return;
 	}
 
-	if (!(raw_packet_id == rudp::connect_request && connection == nullptr)) return;
+	if (!(raw_packet_id <= rudp::connect_confirm && connection == nullptr)) return;
 
-	bool add_result = try_add_connection(result.recv_point);
+	switch (raw_packet_id)
+	{
 
-	if (add_result == false) return;
+	case rudp::connect_request:
+		_connection_handle_request(result.recv_point);
+		return;
 
-	try_get_connection(connection, result.recv_point);
+	case rudp::connect_confirm:
+		_connection_handle_confirm(result.recv_point);
+		return;
 
-	if (connection == nullptr) return;
+	default:
+		return;
 
-	ice_data::read data(result.recv_arr, result.recv_size);
+	}
+}
 
-	connection->handle(data);
+void rudp_server::_connection_handle_request(end_point& remote_point)
+{
+	auto it = connections_pending.find(remote_point.get_hash());
 
-	ext_connection_added(*connection);
+	if (it != connections_pending.end()) return;
+
+	bool predicate_result;
+
+	try
+	{
+		if (predicate_add_connection == nullptr) predicate_result = true;
+		else predicate_result = predicate_add_connection(remote_point);
+	}
+
+	catch (const std::exception& exc)
+	{
+		ice_logger::log_error("connection predicate error", "user predicate error: "
+			+ std::string(exc.what()));
+
+		predicate_result = false;
+	}
+
+	if (predicate_result == false) return;
+
+	connections_pending[remote_point.get_hash()] = scheduler.add([this, remote_point]() { _connection_expired(remote_point); }, connection_expire_timeout);
+
+	ice_data::write data(1);
+	data.set_flag(rudp::connect_response);
+
+	send(remote_point, data);
+}
+
+void rudp_server::_connection_handle_confirm(end_point& remote_point)
+{
+	auto it = connections_pending.find(remote_point.get_hash());
+
+	if (it == connections_pending.end()) return;
+
+	scheduler.remove(connections_pending.at(remote_point.get_hash()));
+
+	connections_pending.erase(it);
+
+	try_add_connection(remote_point);
+}
+
+void rudp_server::_connection_expired(end_point remote_point)
+{
+	auto it = connections_pending.find(remote_point.get_hash());
+
+	if (it == connections_pending.end()) return;
+
+	connections_pending.erase(remote_point.get_hash());
 }
 
 bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& remote_point)
@@ -91,24 +149,6 @@ bool rudp_server::try_get_connection(rudp_connection*& connection, end_point& re
 
 bool rudp_server::try_add_connection(end_point& remote_point)
 {
-	bool predicate_result;
-
-	try
-	{
-		if (predicate_add_connection == nullptr) predicate_result = true;
-		else predicate_result = predicate_add_connection(remote_point);
-	}
-
-	catch (const std::exception& exc)
-	{
-		ice_logger::log_error("connection added error", "user predicate error: "
-			+ std::string(exc.what()));
-
-		predicate_result = false;
-	}
-
-	if (predicate_result == false) return false;
-
 	const auto cch = [this](rudp_connection& c, ice_data::read& d) { connection_callback_handle(c, d); };
 	const auto ccs = [this](end_point& e, ice_data::write& d) { connection_callback_send(e, d); };
 	const auto ccd = [this](end_point& c) { connection_callback_disconnect(c); };

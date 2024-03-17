@@ -70,19 +70,11 @@ private:
 
 private:
 
-	void handle_connect_request();
-
-private:
-
 	void ch_handle(ice_data::read& data) override;
 	
 	void ch_send(ice_data::write& data) override;
 
 	void ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id) override;
-
-private:
-
-	void send_connect_response();
 
 private:
 

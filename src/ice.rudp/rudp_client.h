@@ -83,6 +83,10 @@ private:
 
 	void ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id) override;
 
+private:
+
+	void send_connect_confirm();
+
 public:
 
 	void send_unreliable(ice_data::write& data);

@@ -45,10 +45,6 @@ void rudp_connection::handle(ice_data::read& data)
 	switch (packet_id)
 	{
 
-	case rudp::connect_request:
-		handle_connect_request();
-		break;
-
 	case rudp::heartbeat_request:
 		handle_heartbeat_request();
 		break;
@@ -75,11 +71,6 @@ void rudp_connection::handle(ice_data::read& data)
 	}
 }
 
-void rudp_connection::handle_connect_request()
-{
-	send_connect_response();
-}
-
 void rudp_connection::ch_handle(ice_data::read& data)
 {
 	serv_callback_handle(*this, data);
@@ -93,13 +84,6 @@ void rudp_connection::ch_send(ice_data::write& data)
 void rudp_connection::ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id)
 {
 	serv_reliable_packet_lost(*this, data, size, id);
-}
-
-void rudp_connection::send_connect_response()
-{
-	ice_data::write data(1);
-	data.set_flag((char)rudp::connect_response);
-	ch_send(data);
 }
 
 void rudp_connection::disconnect()

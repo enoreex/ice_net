@@ -35,6 +35,10 @@ public:
 
 private:
 
+	std::unordered_map<long long, scheduler::element*> connections_pending;
+
+private:
+
 	std::unordered_map<long long, rudp_connection*> connections;
 
 	std::vector<rudp_connection*> connections_arr;
@@ -57,6 +61,14 @@ public:
 
 	std::function<void(rudp_connection&, char*, unsigned short, unsigned short)> reliable_packet_lost;
 
+private:
+
+	const int connection_expire_timeout = 1000;
+
+private:
+
+	scheduler scheduler;
+
 public:
 
 	end_point get_local_point();
@@ -72,6 +84,14 @@ public:
 private:
 
 	void receive();
+
+private:
+
+	void _connection_handle_request(end_point& remote_point);
+
+	void _connection_handle_confirm(end_point& remote_point);
+
+	void _connection_expired(end_point remote_point);
 
 private:
 

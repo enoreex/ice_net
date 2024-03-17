@@ -15,7 +15,9 @@ public:
 	{
 		connect_request = 1,
 
-		connect_response,
+		connect_response = 2,
+
+		connect_confirm = 3,
 
 		heartbeat_request,
 
@@ -28,7 +30,7 @@ public:
 		ack,
 	};
 
-	static const int disconnect_timeout = 3000;
+	static const int disconnect_timeout = 5000;
 
 	static const int heartbeat_interval = 750;
 

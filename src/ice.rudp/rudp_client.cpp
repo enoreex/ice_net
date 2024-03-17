@@ -125,6 +125,8 @@ void rudp_client::handle_connect_response()
 
 	rudp_peer::rudp_init();
 
+	send_connect_confirm();
+
 	ice_logger::log("try-connect", "connected!");
 
 	if (connected_callback) connected_callback();
@@ -143,6 +145,13 @@ void rudp_client::ch_send(ice_data::write& data)
 void rudp_client::ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id)
 {
 	if (reliable_packet_lost) reliable_packet_lost(data, size, id);
+}
+
+void rudp_client::send_connect_confirm()
+{
+	ice_data::write data(1);
+	data.set_flag(rudp::connect_confirm);
+	ch_send(data);
 }
 
 void rudp_client::send_unreliable(ice_data::write& data)
