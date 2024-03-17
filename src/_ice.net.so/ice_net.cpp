@@ -110,6 +110,24 @@ void server_set_handle(rudp_server* sock, void(*action)(rudp_server*, i_ARRAY, i
 
 
 
+void server_set_predicate_add_connection(rudp_server* sock, bool(*action)(rudp_server*, end_point*, i_STRING, i_USHORT))
+{
+    if (sock == nullptr) return;
+
+    if (action == nullptr)
+    {
+        sock->external_data_callback = nullptr;
+        return;
+    }
+
+    sock->predicate_add_connection = [sock, action](end_point& ep)
+    {
+        return action(sock, &ep, ep.get_address_str().c_str(), ep.get_port());
+    };
+}
+
+
+
 void client_set_reliable_packet_lost(rudp_client* sock, void(*action)(rudp_client*, i_ARRAY, i_USHORT, i_USHORT))
 {
     if (sock == nullptr) return;
