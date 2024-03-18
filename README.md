@@ -31,7 +31,7 @@ You may have noticed that library included folders with an ending (.lib), (.dll)
     <td style="font-size: smaller;">(Windows C++)</td>
     <td style="font-size: smaller;">(.lib)</td>
     <td style="font-size: smaller;">(.dll)</td>
-    <td style="font-size: smaller;">(.so)</td>
+    <td style="font-size: smaller;"> </td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Windows C#)</td>
