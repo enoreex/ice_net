@@ -168,6 +168,18 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
 
+		try
+		{
+			ext_connection_added(*connection);
+		}
+
+		catch (const std::exception& exc)
+		{
+			ice_logger::log_error("connection add error", "user connection_add notify error: "
+				+ std::string(exc.what()));
+		}
+
+
 		return true;
 	}
 
@@ -201,7 +213,16 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
 
-		ext_connection_removed(*connection);
+		try
+		{
+			ext_connection_removed(*connection);
+		}
+
+		catch (const std::exception& exc)
+		{
+			ice_logger::log_error("connection remove error", "user connection_remove notify error: "
+				+ std::string(exc.what()));
+		}
 
 		delete connection;
 
