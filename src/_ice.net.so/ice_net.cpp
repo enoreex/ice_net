@@ -63,14 +63,14 @@ void start_client(rudp_client* sock, i_STRING address, i_USHORT port)
 {
 	if (sock == 0) return;
 
-	sock->connect(end_point(address, port), end_point(0, 0));
+	sock->connect(end_point(address, port), end_point(0, 0), false);
 }
 
 void start_server(rudp_server* sock, i_USHORT port)
 {
 	if (sock == 0) return;
 
-	sock->try_start(end_point(0, port));
+	sock->try_start(end_point(0, port), false);
 }
 
 
