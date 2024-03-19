@@ -1,25 +1,18 @@
-#include "udp_client.h"
+#include "udp_sock.h"
 
-udp_client::~udp_client()
+udp_sock::~udp_sock()
 {
-    disconnect();
+    stop();
 }
 
-end_point udp_client::get_local_point()
+end_point udp_sock::get_local_point()
 {
     return end_point(
         ntohl(local_in.sin_addr.s_addr),
         ntohs(local_in.sin_port));
 }
 
-end_point udp_client::get_remote_point()
-{
-    return end_point(
-        ntohl(remote_in.sin_addr.s_addr),
-        ntohs(remote_in.sin_port));
-}
-
-bool udp_client::connect(end_point& remote_point, end_point& local_point)
+bool udp_sock::start(end_point local_point)
 {
 
 #ifdef _WIN32
@@ -41,18 +34,14 @@ bool udp_client::connect(end_point& remote_point, end_point& local_point)
         if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("create socket error", win_error_msg);
 #else
         ice_logger::log_error("create socket error", strerror(errno));
-#endif      
-
+#endif        
+        
         return false;
     }
 
     local_in.sin_family = AF_INET;
     local_in.sin_addr.s_addr = ntohl(local_point.get_address());
     local_in.sin_port = ntohs(local_point.get_port());
-
-    remote_in.sin_family = AF_INET;
-    remote_in.sin_addr.s_addr = ntohl(remote_point.get_address());
-    remote_in.sin_port = ntohs(remote_point.get_port());
 
     if (bind(sock, (sockaddr*)&local_in, sizeof(local_in)) == -1)
     {
@@ -97,7 +86,7 @@ bool udp_client::connect(end_point& remote_point, end_point& local_point)
     return true;
 }
 
-bool udp_client::receive_available()
+bool udp_sock::receive_available()
 {
     int available_data = 0;
 
@@ -127,14 +116,16 @@ bool udp_client::receive_available()
     return (available_data > 0);
 }
 
-a_client::recv_result udp_client::receive()
+a_sock::recv_result udp_sock::receive()
 {
     recv_result result;
 
+    sockaddr_in client_in;
+
 #ifdef _WIN32
-    int remote_size = sizeof(sockaddr_in);
+    int client_address_size = sizeof(client_in);
 #else
-    socklen_t remote_size = sizeof(sockaddr_in);
+    socklen_t client_address_size = sizeof(client_in);
 #endif
 
     int available_data = 0;
@@ -165,7 +156,7 @@ a_client::recv_result udp_client::receive()
     if (available_data == 0) return result;
 
     char* recv_arr = new char[available_data];
-    int recv = recvfrom(sock, recv_arr, available_data, 0, (sockaddr*)&remote_in, &remote_size);
+    int recv = recvfrom(sock, recv_arr, available_data, 0, (sockaddr*)&client_in, &client_address_size);
 
     if (recv == -1)
     {
@@ -176,22 +167,44 @@ a_client::recv_result udp_client::receive()
     result.recv_arr = recv_arr;
     result.recv_size = static_cast<unsigned short>(recv);
 
+    result.recv_point.set_address(ntohl(client_in.sin_addr.s_addr));
+    result.recv_point.set_port(ntohs(client_in.sin_port));
+
     return result;
 }
 
-bool udp_client::send(char* data, unsigned short data_size)
+bool udp_sock::send(char* data, unsigned short data_size, const end_point& remote_point)
 {
-    int result = sendto(sock, data, data_size, 0, (sockaddr*)&remote_in, sizeof(sockaddr_in));
+    sockaddr_in client_in;
+
+#ifdef _WIN32
+    int client_address_size = sizeof(client_in);
+#else
+    socklen_t client_address_size = sizeof(client_in);
+#endif
+
+    client_in.sin_family = AF_INET;
+    client_in.sin_addr.s_addr = htonl(remote_point.get_address());
+    client_in.sin_port = htons(remote_point.get_port());
+
+    int result = sendto(sock, data, data_size, 0, (sockaddr*)&client_in, client_address_size);
 
     if (result == -1)
     {
+
+#ifdef _WIN32
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("sendto error", win_error_msg);
+#else
+        ice_logger::log_error("sendto error", strerror(errno));
+#endif
+
         return false;
     }
 
     return true;
 }
 
-void udp_client::disconnect()
+void udp_sock::stop()
 {
     if (sock == 0) return;
 

@@ -5,7 +5,7 @@
 
 #include "end_point.h"
 
-class a_server
+class a_sock
 {
 
 public:
@@ -21,7 +21,7 @@ public:
 
 public:
 
-    virtual ~a_server() = default;
+    virtual ~a_sock() = default;
 
 public:
 
@@ -29,7 +29,7 @@ public:
 
 public:
 
-    virtual bool start(end_point& local_point) = 0;
+    virtual bool start(end_point local_point) = 0;
 
     virtual bool receive_available() = 0;
 

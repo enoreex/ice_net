@@ -6,7 +6,7 @@
 #include "../ice.core/ice_data.h"
 #include "../ice.core/ice_logger.h"
 
-#include "common/transport/a_client.h"
+#include "common/transport/a_sock.h"
 #include "common/rudp_peer.h"
 #include "common/rudp.h"
 	
@@ -19,7 +19,11 @@ class rudp_client final : public rudp_peer
 
 public:
 
-	a_client* socket = nullptr;
+	rudp_client();
+
+public:
+
+	a_sock* socket = nullptr;
 
 public:
 
@@ -53,13 +57,17 @@ public:
 
 	end_point get_remote_point();
 
+private:
+
+	end_point remote_point = end_point(0, 0);
+
 public:
 
 	void update();
 
 public:
 
-	void connect(end_point remote_point, end_point local_point);
+	void connect(end_point remote_point, end_point local_point, bool sockInit = true);
 
 	void connect_attempt();
 

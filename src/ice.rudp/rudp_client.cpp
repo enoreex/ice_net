@@ -1,5 +1,7 @@
 #include "rudp_client.h"
 
+rudp_client::rudp_client() {  }
+
 end_point rudp_client::get_local_point()
 {
 	return socket->get_local_point();
@@ -7,7 +9,7 @@ end_point rudp_client::get_local_point()
 
 end_point rudp_client::get_remote_point()
 {
-	return socket->get_remote_point();
+	return remote_point;
 }
 
 void rudp_client::update()
@@ -17,7 +19,7 @@ void rudp_client::update()
 	receive();
 }
 
-void rudp_client::connect(end_point remote_point, end_point local_point)
+void rudp_client::connect(end_point remote_point, end_point local_point, bool sockInit)
 {
 	if (socket == nullptr)
 	{
@@ -28,13 +30,15 @@ void rudp_client::connect(end_point remote_point, end_point local_point)
 
 	if (current_state != disconnected) return;
 
-	bool result = socket->connect(remote_point, local_point);
+	bool result = sockInit == false ? true : socket->start(local_point);
 
 	if (result == false) return;
 
 	current_state = connecting;
-
+	
 	connection_attempts = 0;
+
+	this->remote_point = remote_point;
 
 	ice_logger::log("client-connect", ("socket created! local ep: [" +
 		socket->get_local_point().get_address_str() + ":" +
@@ -71,7 +75,7 @@ void rudp_client::receive()
 
 	auto result = socket->receive();
 
-	if (result.recv_arr == nullptr) return;
+	if (result.recv_arr == nullptr || result.recv_point != remote_point) return;
 
 	ice_data::read data(result.recv_arr, result.recv_size);
 
@@ -139,7 +143,7 @@ void rudp_client::ch_handle(ice_data::read& data)
 
 void rudp_client::ch_send(ice_data::write& data)
 {
-	socket->send(data.get_buffer(), data.get_buffer_size());
+	socket->send(data.get_buffer(), data.get_buffer_size(), remote_point);
 }
 
 void rudp_client::ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id)

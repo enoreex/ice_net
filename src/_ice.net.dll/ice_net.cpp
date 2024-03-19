@@ -26,20 +26,35 @@ void logger_set_error(void(*action)(const char*))
 
 
 
+udp_sock* create_socket()
+{
+	return new udp_sock();
+}
+
+
+
 rudp_client* create_client()
 {
 	rudp_client* client = new rudp_client;
-	client->socket = new udp_client;
-
 	return client;
 }
 
 rudp_server* create_server()
 {
 	rudp_server* server = new rudp_server;
-	server->socket = new udp_server;
-
 	return server;
+}
+
+
+
+void client_set_socket(rudp_client* sock, udp_sock* udp)
+{
+	sock->socket = udp;
+}
+
+void server_set_socket(rudp_server* sock, udp_sock* udp)
+{
+	sock->socket = udp;
 }
 
 
@@ -273,8 +288,6 @@ rudp_client* release_client(rudp_client* sock)
 
 	sock->disconnect();
 
-	delete sock->socket;
-
 	delete sock;
 
 	ice_logger::log("release", "client socket deleted!");
@@ -288,8 +301,6 @@ rudp_server* release_server(rudp_server* sock)
 	
 	sock->stop();
 
-	delete sock->socket;
-
 	delete sock;
 
 	ice_logger::log("release", "server socket deleted!");
@@ -297,3 +308,13 @@ rudp_server* release_server(rudp_server* sock)
 	return nullptr;
 }
 
+
+
+udp_sock* release_socket(udp_sock* udp)
+{
+	delete udp;
+
+	ice_logger::log("release", "udp socket deleted!");
+
+	return nullptr;
+}

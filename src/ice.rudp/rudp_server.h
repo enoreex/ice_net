@@ -6,7 +6,7 @@
 #include "../ice.core/ice_data.h"
 #include "../ice.core/ice_logger.h"
 
-#include "common/transport/a_server.h"
+#include "common/transport/a_sock.h"
 #include "common/rudp.h"
 
 #include "rudp_connection.h"
@@ -18,6 +18,10 @@
 
 class rudp_server final
 {
+
+public:
+
+	rudp_server();
 
 private:
 
@@ -31,7 +35,7 @@ private:
 
 public:
 
-	a_server* socket = nullptr;
+	a_sock* socket = nullptr;
 
 private:
 
@@ -79,7 +83,7 @@ public:
 
 public:
 
-	bool try_start(end_point local_point);
+	bool try_start(end_point local_point, bool sockInit = true);
 
 private:
 

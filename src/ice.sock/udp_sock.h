@@ -21,7 +21,7 @@ typedef int SOCKET;
 #endif
 
 #include "..\ice.core\ice_logger.h"
-#include "..\ice.rudp\common\transport\a_client.h"
+#include "..\ice.rudp\common\transport\a_sock.h"
 
 #ifdef _WIN32
 
@@ -29,12 +29,13 @@ typedef int SOCKET;
 
 #endif
 
-class udp_client final : public a_client
+class udp_sock final : public a_sock
 {
 
 private:
 
     SOCKET sock = 0;
+
     sockaddr_in local_in = sockaddr_in();
     sockaddr_in remote_in = sockaddr_in();
 
@@ -48,21 +49,19 @@ private:
 
 public:
 
-    ~udp_client();
+    ~udp_sock();
 
 public:
 
     end_point get_local_point() override;
 
-    end_point get_remote_point() override;
-    
-    bool connect(end_point& remote_point, end_point& local_point) override;
-    
+    bool start(end_point local_point) override;
+
     bool receive_available() override;
-    
+
     recv_result receive() override;
-    
-    bool send(char* data, unsigned short data_size) override;
-    
-    void disconnect() override;
+
+    bool send(char* data, unsigned short data_size, const end_point& remote_point) override;
+
+    void stop() override;
 };

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 
 project(ice_net)
 
-add_library(ice_net STATIC 
+add_library(${CMAKE_PROJECT_NAME} STATIC 
     "../src/_ice.net.lib/ice_net.h"
     "../src/_ice.net.lib/ice_net.cpp"
 
@@ -11,10 +11,8 @@ add_library(ice_net STATIC
     "../src/ice.core/ice_logger.h"
     "../src/ice.core/ice_logger.cpp" 
 
-    "../src/ice.rudp/common/transport/a_client.h"
-    "../src/ice.rudp/common/transport/a_client.cpp" 
-    "../src/ice.rudp/common/transport/a_server.h" 
-    "../src/ice.rudp/common/transport/a_server.cpp"
+    "../src/ice.rudp/common/transport/a_sock.h"
+    "../src/ice.rudp/common/transport/a_sock.cpp" 
     "../src/ice.rudp/common/transport/end_point.h" 
     "../src/ice.rudp/common/transport/end_point.cpp" 
 
@@ -30,10 +28,8 @@ add_library(ice_net STATIC
     "../src/ice.rudp/rudp_server.h" 
     "../src/ice.rudp/rudp_server.cpp"
 
-    "../src/ice.sock/udp_client.h"
-    "../src/ice.sock/udp_client.cpp"
-    "../src/ice.sock/udp_server.h"
-    "../src/ice.sock/udp_server.cpp" 
+    "../src/ice.sock/udp_sock.h"
+    "../src/ice.sock/udp_sock.cpp"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

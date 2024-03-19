@@ -1,5 +1,7 @@
 #include "rudp_server.h"
 
+rudp_server::rudp_server() {  }
+
 end_point rudp_server::get_local_point()
 {
 	return socket->get_local_point();
@@ -16,7 +18,7 @@ void rudp_server::update()
 	receive();
 }
 
-bool rudp_server::try_start(end_point local_point)
+bool rudp_server::try_start(end_point local_point, bool sockInit)
 {
 	if (socket == nullptr)
 	{
@@ -27,7 +29,7 @@ bool rudp_server::try_start(end_point local_point)
 
 	if (current_state == connected) return false;
 
-	auto result = socket->start(local_point);
+	auto result = sockInit == false ? true : socket->start(local_point);
 
 	if (result == false) return false;
 
