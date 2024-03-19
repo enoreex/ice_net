@@ -11,23 +11,42 @@ class rudp
 
 public:
 
-	enum rudp_headers
+	enum headers_client
 	{
-		connect_request = 1,
+		c_connect_request = 12,
 
-		connect_response = 2,
+		c_connect_response = 23,
 
-		connect_confirm = 3,
+		c_connect_confirm = 34,
 
-		heartbeat_request,
+		c_heartbeat_request = 45,
 
-		heartbeat_response,
+		c_heartbeat_response = 56,
 
-		unreliable,
+		c_unreliable = 67,
 
-		reliable,
+		c_reliable = 78,
 
-		ack,
+		c_ack = 89,
+	};
+
+	enum headers_server
+	{
+		s_connect_request = 21,
+
+		s_connect_response = 32,
+
+		s_connect_confirm = 43,
+
+		s_heartbeat_request = 54,
+
+		s_heartbeat_response = 65,
+
+		s_unreliable = 76,
+
+		s_reliable = 87,
+
+		s_ack = 98,
 	};
 
 	static const int disconnect_timeout = 5000;

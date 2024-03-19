@@ -35,6 +35,10 @@ ICE_NET_API void logger_set_error(void(*action)(const char*));
 
 
 
+ICE_NET_API udp_sock* create_socket();
+
+
+
 ICE_NET_API rudp_client* create_client();
 
 ICE_NET_API rudp_server* create_server();
@@ -44,6 +48,12 @@ ICE_NET_API rudp_server* create_server();
 ICE_NET_API void start_client(rudp_client* sock, i_STRING address, i_USHORT port);
 
 ICE_NET_API void start_server(rudp_server* sock, i_USHORT port);
+
+
+
+ICE_NET_API void client_set_socket(rudp_client* sock, udp_sock* udp);
+
+ICE_NET_API void server_set_socket(rudp_server* sock, udp_sock* udp);
 
 
 
@@ -100,5 +110,9 @@ ICE_NET_API void server_remove_connection(rudp_server* sock, rudp_connection* c)
 ICE_NET_API rudp_client* release_client(rudp_client* sock);
 
 ICE_NET_API rudp_server* release_server(rudp_server* sock);
+
+
+
+ICE_NET_API udp_sock* release_socket(udp_sock* udp);
 
 #endif

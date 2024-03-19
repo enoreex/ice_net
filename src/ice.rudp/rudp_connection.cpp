@@ -45,23 +45,23 @@ void rudp_connection::handle(ice_data::read& data)
 	switch (packet_id)
 	{
 
-	case rudp::heartbeat_request:
+	case rudp::headers_server::s_heartbeat_request:
 		handle_heartbeat_request();
 		break;
 
-	case rudp::heartbeat_response:
+	case rudp::headers_server::s_heartbeat_response:
 		handle_heartbeat_response();
 		break;
 
-	case rudp::unreliable:
+	case rudp::headers_server::s_unreliable:
 		handle_unreliable(data);
 		break;
 
-	case rudp::reliable:
+	case rudp::headers_server::s_reliable:
 		handle_reliable(data);
 		break;
 
-	case rudp::ack:
+	case rudp::headers_server::s_ack:
 		handle_ack(data);
 		break;
 
@@ -93,4 +93,29 @@ void rudp_connection::disconnect()
 	rudp_peer::rudp_stop();
 
 	serv_callback_disconnect(remote_point);
+}
+
+inline char rudp_connection::_flag_heartbeat_request()
+{
+	return rudp::headers_client::c_heartbeat_request;
+}
+
+inline char rudp_connection::_flag_heartbeat_response()
+{
+	return rudp::headers_client::c_heartbeat_response;
+}
+
+inline char rudp_connection::_flag_unreliable()
+{
+	return rudp::headers_client::c_unreliable;
+}
+
+inline char rudp_connection::_flag_reliable()
+{
+	return rudp::headers_client::c_reliable;
+}
+
+inline char rudp_connection::_flag_ack()
+{
+	return rudp::headers_client::c_ack;
 }

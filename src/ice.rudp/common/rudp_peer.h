@@ -134,6 +134,18 @@ private:
 protected:
 
 	virtual void disconnect() = 0;
+
+protected:
+
+	virtual inline char _flag_heartbeat_request() = 0;
+
+	virtual inline char _flag_heartbeat_response() = 0;
+
+	virtual inline char _flag_unreliable() = 0;
+
+	virtual inline char _flag_reliable() = 0;
+
+	virtual inline char _flag_ack() = 0;
 };
 
 #endif

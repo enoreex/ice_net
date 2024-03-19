@@ -75,7 +75,7 @@ void rudp_client::receive()
 
 	auto result = socket->receive();
 
-	if (result.recv_arr == nullptr || result.recv_point != remote_point) return;
+	if (result.recv_arr == nullptr || !result.recv_point.operator==(remote_point)) return;
 
 	ice_data::read data(result.recv_arr, result.recv_size);
 
@@ -86,32 +86,32 @@ void rudp_client::handle(ice_data::read& data)
 {
 	char packet_id = data.get_flag();
 
-	if (current_state == connecting && packet_id != rudp::connect_response) return;
+	if (current_state == connecting && packet_id != rudp::headers_client::c_connect_response) return;
 
 	switch (packet_id)
 	{
 
-	case rudp::connect_response:
+	case rudp::headers_client::c_connect_response:
 		handle_connect_response();
 		break;
 
-	case rudp::heartbeat_request:
+	case rudp::headers_client::c_heartbeat_request:
 		handle_heartbeat_request();
 		break;
 
-	case rudp::heartbeat_response:
+	case rudp::headers_client::c_heartbeat_response:
 		handle_heartbeat_response();
 		break;
 
-	case rudp::unreliable:
+	case rudp::headers_client::c_unreliable:
 		handle_unreliable(data);
 		break;
 
-	case rudp::reliable:
+	case rudp::headers_client::c_reliable:
 		handle_reliable(data);
 		break;
 
-	case rudp::ack:
+	case rudp::headers_client::c_ack:
 		handle_ack(data);
 		break;
 
@@ -154,7 +154,7 @@ void rudp_client::ch_reliable_packet_lost(char* data, unsigned short size, unsig
 void rudp_client::send_connect_confirm()
 {
 	ice_data::write data(1);
-	data.set_flag(rudp::connect_confirm);
+	data.set_flag(rudp::headers_server::s_connect_confirm);
 	ch_send(data);
 }
 
@@ -171,7 +171,7 @@ void rudp_client::send_reliable(ice_data::write& data)
 void rudp_client::send_connect_request()
 {
 	ice_data::write data(1);
-	data.set_flag((char)rudp::connect_request);
+	data.set_flag(rudp::headers_server::s_connect_request);
 	ch_send(data);
 }
 
@@ -184,4 +184,29 @@ void rudp_client::disconnect()
 	ice_logger::log("client-disconnect", "disconnected!");
 
 	if (disconnected_callback) disconnected_callback();
+}
+
+inline char rudp_client::_flag_heartbeat_request()
+{
+	return rudp::headers_server::s_heartbeat_request;
+}
+
+inline char rudp_client::_flag_heartbeat_response()
+{
+	return rudp::headers_server::s_heartbeat_response;
+}
+
+inline char rudp_client::_flag_unreliable()
+{
+	return rudp::headers_server::s_unreliable;
+}
+
+inline char rudp_client::_flag_reliable()
+{
+	return rudp::headers_server::s_reliable;
+}
+
+inline char rudp_client::_flag_ack()
+{
+	return rudp::headers_server::s_ack;
 }

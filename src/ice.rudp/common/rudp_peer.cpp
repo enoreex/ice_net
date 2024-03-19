@@ -104,7 +104,7 @@ void rudp_peer::handle_ack(ice_data::read& data)
 void rudp_peer::send_heartbeat_request()
 {
 	ice_data::write data(1);
-	data.set_flag((char)rudp::heartbeat_request);
+	data.set_flag(_flag_heartbeat_request());
 
 	ch_send(data);
 
@@ -114,7 +114,7 @@ void rudp_peer::send_heartbeat_request()
 void rudp_peer::send_heartbeat_response()
 {
 	ice_data::write data(1);
-	data.set_flag((char)rudp::heartbeat_response);
+	data.set_flag(_flag_heartbeat_response());
 	ch_send(data);
 }
 
@@ -122,7 +122,7 @@ void rudp_peer::send_unreliable(ice_data::write& data)
 {
 	if (current_state != connected) return;
 
-	data.set_flag(rudp::unreliable);
+	data.set_flag(_flag_unreliable());
 	ch_send(data);
 }
 
@@ -137,7 +137,7 @@ void rudp_peer::send_reliable(ice_data::write& data)
 
 	ice_data::write* reliable_data = new ice_data::write(data.get_buffer_size() - 1 + 3);
 
-	reliable_data->set_flag(rudp::reliable);
+	reliable_data->set_flag(_flag_reliable());
 
 	reliable_data->add_int16(packet_id);
 
@@ -189,7 +189,7 @@ void rudp_peer::send_reliable_attempt(int packet_id)
 void rudp_peer::send_ack(unsigned short packet_id)
 {
 	ice_data::write data(3);
-	data.set_flag(rudp::ack);
+	data.set_flag(_flag_ack());
 	data.add_int16(packet_id);
 
 	ch_send(data);

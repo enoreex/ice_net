@@ -108,6 +108,18 @@ private:
 public:
 
 	void disconnect() override;
+
+private:
+
+	inline char _flag_heartbeat_request();
+
+	inline char _flag_heartbeat_response();
+
+	inline char _flag_unreliable();
+
+	inline char _flag_reliable();
+
+	inline char _flag_ack();
 };
 
 #endif

@@ -65,16 +65,16 @@ void rudp_server::receive()
 		return;
 	}
 
-	if (!(raw_packet_id <= rudp::connect_confirm && connection == nullptr)) return;
+	if (!(raw_packet_id <= rudp::headers_server::s_connect_confirm && connection == nullptr)) return;
 
 	switch (raw_packet_id)
 	{
 
-	case rudp::connect_request:
+	case rudp::headers_server::s_connect_request:
 		_connection_handle_request(result.recv_point);
 		return;
 
-	case rudp::connect_confirm:
+	case rudp::headers_server::s_connect_confirm:
 		_connection_handle_confirm(result.recv_point);
 		return;
 
@@ -111,7 +111,7 @@ void rudp_server::_connection_handle_request(end_point& remote_point)
 	connections_pending[remote_point.get_hash()] = scheduler.add([this, remote_point]() { _connection_expired(remote_point); }, connection_expire_timeout);
 
 	ice_data::write data(1);
-	data.set_flag(rudp::connect_response);
+	data.set_flag(rudp::headers_client::c_connect_response);
 
 	send(remote_point, data);
 }
