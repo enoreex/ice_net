@@ -17,7 +17,7 @@ public:
 
 		c_connect_response = 2,
 
-		c_connect_confirm = 3
+		c_connect_confirm = 3,
 
 		c_heartbeat_request = 4,
 

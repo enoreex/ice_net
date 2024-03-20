@@ -44,6 +44,8 @@ private:
 
     char win_error_msg[256];
 
+    char buffer[65535];
+
 #endif
 
 public:
@@ -58,9 +60,9 @@ public:
 
     bool receive_available() override;
 
-    recv_result receive_from(end_point& remote_point) override;
+    recv_result receive_from(end_point& remote_point, recv_predicate predicate) override;
 
-    recv_result receive() override;
+    recv_result receive(recv_predicate predicate) override;
 
     bool send(char* data, unsigned short data_size, const end_point& remote_point) override;
 

@@ -21,6 +21,10 @@ public:
 
 public:
 
+    typedef bool (a_sock::*recv_predicate)(char)
+
+public:
+
     virtual ~a_sock() = default;
 
 public:
@@ -33,9 +37,9 @@ public:
 
     virtual bool receive_available() = 0;
 
-    virtual recv_result receive_from(end_point& remote_point) = 0;
+    virtual recv_result receive_from(end_point& remote_point, recv_predicate predicate) = 0;
 
-    virtual recv_result receive() = 0;
+    virtual recv_result receive(recv_predicate predicate) = 0;
 
     virtual bool send(char* data, unsigned short data_size, const end_point& remote_point) = 0;
 

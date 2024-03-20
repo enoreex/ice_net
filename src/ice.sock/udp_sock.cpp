@@ -116,7 +116,7 @@ bool udp_sock::receive_available()
     return (available_data > 0);
 }
 
-a_sock::recv_result udp_sock::receive_from(end_point& remote_point)
+a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predicate predicate)
 {
     sockaddr_in remote_in = sockaddr_in();
 
@@ -132,41 +132,14 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point)
     socklen_t remote_size = sizeof(sockaddr_in);
 #endif
 
-    int available_data = 0;
+    int recv = recvfrom(sock, buffer, available_data, 0, (sockaddr*)&remote_in, &remote_size);
 
-#ifdef _WIN32
+    if (recv == -1) return result;
 
-    u_long arg = 0;
-    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR)
-    {
-        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("ioctlsocket error", win_error_msg);
-        return result;
-    }
-    else
-    {
-        available_data = static_cast<int>(arg);
-    }
+    if (predicate(buffer) == false) return result;
 
-#else
-
-    if (ioctl(sock, FIONREAD, &available_data) == -1)
-    {
-        ice_logger::log_error("ioctl error", strerror(errno));
-        return result;
-    }
-
-#endif
-
-    if (available_data == 0) return result;
-
-    char* recv_arr = new char[available_data];
-    int recv = recvfrom(sock, recv_arr, available_data, 0, (sockaddr*)&remote_in, &remote_size);
-
-    if (recv == -1)
-    {
-        delete[] recv_arr;
-        return result;
-    }
+    result.recv_arr = new char[available_data];
+    std::memcpy(result.recv_arr, buffer, recv);;
 
     result.recv_arr = recv_arr;
     result.recv_size = static_cast<unsigned short>(recv);
@@ -174,7 +147,7 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point)
     return result;
 }
 
-a_sock::recv_result udp_sock::receive()
+a_sock::recv_result udp_sock::receive(recv_predicate predicate)
 {
     recv_result result;
 
@@ -186,43 +159,15 @@ a_sock::recv_result udp_sock::receive()
     socklen_t client_address_size = sizeof(client_in);
 #endif
 
-    int available_data = 0;
+    int recv = recvfrom(sock, buffer, available_data, 0, (sockaddr*)&client_in, &client_address_size);
 
-#ifdef _WIN32
+    if (recv == -1) return result;
 
-    u_long arg = 0;
-    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR)
-    {
-        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("ioctlsocket error", win_error_msg);
-        return result;
-    }
-    else
-    {
-        available_data = static_cast<int>(arg);
-    }
+    if (predicate(buffer) == false) return result;
 
-#else
+    result.recv_arr = new char[available_data];
+    std::memcpy(result.recv_arr, buffer, recv);;
 
-    if (ioctl(sock, FIONREAD, &available_data) == -1)
-    {
-        ice_logger::log_error("ioctl error", strerror(errno));
-        return result;
-    }
-
-#endif
-
-    if (available_data == 0) return result;
-
-    char* recv_arr = new char[available_data];
-    int recv = recvfrom(sock, recv_arr, available_data, 0, (sockaddr*)&client_in, &client_address_size);
-
-    if (recv == -1)
-    {
-        delete[] recv_arr;
-        return result;
-    }
-
-    result.recv_arr = recv_arr;
     result.recv_size = static_cast<unsigned short>(recv);
 
     result.recv_point.set_address(ntohl(client_in.sin_addr.s_addr));
