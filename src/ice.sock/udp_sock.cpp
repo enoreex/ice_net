@@ -5,6 +5,16 @@ udp_sock::~udp_sock()
     stop();
 }
 
+void udp_sock::set_shared()
+{
+    _shared = true;
+}
+
+void udp_sock::set_unique()
+{
+    _shared = false;
+}
+
 end_point udp_sock::get_local_point()
 {
     return end_point(
@@ -135,8 +145,6 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predica
     char header;
     int recv_header = recvfrom(sock, &header, sizeof(header), MSG_PEEK, (sockaddr*)&remote_in, &remote_size);
 
-    ice_logger::log("del", std::to_string(static_cast<int>(recv_header)));
-
     if (recv_header == -1)
     {
         recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
@@ -144,7 +152,12 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predica
         return result;
     }
 
-    if (!predicate(header)) return result;
+    if (!predicate(header))
+    {
+        if (_shared == false) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
+
+        return result;
+    }
 
     int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
 
@@ -173,8 +186,6 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
     char header;
     int recv_header = recvfrom(sock, &header, sizeof(header), MSG_PEEK, (sockaddr*)&client_in, &client_address_size);
 
-    ice_logger::log("del", std::to_string(static_cast<int>(recv_header)));
-
     if (recv_header == -1)
     {
         recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
@@ -182,7 +193,12 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
         return result;
     }
 
-    if (!predicate(header)) return result;
+    if (!predicate(header)) 
+    {
+        if (_shared == false) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
+
+        return result;
+    }
 
     int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
 

@@ -52,6 +52,16 @@ public:
 
     ~udp_sock();
 
+private:
+
+    bool _shared = false;
+
+public:
+
+    void set_shared();
+
+    void set_unique();
+
 public:
 
     end_point get_local_point() override;
