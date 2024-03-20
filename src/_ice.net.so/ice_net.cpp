@@ -26,9 +26,14 @@ void logger_set_error(void(*action)(const char*))
 
 
 
-udp_sock* create_socket()
+udp_sock* get_client_socket(rudp_client* sock)
 {
-	return new udp_sock();
+	return sock->socket;
+}
+
+udp_sock* get_server_socket(rudp_server* sock)
+{
+	return sock->socket;
 }
 
 
@@ -59,18 +64,18 @@ void server_set_socket(rudp_server* sock, udp_sock* udp)
 
 
 
-void start_client(rudp_client* sock, i_STRING address, i_USHORT port)
+void start_client(rudp_client* sock, i_STRING address, i_USHORT port, bool initSock)
 {
 	if (sock == 0) return;
 
-	sock->connect(end_point(address, port), end_point(0, 0), false);
+	sock->connect(end_point(address, port), end_point(0, 0), initSock);
 }
 
-void start_server(rudp_server* sock, i_USHORT port)
+void start_server(rudp_server* sock, i_USHORT port, bool initSock)
 {
 	if (sock == 0) return;
 
-	sock->try_start(end_point(0, port), false);
+	sock->try_start(end_point(0, port), initSock);
 }
 
 
