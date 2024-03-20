@@ -116,6 +116,62 @@ bool udp_sock::receive_available()
     return (available_data > 0);
 }
 
+a_sock::recv_result udp_sock::receive_from(end_point& remote_point)
+{
+    remote_in.sin_family = AF_INET;
+    remote_in.sin_addr.s_addr = ntohl(remote_point.get_address());
+    remote_in.sin_port = ntohs(remote_point.get_port());
+
+    recv_result result;
+
+#ifdef _WIN32
+    int remote_size = sizeof(sockaddr_in);
+#else
+    socklen_t remote_size = sizeof(sockaddr_in);
+#endif
+
+    int available_data = 0;
+
+#ifdef _WIN32
+
+    u_long arg = 0;
+    if (ioctlsocket(sock, FIONREAD, &arg) == SOCKET_ERROR)
+    {
+        if (strerror_s(win_error_msg, sizeof(win_error_msg), WSAGetLastError()) == 0) ice_logger::log_error("ioctlsocket error", win_error_msg);
+        return result;
+    }
+    else
+    {
+        available_data = static_cast<int>(arg);
+    }
+
+#else
+
+    if (ioctl(sock, FIONREAD, &available_data) == -1)
+    {
+        ice_logger::log_error("ioctl error", strerror(errno));
+        return result;
+    }
+
+#endif
+
+    if (available_data == 0) return result;
+
+    char* recv_arr = new char[available_data];
+    int recv = recvfrom(sock, recv_arr, available_data, 0, (sockaddr*)&remote_in, &remote_size);
+
+    if (recv == -1)
+    {
+        delete[] recv_arr;
+        return result;
+    }
+
+    result.recv_arr = recv_arr;
+    result.recv_size = static_cast<unsigned short>(recv);
+
+    return result;
+}
+
 a_sock::recv_result udp_sock::receive()
 {
     recv_result result;

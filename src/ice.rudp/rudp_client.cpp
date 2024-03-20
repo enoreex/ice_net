@@ -73,9 +73,9 @@ void rudp_client::receive()
 
 	if (socket->receive_available() == false) return;
 
-	auto result = socket->receive();
+	auto result = socket->receive_from(remote_point);
 
-	if (result.recv_arr == nullptr || !result.recv_point.operator==(remote_point)) return;
+	if (result.recv_arr == nullptr) return;
 
 	ice_data::read data(result.recv_arr, result.recv_size);
 

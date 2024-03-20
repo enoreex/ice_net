@@ -33,6 +33,8 @@ public:
 
     virtual bool receive_available() = 0;
 
+    virtual recv_result receive_from(end_point& remote_point) = 0;
+
     virtual recv_result receive() = 0;
 
     virtual bool send(char* data, unsigned short data_size, const end_point& remote_point) = 0;
