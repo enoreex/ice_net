@@ -35,6 +35,18 @@ a_sock* create_transport(i_USHORT port)
 
 
 
+void transport_set_shared(udp_sock* sock)
+{
+	sock->set_shared();
+}
+
+void transport_set_unique(udp_sock* sock)
+{
+	sock->set_unique();
+}
+
+
+
 rudp_client* create_client()
 {
 	rudp_client* client = new rudp_client;
