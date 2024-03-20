@@ -30,7 +30,7 @@ a_sock* create_transport(i_USHORT port)
 {
 	udp_sock* sock = new udp_sock();
 	sock->start(end_point(0, port));
-	return new sock;
+	return sock;
 }
 
 
