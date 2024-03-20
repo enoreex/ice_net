@@ -37,7 +37,6 @@ private:
     SOCKET sock = 0;
 
     sockaddr_in local_in = sockaddr_in();
-    sockaddr_in remote_in = sockaddr_in();
 
 #ifdef _WIN32
 

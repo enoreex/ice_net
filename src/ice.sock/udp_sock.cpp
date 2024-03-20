@@ -118,6 +118,8 @@ bool udp_sock::receive_available()
 
 a_sock::recv_result udp_sock::receive_from(end_point& remote_point)
 {
+    sockaddr_in remote_in = sockaddr_in();
+
     remote_in.sin_family = AF_INET;
     remote_in.sin_addr.s_addr = ntohl(remote_point.get_address());
     remote_in.sin_port = ntohs(remote_point.get_port());
