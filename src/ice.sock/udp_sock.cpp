@@ -132,11 +132,23 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predica
     socklen_t remote_size = sizeof(sockaddr_in);
 #endif
 
+    char header;
+    int recv_header = recvfrom(sock, &header, sizeof(header), MSG_PEEK, (sockaddr*)&remote_in, &remote_size);
+
+    ice_logger::log("del", std::to_string(static_cast<int>(recv_header)));
+
+    if (recv_header == -1)
+    {
+        recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
+
+        return result;
+    }
+
+    if (!predicate(header)) return result;
+
     int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
 
     if (recv == -1) return result;
-
-    if (predicate(buffer) == false) return result;
 
     result.recv_arr = new char[recv];
     std::memcpy(result.recv_arr, buffer, recv);;
@@ -158,11 +170,23 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
     socklen_t client_address_size = sizeof(client_in);
 #endif
 
+    char header;
+    int recv_header = recvfrom(sock, &header, sizeof(header), MSG_PEEK, (sockaddr*)&client_in, &client_address_size);
+
+    ice_logger::log("del", std::to_string(static_cast<int>(recv_header)));
+
+    if (recv_header == -1)
+    {
+        recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
+
+        return result;
+    }
+
+    if (!predicate(header)) return result;
+
     int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
 
     if (recv == -1) return result;
-
-    if (predicate(buffer) == false) return result;
 
     result.recv_arr = new char[recv];
     std::memcpy(result.recv_arr, buffer, recv);;

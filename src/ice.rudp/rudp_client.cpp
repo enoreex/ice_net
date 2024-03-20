@@ -73,7 +73,7 @@ void rudp_client::receive()
 
 	if (socket->receive_available() == false) return;
 
-	auto result = socket->receive_from(remote_point, [](char* flag) -> bool { return (*flag <= rudp::headers_client::c_ack && *flag > rudp::headers_server::s_ack); });
+	auto result = socket->receive_from(remote_point, [](char flag) -> bool { return (flag <= rudp::headers_client::c_ack); });
 
 	if (result.recv_arr == nullptr) return;
 

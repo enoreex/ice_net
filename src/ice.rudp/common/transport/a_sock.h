@@ -21,7 +21,7 @@ public:
 
 public:
 
-    typedef bool (*recv_predicate)(char*);
+    typedef bool (*recv_predicate)(char);
 
 public:
 

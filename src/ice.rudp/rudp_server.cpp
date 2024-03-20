@@ -46,7 +46,7 @@ void rudp_server::receive()
 {
 	if (socket->receive_available() == false) return;
 
-	auto result = socket->receive([](char* flag) -> bool { return (*flag <= rudp::headers_server::s_ack); });
+	auto result = socket->receive([](char flag) -> bool { return (flag > rudp::headers_client::c_ack && flag <= rudp::headers_server::s_ack); });
 
 	if (result.recv_arr == nullptr) return;
 
