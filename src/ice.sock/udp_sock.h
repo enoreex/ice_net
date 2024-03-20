@@ -44,9 +44,11 @@ private:
 
     char win_error_msg[256];
 
-    char buffer[65535];
-
 #endif
+
+private:
+
+    char buffer[65535];
 
 public:
 
