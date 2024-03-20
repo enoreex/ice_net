@@ -13,40 +13,40 @@ public:
 
 	enum headers_client
 	{
-		c_connect_request = 12,
+		c_connect_request = 1,
 
-		c_connect_response = 23,
+		c_connect_response = 2,
 
-		c_connect_confirm = 34,
+		c_connect_confirm = 3
 
-		c_heartbeat_request = 45,
+		c_heartbeat_request = 4,
 
-		c_heartbeat_response = 56,
+		c_heartbeat_response = 5,
 
-		c_unreliable = 67,
+		c_unreliable = 6,
 
-		c_reliable = 78,
+		c_reliable = 7,
 
-		c_ack = 89,
+		c_ack = 8,
 	};
 
 	enum headers_server
 	{
 		s_connect_request = 21,
 
-		s_connect_response = 32,
+		s_connect_response = 22,
 
-		s_connect_confirm = 43,
+		s_connect_confirm = 23,
 
-		s_heartbeat_request = 54,
+		s_heartbeat_request = 24,
 
-		s_heartbeat_response = 65,
+		s_heartbeat_response = 25,
 
-		s_unreliable = 76,
+		s_unreliable = 26,
 
-		s_reliable = 87,
+		s_reliable = 27,
 
-		s_ack = 98,
+		s_ack = 28,
 	};
 
 	static const int disconnect_timeout = 5000;
