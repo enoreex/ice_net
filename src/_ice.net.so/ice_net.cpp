@@ -49,12 +49,12 @@ rudp_server* create_server()
 
 
 
-void client_set_socket(rudp_client* sock, udp_sock* udp)
+void client_set_transport(rudp_client* sock, a_sock* udp)
 {
 	sock->socket = udp;
 }
 
-void server_set_socket(rudp_server* sock, udp_sock* udp)
+void server_set_transport(rudp_server* sock, a_sock* udp)
 {
 	sock->socket = udp;
 }
@@ -312,7 +312,7 @@ rudp_server* release_server(rudp_server* sock)
 
 
 
-udp_sock* release_socket(udp_sock* udp)
+a_sock* release_transport(a_sock* udp)
 {
 	delete udp;
 

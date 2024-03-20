@@ -59,9 +59,9 @@ ICE_NET_API rudp_server* create_server();
 
 
 
-ICE_NET_API void client_set_socket(rudp_client* sock, udp_sock* udp);
+ICE_NET_API void client_set_transport(rudp_client* sock, a_sock* udp);
 
-ICE_NET_API void server_set_socket(rudp_server* sock, udp_sock* udp);
+ICE_NET_API void server_set_transport(rudp_server* sock, a_sock* udp);
 
 
 
@@ -127,6 +127,6 @@ ICE_NET_API rudp_server* release_server(rudp_server* sock);
 
 
 
-ICE_NET_API udp_sock* release_socket(udp_sock* udp);
+ICE_NET_API a_sock* release_transport(a_sock* udp);
 
 #endif
