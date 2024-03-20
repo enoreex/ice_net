@@ -132,16 +132,15 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predica
     socklen_t remote_size = sizeof(sockaddr_in);
 #endif
 
-    int recv = recvfrom(sock, buffer, available_data, 0, (sockaddr*)&remote_in, &remote_size);
+    int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
 
     if (recv == -1) return result;
 
     if (predicate(buffer) == false) return result;
 
-    result.recv_arr = new char[available_data];
+    result.recv_arr = new char[recv];
     std::memcpy(result.recv_arr, buffer, recv);;
 
-    result.recv_arr = recv_arr;
     result.recv_size = static_cast<unsigned short>(recv);
 
     return result;
@@ -159,13 +158,13 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
     socklen_t client_address_size = sizeof(client_in);
 #endif
 
-    int recv = recvfrom(sock, buffer, available_data, 0, (sockaddr*)&client_in, &client_address_size);
+    int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
 
     if (recv == -1) return result;
 
     if (predicate(buffer) == false) return result;
 
-    result.recv_arr = new char[available_data];
+    result.recv_arr = new char[recv];
     std::memcpy(result.recv_arr, buffer, recv);;
 
     result.recv_size = static_cast<unsigned short>(recv);

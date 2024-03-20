@@ -21,7 +21,7 @@ public:
 
 public:
 
-    typedef bool (a_sock::*recv_predicate)(char)
+    typedef bool (*recv_predicate)(char*);
 
 public:
 
