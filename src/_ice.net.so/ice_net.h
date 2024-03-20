@@ -35,9 +35,9 @@ ICE_NET_API void logger_set_error(void(*action)(const char*));
 
 
 
-ICE_NET_API udp_sock* get_client_socket(rudp_client* sock);
+ICE_NET_API a_sock* get_client_socket(rudp_client* sock);
 
-ICE_NET_API udp_sock* get_server_socket(rudp_server* sock);
+ICE_NET_API a_sock* get_server_socket(rudp_server* sock);
 
 
 

@@ -26,12 +26,12 @@ void logger_set_error(void(*action)(const char*))
 
 
 
-udp_sock* get_client_socket(rudp_client* sock)
+a_sock* get_client_socket(rudp_client* sock)
 {
 	return sock->socket;
 }
 
-udp_sock* get_server_socket(rudp_server* sock)
+a_sock* get_server_socket(rudp_server* sock)
 {
 	return sock->socket;
 }
