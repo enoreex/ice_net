@@ -60,7 +60,7 @@ void rudp_client::connect_attempt()
 
 	send_connect_request();
 
-	ice_logger::log("try-connect", ("trying to connect... attempt[" + std::to_string(connection_attempts) + "]!"));
+	ice_logger::log("try-connect", ("trying to connect... attempt[" + std::to_string(connection_attempts + 1) + "]!"));
 
 	++connection_attempts;
 
