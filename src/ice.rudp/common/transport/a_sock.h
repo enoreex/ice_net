@@ -21,7 +21,14 @@ public:
 
 public:
 
-    typedef bool (*recv_predicate)(char);
+    enum recv_predicate_code
+    {
+        accept,
+        reject,
+        temp,
+    };
+
+    typedef recv_predicate_code (*recv_predicate)(char);
 
 public:
 
@@ -37,9 +44,7 @@ public:
 
     virtual bool receive_available() = 0;
 
-    virtual recv_result receive_from(end_point& remote_point, recv_predicate predicate) = 0;
-
-    virtual recv_result receive(recv_predicate predicate) = 0;
+    virtual recv_result receive_from(recv_predicate predicate, end_point remote_point) = 0;
 
     virtual bool send(char* data, unsigned short data_size, const end_point& remote_point) = 0;
 

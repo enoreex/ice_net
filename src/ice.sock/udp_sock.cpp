@@ -126,13 +126,18 @@ bool udp_sock::receive_available()
     return (available_data > 0);
 }
 
-a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predicate predicate)
+a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point remote_point)
 {
-    sockaddr_in remote_in = sockaddr_in();
+    sockaddr_in remote_in;
 
-    remote_in.sin_family = AF_INET;
-    remote_in.sin_addr.s_addr = ntohl(remote_point.get_address());
-    remote_in.sin_port = ntohs(remote_point.get_port());
+    if (remote_point.get_hash() != 0) 
+    {
+        remote_in = sockaddr_in();
+
+        remote_in.sin_family = AF_INET;
+        remote_in.sin_addr.s_addr = ntohl(remote_point.get_address());
+        remote_in.sin_port = ntohs(remote_point.get_port());
+    }
 
     recv_result result;
 
@@ -152,65 +157,36 @@ a_sock::recv_result udp_sock::receive_from(end_point& remote_point, recv_predica
         return result;
     }
 
-    if (!predicate(header))
-    {
-        if (_shared == false) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
+    auto recv_predicate_result = predicate(header);
 
-        return result;
+    switch (recv_predicate_result)
+    {
+        case a_sock::accept:
+            break;
+
+        case a_sock::reject:
+            if(_shared == false) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
+            return result;    
+
+        case a_sock::temp:
+            recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
+            return result;
     }
 
     int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
 
     if (recv == -1) return result;
 
-    result.recv_arr = new char[recv];
-    std::memcpy(result.recv_arr, buffer, recv);;
-
-    result.recv_size = static_cast<unsigned short>(recv);
-
-    return result;
-}
-
-a_sock::recv_result udp_sock::receive(recv_predicate predicate)
-{
-    recv_result result;
-
-    sockaddr_in client_in;
-
-#ifdef _WIN32
-    int client_address_size = sizeof(client_in);
-#else
-    socklen_t client_address_size = sizeof(client_in);
-#endif
-
-    char header;
-    int recv_header = recvfrom(sock, &header, sizeof(header), MSG_PEEK, (sockaddr*)&client_in, &client_address_size);
-
-    if (recv_header == -1)
+    if (remote_point.get_hash() == 0)
     {
-        recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
-
-        return result;
+        result.recv_point.set_address(ntohl(remote_in.sin_addr.s_addr));
+        result.recv_point.set_port(ntohs(remote_in.sin_port));
     }
-
-    if (!predicate(header)) 
-    {
-        if (_shared == false) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
-
-        return result;
-    }
-
-    int recv = recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&client_in, &client_address_size);
-
-    if (recv == -1) return result;
 
     result.recv_arr = new char[recv];
     std::memcpy(result.recv_arr, buffer, recv);;
 
     result.recv_size = static_cast<unsigned short>(recv);
-
-    result.recv_point.set_address(ntohl(client_in.sin_addr.s_addr));
-    result.recv_point.set_port(ntohs(client_in.sin_port));
 
     return result;
 }
