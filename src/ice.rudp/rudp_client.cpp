@@ -64,7 +64,7 @@ void rudp_client::connect_attempt()
 
 	++connection_attempts;
 
-	connect_element = scheduler.add([this]() { connect_attempt(); }, connection_timeout);
+	connect_element = scheduler.add([this]() { connect_attempt(); }, connection_timeout.at(connection_attempts));
 }
 
 void rudp_client::receive()

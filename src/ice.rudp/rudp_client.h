@@ -41,9 +41,16 @@ public:
 
 private:
 
-	const int max_connection_attempts = 3;
+	const int max_connection_attempts = 20;
 
-	const int connection_timeout = 1500;
+	const std::map<int, int> connection_timeout = 
+	{
+		{1, 10}, {2, 10}, {3, 10}, {4, 10}, {5, 10}, 
+		{6, 15}, {7, 15}, {8, 15}, {9, 15},
+		{10, 20}, {11, 20}, {12, 20}, {13, 20},
+		{14, 500}, {15, 500}, {16, 500}, {17, 500},
+		{18, 1000}, {19, 1000}, {20, 1000}
+	};
 
 	int connection_attempts = 0;
 

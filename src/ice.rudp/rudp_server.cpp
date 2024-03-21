@@ -49,8 +49,8 @@ void rudp_server::receive()
 	auto result = socket->receive_from([](char flag) -> a_sock::recv_predicate_code
 		{
 			if (flag < rudp::headers_client::c_connect_request || flag > rudp::headers_server::s_ack) return a_sock::temp;
-			
-			if (flag > rudp::headers_client::c_ack && flag <= rudp::headers_server::s_ack) return a_sock::accept;
+
+			if (flag > rudp::headers_client::c_ack) return a_sock::accept;
 			
 			return a_sock::reject;
 

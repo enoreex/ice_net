@@ -147,8 +147,7 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
     socklen_t remote_size = sizeof(sockaddr_in);
 #endif
 
-    char header;
-    int recv_header = recvfrom(sock, &header, sizeof(header), MSG_PEEK, (sockaddr*)&remote_in, &remote_size);
+    int recv_header = recvfrom(sock, buffer, sizeof(buffer), MSG_PEEK, (sockaddr*)&remote_in, &remote_size);
 
     if (recv_header == -1)
     {
@@ -157,7 +156,7 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
         return result;
     }
 
-    auto recv_predicate_result = predicate(header);
+    auto recv_predicate_result = predicate(buffer[0]);
 
     switch (recv_predicate_result)
     {
