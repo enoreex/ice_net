@@ -149,6 +149,17 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
 
     int recv_header = recvfrom(sock, buffer, sizeof(buffer), MSG_PEEK, (sockaddr*)&remote_in, &remote_size);
 
+    if (remote_point.get_hash() != 0)
+    {
+        end_point ep_temp = end_point(0, 0);
+
+        ep_temp.set_address(ntohl(remote_in.sin_addr.s_addr));
+        ep_temp.set_port(ntohs(remote_in.sin_port));
+
+        if (remote_point.get_address() != ep_temp.get_address() ||
+            remote_point.get_port() != ep_temp.get_port()) return result;
+    }
+
     if (recv_header == -1)
     {
         recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
@@ -176,11 +187,8 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
 
     if (recv == -1) return result;
 
-    if (remote_point.get_hash() == 0)
-    {
-        result.recv_point.set_address(ntohl(remote_in.sin_addr.s_addr));
-        result.recv_point.set_port(ntohs(remote_in.sin_port));
-    }
+    result.recv_point.set_address(ntohl(remote_in.sin_addr.s_addr));
+    result.recv_point.set_port(ntohs(remote_in.sin_port));
 
     result.recv_arr = new char[recv];
     std::memcpy(result.recv_arr, buffer, recv);;
