@@ -86,13 +86,13 @@ void rudp_connection::ch_reliable_packet_lost(char* data, unsigned short size, u
 	serv_reliable_packet_lost(*this, data, size, id);
 }
 
-void rudp_connection::disconnect()
+void rudp_connection::disconnect(bool notify)
 {
 	if (current_state == disconnected) return;
 
 	rudp_peer::rudp_stop();
 
-	serv_callback_disconnect(remote_point);
+	serv_callback_disconnect(remote_point, notify);
 }
 
 inline char rudp_connection::_flag_heartbeat_request()

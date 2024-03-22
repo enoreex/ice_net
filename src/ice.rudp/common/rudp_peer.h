@@ -133,7 +133,7 @@ private:
 
 protected:
 
-	virtual void disconnect() = 0;
+	virtual void disconnect(bool notify = true) = 0;
 
 protected:
 

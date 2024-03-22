@@ -119,7 +119,7 @@ private:
 
 public:
 
-	void disconnect(bool notify = true) override;
+	void disconnect(bool notify) override;
 
 private:
 

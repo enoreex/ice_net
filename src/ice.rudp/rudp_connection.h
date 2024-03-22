@@ -24,7 +24,7 @@ private:
 
 	using SERV_C_S = std::function<void(end_point&, ice_data::write&)>;
 
-	using SERV_C_D = std::function<void(end_point&)>;
+	using SERV_C_D = std::function<void(end_point&, bool)>;
 
 	using SERV_P_L = std::function<void(rudp_connection&, char*, unsigned short, unsigned short)>;
 
@@ -78,7 +78,7 @@ private:
 
 private:
 
-	void disconnect() override;
+	void disconnect(bool notify) override;
 
 private:
 
