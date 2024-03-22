@@ -46,7 +46,7 @@ public:
 
     virtual recv_result receive_from(recv_predicate predicate, end_point remote_point) = 0;
 
-    virtual bool send(char* data, unsigned short data_size, const end_point& remote_point) = 0;
+    virtual bool send(const char* data, unsigned short data_size, const end_point& remote_point) = 0;
 
     virtual void stop() = 0;
 };

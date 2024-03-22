@@ -190,21 +190,16 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
     return result;
 }
 
-bool udp_sock::send(char* data, unsigned short data_size, const end_point& remote_point)
+bool udp_sock::send(const char* data, unsigned short data_size, const end_point& remote_point)
 {
     sockaddr_in client_in;
-
-#ifdef _WIN32
-    int client_address_size = sizeof(client_in);
-#else
-    socklen_t client_address_size = sizeof(client_in);
-#endif
+    memset(&client_in, 0, sizeof(client_in));
 
     client_in.sin_family = AF_INET;
-    client_in.sin_addr.s_addr = htonl(remote_point.get_address());
+    client_in.sin_addr.s_addr = inet_addr(remote_point.get_address_str().c_str());
     client_in.sin_port = htons(remote_point.get_port());
 
-    int result = sendto(sock, data, data_size, 0, (sockaddr*)&client_in, client_address_size);
+    int result = sendto(sock, data, data_size, 0, (const sockaddr*)&client_in, sizeof(client_in));
 
     if (result == -1)
     {
