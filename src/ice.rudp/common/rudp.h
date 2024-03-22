@@ -17,36 +17,32 @@ public:
 
 		c_connect_response = 32,
 
-		c_connect_confirm = 33,
+		c_heartbeat_request = 33,
 
-		c_heartbeat_request = 34,
+		c_heartbeat_response = 34,
 
-		c_heartbeat_response = 35,
+		c_unreliable = 35,
 
-		c_unreliable = 36,
+		c_reliable = 36,
 
-		c_reliable = 37,
-
-		c_ack = 38,
+		c_ack = 37,
 	};
 
 	enum headers_server
 	{
 		s_connect_request = 61,
 
-		s_connect_response = 62,
+		s_connect_confirm = 62,
 
-		s_connect_confirm = 63,
+		s_heartbeat_request = 63,
 
-		s_heartbeat_request = 64,
+		s_heartbeat_response = 64,
 
-		s_heartbeat_response = 65,
+		s_unreliable = 65,
 
-		s_unreliable = 66,
+		s_reliable = 66,
 
-		s_reliable = 67,
-
-		s_ack = 68,
+		s_ack = 67,
 	};
 
 	static const int disconnect_timeout = 5000;
