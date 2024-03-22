@@ -76,7 +76,7 @@ void rudp_client::receive()
 	auto result = socket->receive_from([](char flag) -> a_sock::recv_predicate_code
 		{
 			if (flag < rudp::headers_client::c_connect_request || flag > rudp::headers_server::s_ack) return a_sock::temp;
-			
+
 			if (flag <= rudp::headers_client::c_ack) return a_sock::accept;
 
 			return a_sock::reject;
@@ -84,6 +84,9 @@ void rudp_client::receive()
 		}, remote_point);
 
 	if (result.recv_arr == nullptr) return;
+
+	if (remote_point.get_address() != result.recv_point.get_address() ||
+		remote_point.get_port() != result.recv_point.get_port()) return;
 
 	ice_data::read data(result.recv_arr, result.recv_size);
 
