@@ -225,7 +225,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 
 		try
 		{
-			ext_connection_removed(*connection, notify);
+			if (notify) ext_connection_removed(*connection);
 		}
 
 		catch (const std::exception& exc)
@@ -296,7 +296,7 @@ void rudp_server::connection_callback_send(end_point& remote_point, ice_data::wr
 
 void rudp_server::connection_callback_disconnect(end_point& remote_point, bool notify)
 {
-	try_remove_connection(remote_point);
+	try_remove_connection(remote_point, notify);
 }
 
 void rudp_server::connection_callback_reliable_packet_lost(rudp_connection& c, char* data, unsigned short size, unsigned short id) const
@@ -327,10 +327,8 @@ inline void rudp_server::ext_connection_added(rudp_connection& c) const
 	if (connection_added_callback) connection_added_callback(c);
 }
 
-inline void rudp_server::ext_connection_removed(rudp_connection& c, bool notify) const
+inline void rudp_server::ext_connection_removed(rudp_connection& c) const
 {
-	if (notify == false) return;
-
 	if (connection_removed_callback) connection_removed_callback(c);
 }
 

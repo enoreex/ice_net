@@ -133,7 +133,7 @@ private:
 
 	inline void ext_connection_added(rudp_connection& c) const;
 
-	inline void ext_connection_removed(rudp_connection& c, bool notify) const;
+	inline void ext_connection_removed(rudp_connection& c) const;
 
 	inline void ext_data_handled(rudp_connection& c, ice_data::read& d) const;
 
