@@ -51,7 +51,7 @@ public:
 
 	static const int disconnect_timeout = 5000;
 
-	static const int heartbeat_interval = 750;
+	static const int heartbeat_interval = 200;
 
 	static const int min_resend_time = 200;
 
