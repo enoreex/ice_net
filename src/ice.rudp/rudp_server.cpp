@@ -35,7 +35,7 @@ bool rudp_server::try_start()
 		socket->get_local_point().get_address_str() + ":" +
 		socket->get_local_point().get_port_str() + "]"));
 
-	return result;
+	return true;
 }
 
 void rudp_server::receive()
