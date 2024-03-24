@@ -18,7 +18,7 @@ void rudp_server::update()
 	receive();
 }
 
-bool rudp_server::try_start(end_point local_point, bool sockInit)
+bool rudp_server::try_start()
 {
 	if (socket == nullptr)
 	{
@@ -28,10 +28,6 @@ bool rudp_server::try_start(end_point local_point, bool sockInit)
 	}
 
 	if (current_state == connected) return false;
-
-	auto result = sockInit == false ? true : socket->start(local_point);
-
-	if (result == false) return false;
 
 	current_state = connected;
 

@@ -54,15 +54,17 @@ public:
 
     ~udp_sock();
 
-private:
+public:
 
-    bool _shared = false;
+    enum recv_mode 
+    {
+        single,
+        shared,
+    };
 
 public:
 
-    void set_shared();
-
-    void set_unique();
+    recv_mode recv_mode = single;
 
 public:
 

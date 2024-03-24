@@ -19,7 +19,7 @@ void rudp_client::update()
 	receive();
 }
 
-void rudp_client::connect(end_point remote_point, end_point local_point, bool sockInit)
+void rudp_client::connect(end_point remote_point)
 {
 	if (socket == nullptr)
 	{
@@ -29,10 +29,6 @@ void rudp_client::connect(end_point remote_point, end_point local_point, bool so
 	}
 
 	if (current_state != disconnected) return;
-
-	bool result = sockInit == false ? true : socket->start(local_point);
-
-	if (result == false) return;
 
 	current_state = connecting;
 	

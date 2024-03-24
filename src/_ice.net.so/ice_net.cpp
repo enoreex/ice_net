@@ -35,14 +35,14 @@ a_sock* create_transport(i_USHORT port)
 
 
 
-void transport_set_shared(udp_sock* sock)
+void transport_set_single(udp_sock* sock)
 {
-	sock->set_shared();
+	sock->recv_mode = udp_sock::single;
 }
 
-void transport_set_unique(udp_sock* sock)
+void transport_set_shared(udp_sock* sock)
 {
-	sock->set_unique();
+	sock->recv_mode = udp_sock::shared;
 }
 
 
@@ -77,14 +77,14 @@ void start_client(rudp_client* sock, i_STRING address, i_USHORT port)
 {
 	if (sock == 0) return;
 
-	sock->connect(end_point(address, port), end_point(0, 0), false);
+	sock->connect(end_point(address, port));
 }
 
 void start_server(rudp_server* sock)
 {
 	if (sock == 0) return;
 
-	sock->try_start(end_point(0, 0), false);
+	sock->try_start();
 }
 
 

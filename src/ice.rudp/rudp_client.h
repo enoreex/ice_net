@@ -79,7 +79,7 @@ public:
 
 public:
 
-	void connect(end_point remote_point, end_point local_point, bool sockInit = true);
+	void connect(end_point remote_point);
 
 	void connect_attempt();
 

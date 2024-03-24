@@ -53,9 +53,9 @@ ICE_NET_API a_sock* create_transport(i_USHORT port);
 
 
 
-ICE_NET_API void transport_set_shared(udp_sock* sock);
+ICE_NET_API void transport_set_single(udp_sock* sock);
 
-ICE_NET_API void transport_set_unique(udp_sock* sock);
+ICE_NET_API void transport_set_shared(udp_sock* sock);
 
 
 

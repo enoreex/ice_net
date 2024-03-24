@@ -5,16 +5,6 @@ udp_sock::~udp_sock()
     stop();
 }
 
-void udp_sock::set_shared()
-{
-    _shared = true;
-}
-
-void udp_sock::set_unique()
-{
-    _shared = false;
-}
-
 end_point udp_sock::get_local_point()
 {
     return end_point(
@@ -164,7 +154,7 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
             break;
 
         case a_sock::reject:
-            if(_shared == false) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
+            if (this->recv_mode == single) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
             return result;    
 
         case a_sock::temp:

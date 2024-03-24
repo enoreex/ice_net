@@ -83,7 +83,7 @@ public:
 
 public:
 
-	bool try_start(end_point local_point, bool sockInit = true);
+	bool try_start();
 
 private:
 
