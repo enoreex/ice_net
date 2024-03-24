@@ -61,6 +61,8 @@ public:
 
 	std::function<void(rudp_connection&, ice_data::read&)> external_data_callback;
 
+	std::function<void(rudp_connection&, end_point, ice_data::read&)> external_data_specific_callback;
+
 public:
 
 	std::function<void(rudp_connection&, char*, unsigned short, unsigned short)> reliable_packet_lost;
@@ -135,7 +137,7 @@ private:
 
 	inline void ext_connection_removed(rudp_connection& c) const;
 
-	inline void ext_data_handled(rudp_connection& c, ice_data::read& d) const;
+	inline void ext_data_handled(rudp_connection& c, end_point e, ice_data::read& d) const;
 
 private:
 

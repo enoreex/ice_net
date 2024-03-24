@@ -282,7 +282,7 @@ const end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connect
 
 void rudp_server::connection_callback_handle(rudp_connection& connection, ice_data::read& data)
 {
-	ext_data_handled(connection, data);
+	ext_data_handled(connection, connection.get_remote_point(), data);
 }
 
 void rudp_server::connection_callback_send(end_point& remote_point, ice_data::write& data)
@@ -328,9 +328,10 @@ inline void rudp_server::ext_connection_removed(rudp_connection& c) const
 	if (connection_removed_callback) connection_removed_callback(c);
 }
 
-inline void rudp_server::ext_data_handled(rudp_connection& c, ice_data::read& d) const
+inline void rudp_server::ext_data_handled(rudp_connection& c, end_point p, ice_data::read& d) const
 {
 	if (external_data_callback) external_data_callback(c, d);
+	if (external_data_specific_callback) external_data_specific_callback(c, p, d);
 }
 
 void rudp_server::send(end_point& remote_point, ice_data::write& data)
