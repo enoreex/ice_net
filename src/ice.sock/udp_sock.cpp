@@ -221,7 +221,7 @@ void udp_sock::stop()
 
 #ifdef _WIN32
 
-    WSACleanup();
+    //WSACleanup();
 
 #endif
 }
