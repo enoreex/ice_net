@@ -116,18 +116,9 @@ bool udp_sock::receive_available()
     return (available_data > 0);
 }
 
-a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point remote_point)
+a_sock::recv_result udp_sock::receive(recv_predicate predicate)
 {
     sockaddr_in remote_in;
-
-    if (remote_point.get_hash() != 0) 
-    {
-        remote_in = sockaddr_in();
-
-        remote_in.sin_family = AF_INET;
-        remote_in.sin_addr.s_addr = ntohl(remote_point.get_address());
-        remote_in.sin_port = ntohs(remote_point.get_port());
-    }
 
     recv_result result;
 
@@ -146,7 +137,9 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
         return result;
     }
 
-    auto recv_predicate_result = predicate(buffer[0]);
+    end_point from = end_point(ntohl(remote_in.sin_addr.s_addr), ntohs(remote_in.sin_port));
+
+    auto recv_predicate_result = predicate(buffer[0], from);
 
     switch (recv_predicate_result)
     {
@@ -166,10 +159,10 @@ a_sock::recv_result udp_sock::receive_from(recv_predicate predicate, end_point r
 
     if (recv == -1) return result;
 
-    result.recv_point.set_address(ntohl(remote_in.sin_addr.s_addr));
-    result.recv_point.set_port(ntohs(remote_in.sin_port));
+    result.recv_point = from;
 
     result.recv_arr = new char[recv];
+
     std::memcpy(result.recv_arr, buffer, recv);;
 
     result.recv_size = static_cast<unsigned short>(recv);
@@ -216,12 +209,6 @@ void udp_sock::stop()
 
     int status = shutdown(sock, SHUT_RDWR);
     if (status == 0) { close(sock); }
-
-#endif
-
-#ifdef _WIN32
-
-    //WSACleanup();
 
 #endif
 }

@@ -5,6 +5,8 @@
 
 #include "end_point.h"
 
+#include <functional>
+
 class a_sock
 {
 
@@ -28,7 +30,7 @@ public:
         temp,
     };
 
-    typedef recv_predicate_code (*recv_predicate)(char);
+    typedef std::function<recv_predicate_code(char, end_point&)> recv_predicate;
 
 public:
 
@@ -44,7 +46,7 @@ public:
 
     virtual bool receive_available() = 0;
 
-    virtual recv_result receive_from(recv_predicate predicate, end_point remote_point) = 0;
+    virtual recv_result receive(recv_predicate predicate) = 0;
 
     virtual bool send(const char* data, unsigned short data_size, const end_point& remote_point) = 0;
 

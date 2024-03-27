@@ -42,7 +42,7 @@ void rudp_server::receive()
 {
 	if (socket->receive_available() == false) return;
 
-	auto result = socket->receive_from([](char flag) -> a_sock::recv_predicate_code
+	auto result = socket->receive([](char flag, end_point& from) -> a_sock::recv_predicate_code
 		{
 			if (flag < rudp::headers_client::c_connect_request || flag > rudp::headers_server::s_ack) return a_sock::temp;
 
@@ -50,7 +50,7 @@ void rudp_server::receive()
 			
 			return a_sock::reject;
 
-		}, end_point(0, 0));
+		});
 
 	if (result.recv_arr == nullptr) return;
 

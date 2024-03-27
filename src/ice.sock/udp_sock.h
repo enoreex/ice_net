@@ -74,7 +74,7 @@ public:
 
     bool receive_available() override;
 
-    recv_result receive_from(recv_predicate predicate, end_point remote_point) override;
+    recv_result receive(recv_predicate predicate) override;
 
     bool send(const char* data, unsigned short data_size, const end_point& remote_point) override;
 
