@@ -210,8 +210,6 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 	{
 		if (try_get_connection(connection, remote_point) == false) return false;
 
-		auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
-
 		ice_logger::log("connection removed", ("connection removed! remote ep: [" +
 			remote_point.get_address_str() + ":" +
 			remote_point.get_port_str() + "]"));
@@ -227,8 +225,11 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 				+ std::string(exc.what()));
 		}
 
+		auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
+
+		if (it != connections_arr.end()) connections_arr.erase(it);
+
 		connections.erase(remote_point.get_hash());
-		connections_arr.erase(it, connections_arr.end());
 
 		delete connection;
 
