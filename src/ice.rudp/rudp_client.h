@@ -123,15 +123,15 @@ public:
 
 private:
 
-	inline char _flag_heartbeat_request();
+	inline char _flag_heartbeat_request() override;
 
-	inline char _flag_heartbeat_response();
+	inline char _flag_heartbeat_response() override;
 
-	inline char _flag_unreliable();
+	inline char _flag_unreliable() override;
 
-	inline char _flag_reliable();
+	inline char _flag_reliable() override;
 
-	inline char _flag_ack();
+	inline char _flag_ack() override;
 };
 
 #endif
