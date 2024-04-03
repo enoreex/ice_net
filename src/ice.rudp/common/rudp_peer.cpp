@@ -190,6 +190,12 @@ void rudp_peer::send_ack(unsigned short packet_id)
 
 void rudp_peer::reliable_release(unsigned short packet_id)
 {
+	auto pair = pending_packets.find(packet_id);
+
+	if (pair == pending_packets.end()) return;
+
+	auto packet = pair->second;
+
 	ice_logger::log("reability", ("reliable packet[" + std::to_string(packet->packet_id) + "] was not handled!"));
 
 	ch_reliable_packet_lost(packet->data->get_buffer() + 3, packet->data->get_buffer_size() - 3, packet->packet_id);
