@@ -64,11 +64,11 @@ private:
 
 	struct pending_packet
 	{
-		ice_data::write* data = nullptr;
-
 		unsigned char attempts = 0;
 
 		unsigned short packet_id = 0;
+
+		ice_data::write* data = nullptr;
 
 		scheduler::element* element = nullptr;
 	};
