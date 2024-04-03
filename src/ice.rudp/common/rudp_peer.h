@@ -68,7 +68,7 @@ private:
 
 		unsigned char attempts = 0;
 
-		unsigned short packet_id = -1;
+		unsigned short packet_id = 0;
 
 		scheduler::element* element = nullptr;
 	};
@@ -119,9 +119,13 @@ protected:
 
 private:
 
-	void send_reliable_attempt(int packet_id = -1);
+	void send_reliable_attempt(unsigned short packet_id);
 
 	void send_ack(unsigned short packet_id);
+
+private:
+
+	void reliable_release(unsigned short packet_id);
 
 private:
 

@@ -48,11 +48,10 @@ void rudp_peer::rudp_stop()
 
 void rudp_peer::rudp_reset()
 {
-	for (auto& it : pending_packets) delete it.second;
+	for (auto& it : pending_packets) reliable_release(it.second->packet_id);
 	pending_packets.clear();
 
 	scheduler.clear();
-
 }
 
 void rudp_peer::handle_heartbeat_request()
@@ -97,6 +96,8 @@ void rudp_peer::handle_ack(ice_data::read& data)
 	scheduler.remove(packet->element);
 
 	pending_packets.erase(pair);
+
+	delete packet->data;
 
 	delete packet;
 }
@@ -154,7 +155,7 @@ void rudp_peer::send_reliable(ice_data::write& data)
 	send_reliable_attempt(packet_id);
 }
 
-void rudp_peer::send_reliable_attempt(int packet_id)
+void rudp_peer::send_reliable_attempt(unsigned short packet_id)
 {
 	if (current_state != connected) return;
 
@@ -166,15 +167,7 @@ void rudp_peer::send_reliable_attempt(int packet_id)
 
 	if (packet->attempts >= rudp::max_resend_count)
 	{
-		ice_logger::log("reability", ("reliable packet[" + std::to_string(packet->packet_id) + "] was not handled!"));
-
-		ch_reliable_packet_lost(packet->data->get_buffer() + 3, packet->data->get_buffer_size() - 3, packet->packet_id);
-
-		pending_packets.erase(pair);
-
-		delete packet->data;
-
-		delete packet;
+		reliable_release(packet_id);
 
 		return;
 	}
@@ -193,6 +186,19 @@ void rudp_peer::send_ack(unsigned short packet_id)
 	data.add_int16(packet_id);
 
 	ch_send(data);
+}
+
+void rudp_peer::reliable_release(unsigned short packet_id)
+{
+	ice_logger::log("reability", ("reliable packet[" + std::to_string(packet->packet_id) + "] was not handled!"));
+
+	ch_reliable_packet_lost(packet->data->get_buffer() + 3, packet->data->get_buffer_size() - 3, packet->packet_id);
+
+	pending_packets.erase(pair);
+
+	delete packet->data;
+
+	delete packet;
 }
 
 void rudp_peer::start_heartbeat_timer()
