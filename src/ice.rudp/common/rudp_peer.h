@@ -64,6 +64,8 @@ private:
 
 	struct pending_packet
 	{
+		~pending_packet();
+
 		unsigned char attempts = 0;
 
 		unsigned short packet_id = 0;
@@ -73,7 +75,7 @@ private:
 		scheduler::element* element = nullptr;
 	};
 
-	std::map<unsigned short, pending_packet*> pending_packets;
+	std::map<unsigned short, pending_packet> pending_packets;
 	
 protected:
 

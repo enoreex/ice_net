@@ -40,7 +40,7 @@ scheduler::element* scheduler::add(std::function<void()> new_event, int time_in_
 		window_low = window_low->previous;
 	}
 
-	window_head == nullptr ? nullptr : (window_head->previous = new_element);
+	if (window_head != nullptr) window_head->previous = new_element;
 	if (window_low != nullptr) window_low->next = new_element;
 
 	new_element->next = window_head;
