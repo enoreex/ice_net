@@ -53,11 +53,17 @@ void rudp_peer::rudp_stop()
 
 void rudp_peer::rudp_reset()
 {
-	if(!pending_packets.empty()) for (auto& it : pending_packets) reliable_release(it.second.packet_id);
+	scheduler.clear();
+
+	if (pending_packets.size() > 0)
+	{
+		for (auto& it : pending_packets)
+		{
+			reliable_release(it.second.packet_id);
+		}
+	}
 
 	pending_packets.clear();
-
-	scheduler.clear();
 }
 
 void rudp_peer::handle_heartbeat_request()
