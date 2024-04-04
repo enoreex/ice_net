@@ -185,7 +185,7 @@ void rudp_peer::send_reliable_attempt(unsigned short packet_id)
 
 	packet.element = scheduler.add([this, packet_id]() { send_reliable_attempt(packet_id); }, get_resend_time());
 
-	ch_send(packet.data);
+	ch_send(*packet.data);
 }
 
 void rudp_peer::send_ack(unsigned short packet_id)
