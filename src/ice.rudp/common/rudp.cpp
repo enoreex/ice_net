@@ -56,7 +56,11 @@ void scheduler::remove(element*& obj)
 	if (obj->next != nullptr) obj->next->previous = obj->previous;
 	if (obj->previous != nullptr) obj->previous->next = obj->next;
 
-	if (obj == head) head = head->previous;
+	if (obj == head)
+	{
+		if (head->previous != nullptr) head = nullptr;
+		else head = head->previous;
+	}
 
 	delete obj;
 
