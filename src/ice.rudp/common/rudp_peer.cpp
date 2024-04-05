@@ -54,13 +54,7 @@ void rudp_peer::rudp_reset()
 {
 	scheduler.clear();
 
-	if (pending_packets.size() > 0)
-	{
-		for (auto& it : pending_packets)
-		{
-			reliable_release(it.second.packet_id);
-		}
-	}
+	if (!pending_packets.empty()) for (auto& it : pending_packets) reliable_release(it.second.packet_id);
 
 	pending_packets.clear();
 }
