@@ -41,7 +41,6 @@ void rudp_peer::rudp_init()
 	rudp_reset();
 
 	start_heartbeat_timer();
-	start_disconnect_timer();
 }
 
 void rudp_peer::rudp_stop()
