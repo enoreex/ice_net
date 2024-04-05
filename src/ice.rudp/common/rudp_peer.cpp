@@ -78,7 +78,6 @@ void rudp_peer::handle_heartbeat_response()
 	set_rtt(rtt_watch.get_elapsed_milliseconds());
 
 	stop_disconnect_timer();
-	start_disconnect_timer();
 }
 
 void rudp_peer::handle_unreliable(ice_data::read& data)
@@ -222,11 +221,15 @@ void rudp_peer::start_heartbeat_timer()
 {
 	send_heartbeat_request();
 
+	start_disconnect_timer();
+
 	heartbeat_element = scheduler.add([this]() { start_heartbeat_timer(); }, rudp::heartbeat_interval);
 }
 
 void rudp_peer::start_disconnect_timer()
 {
+	if (disconnect_element != nullptr) return;
+
 	disconnect_element = scheduler.add([this]() { disconnect(); }, rudp::disconnect_timeout);
 }
 
