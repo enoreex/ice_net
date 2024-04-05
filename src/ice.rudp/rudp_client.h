@@ -61,7 +61,7 @@ private:
 
 private:
 
-	scheduler::element* connect_element;
+	scheduler::element* connect_element = nullptr;
 
 public:
 

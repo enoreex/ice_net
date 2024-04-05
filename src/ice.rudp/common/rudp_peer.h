@@ -54,9 +54,9 @@ protected:
 
 private:
 
-	scheduler::element* heartbeat_element;
+	scheduler::element* heartbeat_element = nullptr;
 
-	scheduler::element* disconnect_element;
+	scheduler::element* disconnect_element = nullptr;
 
 	stopwatch rtt_watch;
 
