@@ -54,16 +54,12 @@ void scheduler::remove(element*& obj)
 	if (obj == nullptr) return;
 
 	if (obj->next != nullptr) obj->next->previous = obj->previous;
+
 	if (obj->previous != nullptr) obj->previous->next = obj->next;
 
-	if (obj == head)
-	{
-		if (head->previous != nullptr) head = nullptr;
-		else head = head->previous;
-	}
+	if (obj == head) head = obj->previous;
 
 	delete obj;
-
 	obj = nullptr;
 }
 
@@ -75,7 +71,14 @@ void scheduler::execute()
 
 	element* temp = head;
 
-	head = head->previous;
+	if (head->previous != nullptr)
+	{
+		head = head->previous;
+		head->next = nullptr;
+	}
+
+	else head = nullptr;
+
 	temp->event();
 
 	delete temp;
@@ -83,7 +86,8 @@ void scheduler::execute()
 
 void scheduler::clear()
 {
-	while (head != nullptr) {
+	while (head != nullptr)
+	{
 		element* temp = head;
 		head = head->previous;
 		delete temp;
