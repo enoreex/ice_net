@@ -250,6 +250,14 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 
 }
 
+void rudp_server::clear_connections()
+{
+	for (auto& c : connections_arr) delete c;
+
+	connections.clear();
+	connections_arr.clear();
+}
+
 void rudp_server::connection_internal_disconnect(rudp_connection*& connection, bool notify)
 {
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
@@ -346,14 +354,9 @@ void rudp_server::send(end_point& remote_point, ice_data::write& data)
 
 void rudp_server::stop()
 {
-	if (current_state == disconnected || !socket) return;
-
 	current_state = disconnected;
-
-	for (auto c& : connections_arr) delete c;
-
-	connections.clear();
-	connections_arr.clear();
+	
+	clear_connections();
 
 	ice_logger::log("server-stop", "closed!");
 }

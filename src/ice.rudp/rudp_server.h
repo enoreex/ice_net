@@ -109,6 +109,8 @@ private:
 
 	bool try_remove_connection(end_point& remote_point, bool notify);
 
+	void clear_connections();
+
 public:
 
 	void connection_internal_disconnect(rudp_connection*& connection, bool notify = true);
