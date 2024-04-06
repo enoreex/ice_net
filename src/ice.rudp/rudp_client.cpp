@@ -84,6 +84,8 @@ void rudp_client::receive()
 
 	ice_data::read data(result.recv_arr, result.recv_size);
 
+	if (result.auto_release) delete[] result.recv_arr;
+
 	handle(data);
 }
 

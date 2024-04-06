@@ -66,10 +66,14 @@ void rudp_server::receive()
 	{
 		ice_data::read data(result.recv_arr, result.recv_size);
 
+		if (result.auto_release) delete[] result.recv_arr;
+
 		connection->handle(data);
 
 		return;
 	}
+
+	if (result.auto_release) delete[] result.recv_arr;
 
 	if (!(raw_packet_id <= rudp::headers_server::s_connect_confirm && connection == nullptr)) return;
 

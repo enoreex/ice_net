@@ -165,6 +165,8 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
 
     result.recv_size = static_cast<unsigned short>(recv);
 
+    result.auto_release = false;
+
     return result;
 }
 

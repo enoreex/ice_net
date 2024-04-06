@@ -19,6 +19,8 @@ public:
         unsigned short recv_size = 0;
 
         end_point recv_point = end_point(0, 0);
+
+        bool auto_release = false;
     };
 
 public:
