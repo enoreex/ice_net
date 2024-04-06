@@ -133,8 +133,6 @@ private:
 
 	void start_heartbeat_timer();
 
-	void stop_heartbeat_timer();
-
 	void start_disconnect_timer();
 
 	void stop_disconnect_timer();

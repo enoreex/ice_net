@@ -52,9 +52,6 @@ void rudp_peer::rudp_stop()
 
 void rudp_peer::rudp_reset()
 {
-	stop_heartbeat_timer();
-	stop_disconnect_timer();
-
 	scheduler.clear();
 
 	if (!pending_packets.empty()) for (auto& it : pending_packets) reliable_release(it.second.packet_id);
@@ -220,11 +217,6 @@ void rudp_peer::start_heartbeat_timer()
 	start_disconnect_timer();
 
 	heartbeat_element = scheduler.add([this]() { start_heartbeat_timer(); }, rudp::heartbeat_interval);
-}
-
-void rudp_peer::stop_heartbeat_timer()
-{
-	scheduler.remove(heartbeat_element);
 }
 
 void rudp_peer::start_disconnect_timer()
