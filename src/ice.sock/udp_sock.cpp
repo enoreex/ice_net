@@ -161,9 +161,7 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
 
     result.recv_point = from;
 
-    result.recv_arr = new char[recv];
-
-    std::memcpy(result.recv_arr, buffer, recv);;
+    result.recv_arr = buffer;
 
     result.recv_size = static_cast<unsigned short>(recv);
 

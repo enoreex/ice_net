@@ -23,6 +23,8 @@ public:
 
 		write(unsigned short reserve_size = 32);
 
+		~write();
+
 	private:
 
 		std::vector<char> data;
@@ -33,7 +35,7 @@ public:
 
 	public:
 
-		void add_buffer(const char* value, const unsigned short size);
+		void add_buffer(const char* value, const unsigned short size, bool auto_release = true);
 
 		void add_int8(const char& value);
 
@@ -53,7 +55,9 @@ public:
 
 	public:
 
-		read(char* data, const int size);
+		read(char* data, const int size, bool auto_release = true);
+
+		~read();
 
 	private:
 
