@@ -55,19 +55,19 @@ public:
 
 public:
 
-	std::function<void(rudp_connection&)> connection_added_callback;
+	std::function<void(rudp_connection*)> connection_added_callback;
 
-	std::function<void(rudp_connection&)> connection_removed_callback;
-
-public:
-
-	std::function<void(rudp_connection&, ice_data::read&)> external_data_callback;
-
-	std::function<void(rudp_connection&, end_point, ice_data::read&)> external_data_specific_callback;
+	std::function<void(rudp_connection*)> connection_removed_callback;
 
 public:
 
-	std::function<void(rudp_connection&, char*, unsigned short, unsigned short)> reliable_packet_lost;
+	std::function<void(rudp_connection*, ice_data::read&)> external_data_callback;
+
+	std::function<void(rudp_connection*, end_point, ice_data::read&)> external_data_specific_callback;
+
+public:
+
+	std::function<void(rudp_connection*, char*, unsigned short, unsigned short)> reliable_packet_lost;
 
 private:
 
@@ -121,13 +121,13 @@ public:
 
 private:
 
-	void connection_callback_handle(rudp_connection& connection, ice_data::read& data);
+	void connection_callback_handle(rudp_connection*& connection, ice_data::read& data);
 
 	void connection_callback_send(end_point& remote_point, ice_data::write& data);
 
 	void connection_callback_disconnect(end_point& remote_point, bool notify);
 
-	void connection_callback_reliable_packet_lost(rudp_connection& c, char* data, unsigned short size, unsigned short id) const;
+	void connection_callback_reliable_packet_lost(rudp_connection*& c, char* data, unsigned short size, unsigned short id) const;
 
 public:
 
@@ -137,11 +137,11 @@ public:
 
 private:
 
-	inline void ext_connection_added(rudp_connection& c) const;
+	inline void ext_connection_added(rudp_connection*& c) const;
 
-	inline void ext_connection_removed(rudp_connection& c) const;
+	inline void ext_connection_removed(rudp_connection*& c) const;
 
-	inline void ext_data_handled(rudp_connection& c, end_point e, ice_data::read& d) const;
+	inline void ext_data_handled(rudp_connection*& c, end_point e, ice_data::read& d) const;
 
 private:
 

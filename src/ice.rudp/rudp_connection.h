@@ -20,13 +20,13 @@ class rudp_connection final : public rudp_peer
 
 private:
 
-	using SERV_C_H = std::function<void(rudp_connection&, ice_data::read&)>;
+	using SERV_C_H = std::function<void(rudp_connection*&, ice_data::read&)>;
 
 	using SERV_C_S = std::function<void(end_point&, ice_data::write&)>;
 
 	using SERV_C_D = std::function<void(end_point&, bool)>;
 
-	using SERV_P_L = std::function<void(rudp_connection&, char*, unsigned short, unsigned short)>;
+	using SERV_P_L = std::function<void(rudp_connection*&, char*, unsigned short, unsigned short)>;
 
 private:
 

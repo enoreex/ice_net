@@ -73,7 +73,8 @@ void rudp_connection::handle(ice_data::read& data)
 
 void rudp_connection::ch_handle(ice_data::read& data)
 {
-	serv_callback_handle(*this, data);
+	auto me = &(*this);
+	serv_callback_handle(me, data);
 }
 
 void rudp_connection::ch_send(ice_data::write& data)
@@ -83,7 +84,8 @@ void rudp_connection::ch_send(ice_data::write& data)
 
 void rudp_connection::ch_reliable_packet_lost(char* data, unsigned short size, unsigned short id)
 {
-	serv_reliable_packet_lost(*this, data, size, id);
+	auto me = &(*this);
+	serv_reliable_packet_lost(me, data, size, id);
 }
 
 void rudp_connection::disconnect(bool notify)

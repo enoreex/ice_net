@@ -131,9 +131,9 @@ void server_set_handle(rudp_server* sock, void(*action)(rudp_server*, i_ARRAY, i
 		return;
 	}
 
-	sock->external_data_callback = [sock, action](rudp_connection& c, ice_data::read& data)
+	sock->external_data_callback = [sock, action](rudp_connection* c, ice_data::read& data)
 		{
-			action(sock, data.get_buffer_remaining(), data.get_buffer_size_remaining(), &c);
+			action(sock, data.get_buffer_remaining(), data.get_buffer_size_remaining(), c);
 		};
 }
 
@@ -183,9 +183,9 @@ void server_set_reliable_packet_lost(rudp_server* sock, void(*action)(rudp_serve
 		return;
 	}
 
-	sock->reliable_packet_lost = [sock, action](rudp_connection& c, i_ARRAY data, i_USHORT size, i_USHORT id)
+	sock->reliable_packet_lost = [sock, action](rudp_connection* c, i_ARRAY data, i_USHORT size, i_USHORT id)
 		{
-			action(sock, data, size, id, &c);
+			action(sock, data, size, id, c);
 		};
 }
 
@@ -217,13 +217,13 @@ void server_set_connected(rudp_server* sock, void(*action)(rudp_server*, rudp_co
 		return;
 	}
 
-	sock->connection_added_callback = [sock, action](rudp_connection& c)
+	sock->connection_added_callback = [sock, action](rudp_connection* c)
 		{
-			rudp_connection* ptr = &c;
+			rudp_connection* ptr = c;
 
 			std::string address_str = sock->connection_internal_get_remote_ep(ptr).get_address_str();
 
-			action(sock, &c, sock->connection_internal_get_remote_ep_ptr(ptr), address_str.c_str(), sock->connection_internal_get_remote_ep(ptr).get_port());
+			action(sock, c, sock->connection_internal_get_remote_ep_ptr(ptr), address_str.c_str(), sock->connection_internal_get_remote_ep(ptr).get_port());
 		};
 }
 
@@ -237,9 +237,9 @@ void server_set_disconnected(rudp_server* sock, void(*action)(rudp_server*, rudp
 		return;
 	}
 
-	sock->connection_removed_callback = [sock, action](rudp_connection& c)
+	sock->connection_removed_callback = [sock, action](rudp_connection* c)
 		{
-			action(sock, &c);
+			action(sock, c);
 		};
 }
 
