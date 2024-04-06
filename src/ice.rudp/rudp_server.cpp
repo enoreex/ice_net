@@ -2,6 +2,8 @@
 
 rudp_server::rudp_server() {  }
 
+rudp_server::~rudp_server() { stop(); }
+
 end_point rudp_server::get_local_point()
 {
 	return socket->get_local_point();
@@ -347,6 +349,8 @@ void rudp_server::stop()
 	if (current_state == disconnected || !socket) return;
 
 	current_state = disconnected;
+
+	for (auto c& : connections_arr) delete c;
 
 	connections.clear();
 	connections_arr.clear();
