@@ -69,19 +69,22 @@ void scheduler::execute()
 
 	if (head->event_time > std::chrono::system_clock::now()) return;
 
-	element* temp = head;
-
-	if (head->previous != nullptr)
+	while (head->event_time < std::chrono::system_clock::now())
 	{
-		head = head->previous;
-		head->next = nullptr;
+		element* temp = head;
+
+		if (head->previous != nullptr)
+		{
+			head = head->previous;
+			head->next = nullptr;
+		}
+
+		else head = nullptr;
+
+		temp->event();
+
+		delete temp;
 	}
-
-	else head = nullptr;
-
-	temp->event();
-
-	delete temp;
 }
 
 void scheduler::clear()
