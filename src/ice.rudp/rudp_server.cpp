@@ -2,7 +2,7 @@
 
 rudp_server::rudp_server() {  }
 
-rudp_server::~rudp_server() {  }
+rudp_server::~rudp_server() { clear_connections(); }
 
 end_point rudp_server::get_local_point()
 {
