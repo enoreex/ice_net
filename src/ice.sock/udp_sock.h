@@ -76,7 +76,7 @@ public:
 
     recv_result receive(recv_predicate predicate) override;
 
-    bool send(const char* data, unsigned short data_size, const end_point& remote_point) override;
+    bool send(const char* data, unsigned short data_size, end_point& remote_point) override;
 
     void stop() override;
 };

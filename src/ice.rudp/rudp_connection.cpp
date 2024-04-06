@@ -17,7 +17,7 @@ end_point rudp_connection::get_remote_point()
 	return remote_point;
 }
 
-const end_point* rudp_connection::get_remote_point_ptr()
+end_point* rudp_connection::get_remote_point_ptr()
 {
 	return &remote_point;
 }

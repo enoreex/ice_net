@@ -284,7 +284,7 @@ end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& conne
 	return remote_point;
 }
 
-const end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connection*& connection)
+end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connection*& connection)
 {
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 

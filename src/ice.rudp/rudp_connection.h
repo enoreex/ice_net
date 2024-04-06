@@ -54,7 +54,7 @@ private:
 
 	end_point get_remote_point();
 
-	const end_point* get_remote_point_ptr();
+	end_point* get_remote_point_ptr();
 
 private:
 

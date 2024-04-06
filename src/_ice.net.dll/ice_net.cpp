@@ -223,7 +223,7 @@ void server_set_connected(rudp_server* sock, void(*action)(rudp_server*, rudp_co
 
 			std::string address_str = sock->connection_internal_get_remote_ep(ptr).get_address_str();
 
-			action(sock, &c, const_cast<end_point*>(sock->connection_internal_get_remote_ep_ptr(ptr)), address_str.c_str(), sock->connection_internal_get_remote_ep(ptr).get_port());
+			action(sock, &c, sock->connection_internal_get_remote_ep_ptr(ptr), address_str.c_str(), sock->connection_internal_get_remote_ep(ptr).get_port());
 		};
 }
 

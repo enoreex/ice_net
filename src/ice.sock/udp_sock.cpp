@@ -170,7 +170,7 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
     return result;
 }
 
-bool udp_sock::send(const char* data, unsigned short data_size, const end_point& remote_point)
+bool udp_sock::send(const char* data, unsigned short data_size, end_point& remote_point)
 {
     sockaddr_in client_in;
     memset(&client_in, 0, sizeof(client_in));
