@@ -2,7 +2,7 @@
 
 rudp_server::rudp_server() {  }
 
-rudp_server::~rudp_server() { stop(); }
+rudp_server::~rudp_server() {  }
 
 end_point rudp_server::get_local_point()
 {
@@ -256,10 +256,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 
 void rudp_server::clear_connections()
 {
-	for (auto& c : connections_arr) delete c;
-
-	connections.clear();
-	connections_arr.clear();
+	for (auto& c : connections_arr) try_remove_connection(c->remote_point, false);
 }
 
 void rudp_server::connection_internal_disconnect(rudp_connection*& connection, bool notify)
