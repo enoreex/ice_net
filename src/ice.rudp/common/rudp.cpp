@@ -57,34 +57,50 @@ void scheduler::remove(element*& obj)
 
 	if (obj->previous != nullptr) obj->previous->next = obj->next;
 
-	if (obj == head) head = obj->previous;
-
-	delete obj;
-	obj = nullptr;
-}
-
-void scheduler::execute()
-{
-	if (head == nullptr) return;
-
-	if (head->event_time > std::chrono::system_clock::now()) return;
-
-	while (head->event_time < std::chrono::system_clock::now())
+	if (obj == head)
 	{
-		element* temp = head;
-
-		if (head->previous != nullptr)
+		if (obj->previous != nullptr)
 		{
-			head = head->previous;
+			head = obj->previous;
 			head->next = nullptr;
 		}
 
 		else head = nullptr;
-
-		temp->event();
-
-		delete temp;
 	}
+
+	delete obj;
+
+	obj = nullptr;
+}
+
+bool scheduler::execute_once()
+{
+	if (head == nullptr) return false;
+
+	if (head->event_time > std::chrono::system_clock::now()) return false;
+
+	element* temp = head;
+
+	if (head->previous != nullptr)
+	{
+		head = head->previous;
+		head->next = nullptr;
+	}
+
+	else head = nullptr;
+
+	temp->event();
+
+	delete temp;
+
+	if (head == nullptr) return false;
+
+	return true;
+}
+
+void scheduler::execute()
+{
+	while (execute_once()) {  }
 }
 
 void scheduler::clear()

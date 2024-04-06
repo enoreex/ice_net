@@ -64,6 +64,7 @@ public:
 	struct element
 	{
 		element* next = nullptr;
+
 		element* previous = nullptr;
 
 		std::function<void()> event = nullptr;
@@ -84,6 +85,8 @@ public:
 	element* add(std::function<void()> new_event, int time_in_milliseconds);
 
 	void remove(element*& obj);
+
+	bool execute_once();
 
 	void execute();
 
