@@ -2,7 +2,7 @@
 
 rudp_peer::~rudp_peer()
 {
-	rudp_reset();
+	rudp_stop();
 }
 
 rudp_peer::pending_packet::~pending_packet()
@@ -53,12 +53,12 @@ void rudp_peer::rudp_stop()
 }
 
 void rudp_peer::rudp_reset()
-{
-	pending_packets.clear();	
+{	
+	scheduler.clear();
 
 	if (!pending_packets.empty()) for (auto& it : pending_packets) reliable_release(it.second.packet_id);
-	
-	scheduler.clear();
+		
+	pending_packets.clear();	
 }
 
 void rudp_peer::handle_heartbeat_request()
