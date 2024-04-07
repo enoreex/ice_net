@@ -25,6 +25,13 @@ void rudp_server::update()
 
 				return;
 			}
+		}
+	}
+
+	if (!connections_arr.empty())
+	{
+		for (int i = 0; i < connections_arr.size(); i++)
+		{
 			connections_arr[i]->update();
 		}
 	}
