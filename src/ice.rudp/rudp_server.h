@@ -107,13 +107,13 @@ private:
 
 	bool try_add_connection(end_point& remote_point);
 
-	bool try_remove_connection(end_point& remote_point, bool notify);
+	bool try_remove_connection(end_point& remote_point);
 
 	void clear_connections();
 
 public:
 
-	void connection_internal_disconnect(rudp_connection*& connection, bool notify = true);
+	void connection_internal_disconnect(rudp_connection*& connection);
 
 	end_point connection_internal_get_remote_ep(rudp_connection*& connection);
 
@@ -124,8 +124,6 @@ private:
 	void connection_callback_handle(rudp_connection*& connection, ice_data::read& data);
 
 	void connection_callback_send(end_point& remote_point, ice_data::write& data);
-
-	void connection_callback_disconnect(end_point& remote_point, bool notify);
 
 	void connection_callback_reliable_packet_lost(rudp_connection*& c, char* data, unsigned short size, unsigned short id) const;
 

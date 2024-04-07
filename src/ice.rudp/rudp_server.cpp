@@ -15,7 +15,19 @@ void rudp_server::update()
 
 	if (!scheduler.empty()) scheduler.execute();
 
-	if (!connections_arr.empty()) for (int i = 0; i < connections_arr.size(); i++) connections_arr[i]->update();
+	if (!connections_arr.empty())
+	{
+		for (int i = 0; i < connections_arr.size(); i++)
+		{
+			if (connections_arr[i]->current_state == disconnected) 
+			{
+				try_remove_connection(connections_arr[i]->remote_point);
+
+				return;
+			}
+			connections_arr[i]->update();
+		}
+	}
 
 	receive();
 }
@@ -163,14 +175,13 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 {
 	const auto cch = [this](rudp_connection*& c, ice_data::read& d) { connection_callback_handle(c, d); };
 	const auto ccs = [this](end_point& e, ice_data::write& d) { connection_callback_send(e, d); };
-	const auto ccd = [this](end_point& c, bool n) { connection_callback_disconnect(c, n); };
 	const auto rpl = [this](rudp_connection*& c, char* m, unsigned short s, unsigned short id) { connection_callback_reliable_packet_lost(c, m, s, id); };
 
 	rudp_connection* connection = nullptr;
 
 	try
 	{
-		connection = new rudp_connection(cch, ccs, ccd, rpl);
+		connection = new rudp_connection(cch, ccs, rpl);
 		connection->connect(remote_point);
 
 		connections[remote_point.get_hash()] = connection;
@@ -208,7 +219,7 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 	}
 }
 
-bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
+bool rudp_server::try_remove_connection(end_point& remote_point)
 {
 	rudp_connection* connection = nullptr;
 
@@ -222,7 +233,7 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 
 		try
 		{
-			if (notify) ext_connection_removed(connection);
+			ext_connection_removed(connection);
 		}
 
 		catch (const std::exception& exc)
@@ -256,10 +267,10 @@ bool rudp_server::try_remove_connection(end_point& remote_point, bool notify)
 
 void rudp_server::clear_connections()
 {
-	for (auto& c : connections_arr) try_remove_connection(c->remote_point, false);
+	for (auto& c : connections_arr) try_remove_connection(c->remote_point);
 }
 
-void rudp_server::connection_internal_disconnect(rudp_connection*& connection, bool notify)
+void rudp_server::connection_internal_disconnect(rudp_connection*& connection)
 {
 	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
 
@@ -267,7 +278,7 @@ void rudp_server::connection_internal_disconnect(rudp_connection*& connection, b
 
 	auto remote_point = connection->get_remote_point();
 
-	try_remove_connection(remote_point, notify);
+	try_remove_connection(remote_point);
 }
 
 end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& connection)
@@ -300,11 +311,6 @@ void rudp_server::connection_callback_handle(rudp_connection*& connection, ice_d
 void rudp_server::connection_callback_send(end_point& remote_point, ice_data::write& data)
 {
 	send(remote_point, data);
-}
-
-void rudp_server::connection_callback_disconnect(end_point& remote_point, bool notify)
-{
-	try_remove_connection(remote_point, notify);
 }
 
 void rudp_server::connection_callback_reliable_packet_lost(rudp_connection*& c, char* data, unsigned short size, unsigned short id) const

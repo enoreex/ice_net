@@ -24,8 +24,6 @@ private:
 
 	using SERV_C_S = std::function<void(end_point&, ice_data::write&)>;
 
-	using SERV_C_D = std::function<void(end_point&, bool)>;
-
 	using SERV_P_L = std::function<void(rudp_connection*&, char*, unsigned short, unsigned short)>;
 
 private:
@@ -33,7 +31,6 @@ private:
 	rudp_connection(
 		SERV_C_H sch,
 		SERV_C_S scs,
-		SERV_C_D scd,
 		SERV_P_L rpl);
 
 private:
@@ -45,8 +42,6 @@ private:
 	SERV_C_H serv_callback_handle;
 
 	SERV_C_S serv_callback_send;
-
-	SERV_C_D serv_callback_disconnect;
 
 	SERV_P_L serv_reliable_packet_lost;
 
@@ -78,7 +73,7 @@ private:
 
 private:
 
-	void disconnect(bool notify = true) override;
+	void disconnect() override;
 
 private:
 

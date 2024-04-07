@@ -184,15 +184,13 @@ void rudp_client::send_connect_request()
 	ch_send(data);
 }
 
-void rudp_client::disconnect(bool notify)
+void rudp_client::disconnect()
 {
 	if (current_state == disconnected) return;
 
 	rudp_peer::rudp_stop();
 
 	ice_logger::log("client-disconnect", "disconnected!");
-
-	if (notify == false) return;
 
 	if (disconnected_callback) disconnected_callback();
 }

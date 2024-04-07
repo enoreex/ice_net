@@ -3,12 +3,10 @@
 rudp_connection::rudp_connection(
 	SERV_C_H sch,
 	SERV_C_S scs,
-	SERV_C_D scd,
 	SERV_P_L rpl)
 {
 	this->serv_callback_handle = sch;
 	this->serv_callback_send = scs;
-	this->serv_callback_disconnect = scd;
 	this->serv_reliable_packet_lost = rpl;
 }
 
@@ -90,13 +88,11 @@ void rudp_connection::ch_reliable_packet_lost(char* data, unsigned short size, u
 	serv_reliable_packet_lost(me, data, size, id);
 }
 
-void rudp_connection::disconnect(bool notify)
+void rudp_connection::disconnect()
 {
 	if (current_state == disconnected) return;
 
 	rudp_peer::rudp_stop();
-
-	serv_callback_disconnect(remote_point, notify);
 }
 
 inline char rudp_connection::_flag_heartbeat_request()
