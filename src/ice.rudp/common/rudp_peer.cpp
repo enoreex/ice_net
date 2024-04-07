@@ -45,18 +45,20 @@ void rudp_peer::rudp_init()
 
 void rudp_peer::rudp_stop()
 {
-	rudp_reset();
+	if (current_state == disconnected) return;
 
 	current_state = disconnected;
+
+	rudp_reset();
 }
 
 void rudp_peer::rudp_reset()
 {
-	scheduler.clear();
+	pending_packets.clear();	
 
 	if (!pending_packets.empty()) for (auto& it : pending_packets) reliable_release(it.second.packet_id);
-
-	pending_packets.clear();
+	
+	scheduler.clear();
 }
 
 void rudp_peer::handle_heartbeat_request()
