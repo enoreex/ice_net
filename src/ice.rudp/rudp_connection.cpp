@@ -24,6 +24,8 @@ end_point* rudp_connection::get_remote_point_ptr()
 
 void rudp_connection::update()
 {
+	if (current_state == disconnected) return;
+
 	if (!scheduler.empty()) scheduler.execute();
 }
 
