@@ -207,6 +207,44 @@ void client_set_disconnected(rudp_client* sock, void(*action)(rudp_client*))
 
 
 
+void server_set_connected(rudp_server* sock, void(*action)(rudp_server*, rudp_connection*, end_point*, i_STRING, i_USHORT))
+{
+	if (sock == nullptr) return;
+
+	if (action == nullptr)
+	{
+		sock->connection_added_callback = nullptr;
+		return;
+	}
+
+	sock->connection_added_callback = [sock, action](rudp_connection* c)
+		{
+			rudp_connection* ptr = c;
+
+			std::string address_str = sock->connection_internal_get_remote_ep(ptr).get_address_str();
+
+			action(sock, c, sock->connection_internal_get_remote_ep_ptr(ptr), address_str.c_str(), sock->connection_internal_get_remote_ep(ptr).get_port());
+		};
+}
+
+void server_set_disconnected(rudp_server* sock, void(*action)(rudp_server*, rudp_connection*))
+{
+	if (sock == nullptr) return;
+
+	if (action == nullptr)
+	{
+		sock->connection_removed_callback = nullptr;
+		return;
+	}
+
+	sock->connection_removed_callback = [sock, action](rudp_connection* c)
+		{
+			action(sock, c);
+		};
+}
+
+
+
 void client_send_unreliable(rudp_client* sock, i_ARRAY data, i_USHORT size)
 {
 	if (sock == nullptr) return;
@@ -245,28 +283,6 @@ void server_send_reliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_po
 
 	ice_data::write send_d(size + 3);
 	send_d.add_buffer(data, size, false);
-
-	sock->send_reliable(*ep, send_d);
-}
-
-
-
-void server_send_unreliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_point* ep)
-{
-	if (sock == nullptr || ep == nullptr) return;
-
-	ice_data::write send_d(size + 1);
-	send_d.add_buffer(data, size);
-
-	sock->send_unreliable(*ep, send_d);
-}
-
-void server_send_reliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_point* ep)
-{
-	if (sock == nullptr || ep == nullptr) return;
-
-	ice_data::write send_d(size + 3);
-	send_d.add_buffer(data, size);
 
 	sock->send_reliable(*ep, send_d);
 }
