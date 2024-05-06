@@ -250,7 +250,7 @@ void client_send_unreliable(rudp_client* sock, i_ARRAY data, i_USHORT size)
 	if (sock == nullptr) return;
 
 	ice_data::write send_d(size + 1);
-	send_d.add_buffer(data, size);
+	send_d.add_buffer(data, size, false);
 
 	sock->rudp_client::send_unreliable(send_d);
 }
@@ -260,7 +260,7 @@ void client_send_reliable(rudp_client* sock, i_ARRAY data, i_USHORT size)
 	if (sock == nullptr) return;
 
 	ice_data::write send_d(size + 3);
-	send_d.add_buffer(data, size);
+	send_d.add_buffer(data, size, false);
 
 	sock->rudp_client::send_reliable(send_d);
 }
@@ -272,7 +272,7 @@ void server_send_unreliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_
 	if (sock == nullptr || ep == nullptr) return;
 
 	ice_data::write send_d(size + 1);
-	send_d.add_buffer(data, size);
+	send_d.add_buffer(data, size, false);
 
 	sock->send_unreliable(*ep, send_d);
 }
@@ -282,7 +282,7 @@ void server_send_reliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_po
 	if (sock == nullptr || ep == nullptr) return;
 
 	ice_data::write send_d(size + 3);
-	send_d.add_buffer(data, size);
+	send_d.add_buffer(data, size, false);
 
 	sock->send_reliable(*ep, send_d);
 }
