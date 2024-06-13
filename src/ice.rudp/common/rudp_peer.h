@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <shared_mutex>
+#include <cstring>
 
 class rudp_peer
 {
