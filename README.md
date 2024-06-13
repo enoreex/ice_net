@@ -21,35 +21,46 @@ My convoluted implementation of a reliable protocol. If this is to be used, it s
 
 <i>If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_sock as absraction(Btw, I already created useful example, it comes with the library).</i>
 
-<h3>CMake (.lib) or (.dll) or (.so): </h3>
+<h3>CMake (.a) or (.lib) or (.dll) or (.so): </h3>
 
-You may have noticed that library included folders with an ending (.lib), (.dll), (.so).. You can also use it in C#, but it little uncomfortable, so to make it easier, I created a wrap for C#, so you don’t have to work with the (.dll) and (.so) directly!
+You may have noticed that library included folders with an ending (.a) (.lib), (.dll), (.so).. You can also use it in C#, but it little uncomfortable, so to make it easier, I created a wrap for C#, so you don’t have to work with the (.dll) and (.so) directly!
 
 <h3>What to take: </h3>
 <table>
   <tr>
     <td style="font-size: smaller;">(Windows C++)</td>
+    <td style="font-size: smaller;"> </td>
     <td style="font-size: smaller;">(.lib)</td>
     <td style="font-size: smaller;">(.dll)</td>
     <td style="font-size: smaller;"> </td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Windows C#)</td>
+    <td style="font-size: smaller;"> </td>
     <td style="font-size: smaller;">  </td>
     <td style="font-size: smaller;">(.dll)</td>
     <td style="font-size: smaller;">  </td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Android C#)</td>
+    <td style="font-size: smaller;"> </td>
     <td style="font-size: smaller;">  </td>
     <td style="font-size: smaller;">  </td>
     <td style="font-size: smaller;">(.so)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Unity C#)</td>
+    <td style="font-size: smaller;"> </td>
     <td style="font-size: smaller;">  </td>
     <td style="font-size: smaller;">(.dll)</td>
     <td style="font-size: smaller;">(.so)</td>
+  </tr>
+    <tr>
+    <td style="font-size: smaller;">(Linux C++)</td>
+    <td style="font-size: smaller;">(.a)</td>
+    <td style="font-size: smaller;">  </td>
+    <td style="font-size: smaller;">  </td>
+    <td style="font-size: smaller;">  </td>
   </tr>
 </table>
 
