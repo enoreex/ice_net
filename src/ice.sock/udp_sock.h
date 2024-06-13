@@ -15,13 +15,15 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <cstring>
+#include <cerrno> 
 
 typedef int SOCKET;
 
 #endif
 
-#include "..\ice.core\ice_logger.h"
-#include "..\ice.rudp\common\transport\a_sock.h"
+#include "../ice.core/ice_logger.h"
+#include "../ice.rudp/common/transport/a_sock.h"
 
 #ifdef _WIN32
 
