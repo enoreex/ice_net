@@ -64,6 +64,15 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
   </tr>
 </table>
 
+<h3>(.a): </h3>
+
+<ul>
+  <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
+  <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
+  <li style="font-size: smaller;">(.a) libraries are very easy to use. <strong>(Only Linux)</strong></li>
+  <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Linux or <a href="https://devblogs.microsoft.com/cppblog/linux-development-with-c-in-visual-studio/">Visual Studio!</a></i></li>
+</ul>
+
 <h3>(.lib): </h3>
 
 <ul>
