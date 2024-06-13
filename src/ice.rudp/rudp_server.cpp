@@ -13,7 +13,7 @@ void rudp_server::update()
 {
 	if (current_state == disconnected) return;
 
-	if (!scheduler.empty()) scheduler.execute();
+	if (!planner.empty()) planner.execute();
 
 	if (!connections_arr.empty())
 	{
@@ -137,7 +137,7 @@ void rudp_server::_connection_handle_request(end_point& remote_point)
 
 	if (predicate_result == false) return;
 
-	connections_pending[remote_point.get_hash()] = scheduler.add([this, remote_point]() { _connection_expired(remote_point); }, connection_expire_timeout);
+	connections_pending[remote_point.get_hash()] = planner.add([this, remote_point]() { _connection_expired(remote_point); }, connection_expire_timeout);
 
 	ice_data::write data(1);
 	data.set_flag(rudp::headers_client::c_connect_response);
@@ -151,7 +151,7 @@ void rudp_server::_connection_handle_confirm(end_point& remote_point)
 
 	if (it == connections_pending.end()) return;
 
-	scheduler.remove(connections_pending.at(remote_point.get_hash()));
+	planner.remove(connections_pending.at(remote_point.get_hash()));
 
 	connections_pending.erase(it);
 

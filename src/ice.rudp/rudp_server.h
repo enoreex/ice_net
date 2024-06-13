@@ -75,7 +75,7 @@ private:
 
 private:
 
-	scheduler scheduler;
+	scheduler planner;
 
 public:
 

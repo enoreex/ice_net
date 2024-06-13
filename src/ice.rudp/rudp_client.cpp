@@ -16,7 +16,7 @@ void rudp_client::update()
 {
 	if (current_state == disconnected) return;
 
-	if (!scheduler.empty()) scheduler.execute();
+	if (!planner.empty()) planner.execute();
 
 	receive();
 }
@@ -62,7 +62,7 @@ void rudp_client::connect_attempt()
 
 	++connection_attempts;
 
-	connect_element = scheduler.add([this]() { connect_attempt(); }, connection_timeout.at(connection_attempts));
+	connect_element = planner.add([this]() { connect_attempt(); }, connection_timeout.at(connection_attempts));
 }
 
 void rudp_client::receive()
@@ -134,7 +134,7 @@ void rudp_client::handle_connect_response()
 {
 	current_state = connected;
 
-	scheduler.remove(connect_element);
+	planner.remove(connect_element);
 
 	rudp_peer::rudp_init();
 

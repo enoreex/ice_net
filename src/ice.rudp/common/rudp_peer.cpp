@@ -54,7 +54,7 @@ void rudp_peer::rudp_stop()
 
 void rudp_peer::rudp_reset()
 {	
-	scheduler.clear();
+	planner.clear();
 
 	if (!pending_packets.empty()) for (auto& it : pending_packets) reliable_release(it.second.packet_id);
 		
@@ -102,7 +102,7 @@ void rudp_peer::handle_ack(ice_data::read& data)
 
 	auto& packet = pair->second;
 
-	scheduler.remove(packet.element);
+	planner.remove(packet.element);
 
 	pending_packets.erase(pair);
 }
@@ -185,7 +185,7 @@ void rudp_peer::send_reliable_attempt(unsigned short packet_id)
 
 	++packet.attempts;
 
-	packet.element = scheduler.add([this, packet_id]() { send_reliable_attempt(packet_id); }, get_resend_time());
+	packet.element = planner.add([this, packet_id]() { send_reliable_attempt(packet_id); }, get_resend_time());
 
 	ch_send(*packet.data);
 }
@@ -218,17 +218,17 @@ void rudp_peer::start_heartbeat_timer()
 
 	start_disconnect_timer();
 
-	heartbeat_element = scheduler.add([this]() { start_heartbeat_timer(); }, rudp::heartbeat_interval);
+	heartbeat_element = planner.add([this]() { start_heartbeat_timer(); }, rudp::heartbeat_interval);
 }
 
 void rudp_peer::start_disconnect_timer()
 {
 	if (disconnect_element != nullptr) return;
 
-	disconnect_element = scheduler.add([this]() { disconnect(); }, rudp::disconnect_timeout);
+	disconnect_element = planner.add([this]() { disconnect(); }, rudp::disconnect_timeout);
 }
 
 void rudp_peer::stop_disconnect_timer()
 {
-	scheduler.remove(disconnect_element);
+	planner.remove(disconnect_element);
 }

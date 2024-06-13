@@ -50,7 +50,7 @@ private:
 
 protected:
 
-	scheduler scheduler;
+	scheduler planner;
 
 private:
 

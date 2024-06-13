@@ -24,7 +24,7 @@ void rudp_connection::update()
 {
 	if (current_state == disconnected) return;
 
-	if (!scheduler.empty()) scheduler.execute();
+	if (!planner.empty()) planner.execute();
 }
 
 void rudp_connection::connect(end_point remote_point)
