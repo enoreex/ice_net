@@ -1,18 +1,39 @@
-CC := g++
-CFLAGS := -std=c++17 -Wall -Wextra
+﻿CC := g++
+CFLAGS := -std=c++20 -Wall -Wextra
+LIBS := -pthread  # если потребуется использовать pthread
 
-INC := -I../ice_net/src/_ice.net.lib 
+SRC_DIR := ../src/_ice.net.lib
+CORE_DIR := ../src/ice.core
+RUDP_DIR := ../src/ice.rudp
+SOCK_DIR := ../src/ice.sock
 
-LIB := -L../ice_net/_cmake.a -lice_net
+SRCS := $(wildcard $(SRC_DIR)/*.cpp) \
+        $(wildcard $(CORE_DIR)/*.cpp) \
+        $(wildcard $(RUDP_DIR)/*.cpp) \
+        $(wildcard $(RUDP_DIR)/common/*.cpp) \
+        $(wildcard $(RUDP_DIR)/common/transport/*.cpp) \
+        $(wildcard $(SOCK_DIR)/*.cpp)
 
-SRCS := main.cpp
+INCS := -I../src/_ice.net.lib \
+        -I../src/ice.core \
+        -I../src/ice.rudp \
+        -I../src/ice.rudp/common \
+        -I../src/ice.rudp/common/transport \
+        -I../src/ice.sock
 
-TARGET := main
+OBJS := $(SRCS:.cpp=.o)
 
-all: $(TARGET)
+LIBRARY := libice_net.a
 
-$(TARGET): $(SRCS)
-        $(CC) $(CFLAGS) $(INC) $^ -o $@ $(LIB)
+all: $(LIBRARY)
+
+$(LIBRARY): $(OBJS)
+        ar rcs $@ $(OBJS)
+
+%.o: %.cpp
+        $(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 clean:
-        rm -f $(TARGET)
+        rm -f $(OBJS) $(LIBRARY)
+
+.PHONY: all clean
