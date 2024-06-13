@@ -1,6 +1,6 @@
 ﻿CC := g++
 CFLAGS := -std=c++20 -Wall -Wextra
-LIBS := -pthread  # если потребуется использовать pthread
+LIBS := -pthread
 
 SRC_DIR := ../src/_ice.net.lib
 CORE_DIR := ../src/ice.core
