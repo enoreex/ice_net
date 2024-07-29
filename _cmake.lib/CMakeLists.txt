@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.8)
 project(ice_net)
 
 add_library(${CMAKE_PROJECT_NAME} STATIC 
-    "../src/_ice.net.lib/ice_net.h"
-    "../src/_ice.net.lib/ice_net.cpp"
+    "../src/_ice.net.static/ice_net.h"
+    "../src/_ice.net.static/ice_net.cpp"
 
     "../src/ice.core/ice_data.h"
     "../src/ice.core/ice_data.cpp"

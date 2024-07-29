@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.9)
 project(ice_net)
 
 add_library(${CMAKE_PROJECT_NAME} SHARED 
-    "../src/_ice.net.dll/ice_net.h"
-    "../src/_ice.net.dll/ice_net.cpp"
+    "../src/_ice.net.dynamic/ice_net.h"
+    "../src/_ice.net.dynamic/ice_net.cpp"
 
     "../src/ice.core/ice_data.h"
     "../src/ice.core/ice_data.cpp"
