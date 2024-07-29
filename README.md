@@ -19,11 +19,11 @@ My convoluted implementation of a reliable protocol. If this is to be used, it s
   <li style="font-size: smaller;">The library is cross-platform</li>
 </ul>
 
-<i>If you know enough about CMake, you can even write your own low-level transport (in the ice.sock folder). You can write your own low-level transport using a_sock as absraction(Btw, I already created useful example, it comes with the library).</i>
+<i>If you know enough about CMake, you can even write your own low-level transport (in the ice.aarck folder). You can write your own low-level transport using a_sock as absraction(Btw, I already created useful example, it comes with the library).</i>
 
-<h3>CMake (.a) or (.lib) or (.dll) or (.so): </h3>
+<h3>CMake (.a) or (.lib) or (.dll) or (.aar): </h3>
 
-You may have noticed that library included folders with an ending (.a) (.lib), (.dll), (.so).. You can also use it in C#, but it little uncomfortable, so to make it easier, I created a wrap for C#, so you don’t have to work with the (.dll) and (.so) directly!
+You may have noticed that library included folders with an ending (.a) (.lib), (.dll), (.aar).. You can also use it in C#, but it little uncomfortable, so to make it easier, I created a wrap for C#, so you don’t have to work with the (.dll) and (.aar) directly!
 
 <h3>What to take: </h3>
 <table>
@@ -46,14 +46,14 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
     <td style="font-size: smaller;"> </td>
     <td style="font-size: smaller;">  </td>
     <td style="font-size: smaller;">  </td>
-    <td style="font-size: smaller;">(.so)</td>
+    <td style="font-size: smaller;">(.aar)</td>
   </tr>
   <tr>
     <td style="font-size: smaller;">(Unity C#)</td>
     <td style="font-size: smaller;"> </td>
     <td style="font-size: smaller;">  </td>
     <td style="font-size: smaller;">(.dll)</td>
-    <td style="font-size: smaller;">(.so)</td>
+    <td style="font-size: smaller;">(.aar)</td>
   </tr>
     <tr>
     <td style="font-size: smaller;">(Linux C++)</td>
@@ -90,14 +90,14 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Windows!</i></li>
 </ul>
 
-<h3>(.so): </h3>
+<h3>(.aar): </h3>
 
 <ul>
-  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.so) is less than that of (.lib).</li>
-  <li style="font-size: smaller;">The (.so) can be used even in C#, and EVEN in Unity. <strong>(Only Android)</strong></li>
+  <li style="font-size: smaller;">A separate file (ice_net.h) describes the methods you can use. Obviously, the flexibility of (.aar) is less than that of (.lib).</li>
+  <li style="font-size: smaller;">The (.aar) can be used even in C#, and EVEN in Unity. <strong>(Only Android)</strong></li>
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Android NDK!</i></li>
 </ul>
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Unity</h2>
 
-<i>If you work in <strong>Unity</strong>, I recommend you to use (.so) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just <a href = "https://github.com/enoreex/ice_net/releases/tag/master_release">Download</a> my wrap for unity, in which I did this work.</i>
+<i>If you work in <strong>Unity</strong>, I recommend you to use (.aar) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just <a href = "https://github.com/enoreex/ice_net/releases/tag/master_release">Download</a> my wrap for unity, in which I did this work.</i>
