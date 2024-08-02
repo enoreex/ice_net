@@ -100,6 +100,13 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Example</h2>
 
+<h2>Common: </h2>
+
+```C++
+ice_logger::log_listener = [](std::string& s) { printf(s.c_str()); };
+ice_logger::log_error_listener = [](std::string& s) { printf(("\033[31m" + s + "\033[0m").c_str()); };
+```
+
 <h2>Server: </h2>
 
 ```C++
