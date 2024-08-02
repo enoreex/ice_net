@@ -27,7 +27,11 @@
         #define ICE_NET_API extern "C" __declspec(dllimport)
     #endif
 #else
-    #define ICE_NET_API
+    #ifdef __cplusplus
+        #define ICE_NET_API extern "C"
+    #else
+        #define ICE_NET_API
+    #endif
 #endif
 
 
