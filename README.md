@@ -100,4 +100,43 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
 
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Unity</h2>
 
+<h3>Example: </h3>
+
+<h2>Server: </h2>
+
+```C++
+rudp_server* sock = new rudp_server;
+sock->socket = new udp_sock;
+sock->socket->start(end_point(0, 8080));
+
+sock->try_start();
+
+sock->connection_added_callback = [&](rudp_connection* c) 
+{ 
+  ice_data::write data;
+  data.add_string("Hello!");
+	ep = sock->connection_internal_get_remote_ep(c);
+	sock->send_reliable(ep, data) 
+};
+
+while (true) sock->update();
+```
+
+<h2>Client: </h2>
+
+```C++
+rudp_client* sock = new rudp_client;
+sock->socket = new udp_sock;
+sock->socket->start(end_point(0, 0));
+
+sock->connect(end_point("127.0.0.1", 8080));
+
+sock->external_data_callback = [](ice_data::read& d)
+{
+  std::cout << d.get_string() << std::endl;
+};
+
+while (true) sock->update();
+```
+
 <i>If you work in <strong>Unity</strong>, I recommend you to use (.aar) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just <a href = "https://github.com/enoreex/ice_net/releases/tag/master_release">Download</a> my wrap for unity, in which I did this work.</i>
