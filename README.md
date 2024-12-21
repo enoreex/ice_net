@@ -120,8 +120,8 @@ sock->connection_added_callback = [&](rudp_connection* c)
 { 
   ice_data::write data;
   data.add_string("Hello!");
-  ep = sock->connection_internal_get_remote_ep(c);
-  sock->send_reliable(ep, data) 
+  end_point ep = sock->connection_internal_get_remote_ep(c);
+  sock->send_reliable(ep, data);
 };
 
 while (true) sock->update();
