@@ -61,6 +61,12 @@ class scheduler final
 
 public:
 
+	static bool use_cached_time;
+
+	static std::chrono::time_point<std::chrono::system_clock> cached_time;
+
+public:
+
 	struct element
 	{
 		element* next = nullptr;

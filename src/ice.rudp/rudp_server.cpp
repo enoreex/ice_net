@@ -36,7 +36,7 @@ void rudp_server::update()
 		}
 	}
 
-	receive();
+	if (receive_with_update) receive();
 }
 
 bool rudp_server::try_start()

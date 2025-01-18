@@ -79,6 +79,10 @@ private:
 
 public:
 
+	bool receive_with_update = true;
+
+public:
+
 	end_point get_local_point();
 
 public:
