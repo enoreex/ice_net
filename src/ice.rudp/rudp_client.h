@@ -75,7 +75,7 @@ public:
 
 	void connect_attempt();
 
-private:
+public:
 
 	void receive();
 

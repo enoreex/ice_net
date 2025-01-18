@@ -93,7 +93,7 @@ public:
 
 	bool try_start();
 
-private:
+public:
 
 	void receive();
 

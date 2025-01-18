@@ -18,7 +18,7 @@ void rudp_client::update()
 
 	if (!planner.empty()) planner.execute();
 
-	if (receive_with_update) receive();
+	if (receive_with_update == true) receive();
 }
 
 void rudp_client::connect(end_point remote_point)
