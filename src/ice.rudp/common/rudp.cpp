@@ -2,6 +2,9 @@
 
 #pragma region SCHEDULER
 
+bool scheduler::use_cached_time = false;
+std::chrono::time_point<std::chrono::system_clock> scheduler::cached_time = std::chrono::system_clock::now();
+
 bool scheduler::empty()
 {
     return head == nullptr ? true : false;
