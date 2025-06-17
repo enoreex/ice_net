@@ -3,7 +3,7 @@
   <img src="https://github.com/enoreex/ice_net/blob/master/.git_logo.png" alt="logo" width="200" height="200">
 </p>
 
-<h1 align="center" tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>ICENet C++</h1>
+<h1 align="center" tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>ice_net c++</h1>
 
 My convoluted implementation of a reliable protocol. If this is to be used, it should be used at most in a local network. Unfortunately, the library is not ready for multithreading yet. 
 
