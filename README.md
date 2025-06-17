@@ -145,4 +145,4 @@ while (true) sock->update();
 ```
 <h2 tabindex="-1" dir="auto"><a class="anchor" aria-hidden="true"></a>Unity</h2>
 
-<i>If you work in <strong>Unity</strong>, I recommend you to use (.aar) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just <a href = "https://github.com/enoreex/ice_net/releases/tag/master_release">Download</a> my wrap for unity, in which I did this work.</i>
+<i>If you work in <strong>Unity</strong>, I recommend you to use (.aar) and (.dll) at the same time (for correct operation they must be in Assets/Plugins). To work with C# and C++, use P/Invoke, or just download my wrap for unity, in which I did this work.</i>
