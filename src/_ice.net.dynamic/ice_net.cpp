@@ -326,6 +326,10 @@ rudp_server* release_server(rudp_server* sock)
 
 a_sock* release_transport(a_sock* udp)
 {
+	if (udp == nullptr) return nullptr;
+
+	udp->stop();
+
 	delete udp;
 
 	ice_logger::log("release", "udp socket deleted!");

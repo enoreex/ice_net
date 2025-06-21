@@ -54,10 +54,6 @@ private:
 
 public:
 
-    ~udp_sock();
-
-public:
-
     enum recv_mode 
     {
         single,

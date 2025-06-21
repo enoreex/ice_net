@@ -2,8 +2,6 @@
 
 rudp_server::rudp_server() {  }
 
-rudp_server::~rudp_server() { clear_connections(); }
-
 end_point rudp_server::get_local_point()
 {
 	return socket->get_local_point();
@@ -219,6 +217,8 @@ bool rudp_server::try_add_connection(end_point& remote_point)
 		ice_logger::log_error("connection add error", "add connection error: "
 			+ std::string(exc.what()));
 
+		connection->disconnect();
+
 		delete connection;
 
 		connection = nullptr;
@@ -255,6 +255,8 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 		if (it != connections_arr.end()) connections_arr.erase(it);
 
 		connections.erase(remote_point.get_hash());
+		
+		connection->disconnect();
 
 		delete connection;
 
@@ -265,6 +267,8 @@ bool rudp_server::try_remove_connection(end_point& remote_point)
 	{
 		ice_logger::log_error("connection remove error", "add connection error: "
 			+ std::string(exc.what()));
+
+		connection->disconnect();
 
 		delete connection;
 

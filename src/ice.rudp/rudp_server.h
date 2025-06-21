@@ -23,8 +23,6 @@ public:
 
 	rudp_server();
 
-	~rudp_server();
-
 private:
 
 	enum server_state

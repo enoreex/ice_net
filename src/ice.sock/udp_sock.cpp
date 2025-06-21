@@ -1,10 +1,5 @@
 #include "udp_sock.h"
 
-udp_sock::~udp_sock()
-{
-    stop();
-}
-
 end_point udp_sock::get_local_point()
 {
     return end_point(

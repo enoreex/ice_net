@@ -1,10 +1,5 @@
 #include "rudp_peer.h"
 
-rudp_peer::~rudp_peer()
-{
-	rudp_stop();
-}
-
 rudp_peer::pending_packet::~pending_packet()
 {
 	delete data;

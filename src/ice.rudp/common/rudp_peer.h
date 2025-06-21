@@ -15,10 +15,6 @@
 
 class rudp_peer
 {
-
-protected:
-
-	virtual ~rudp_peer();
 	
 protected:
 

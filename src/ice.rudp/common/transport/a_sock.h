@@ -36,10 +36,6 @@ public:
 
 public:
 
-    virtual ~a_sock() = default;
-
-public:
-
     virtual end_point get_local_point() = 0;
 
 public:
