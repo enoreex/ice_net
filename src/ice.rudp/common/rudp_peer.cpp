@@ -132,17 +132,22 @@ void rudp_peer::send_reliable(ice_data::write& data)
 	if (current_state != connected) return;
 
 	char* reliable_arr = new char[data.get_buffer_size() - 1];
+
 	memcpy(reliable_arr, data.get_buffer() + 1, data.get_buffer_size() - 1);
+
+	const int sz = data.get_buffer_size();
+
+	if (sz <= 1) return;
+
+	const char* src = data.get_buffer();
 
 	unsigned short packet_id = get_next_packet_id();
 
-	ice_data::write* reliable_data = new ice_data::write(data.get_buffer_size() - 1 + 3);
+	auto* reliable = new ice_data::write(static_cast<unsigned short>((sz - 1) + 1 + 2));
 
-	reliable_data->set_flag(_flag_reliable());
-
-	reliable_data->add_int16(packet_id);
-
-	reliable_data->add_buffer(reliable_arr, data.get_buffer_size() - 1);
+	reliable->set_flag(_flag_reliable());
+	reliable->add_int16(packet_id);
+	reliable->add_buffer(src + 1, src + sz);
 
 	pending_packets.insert(std::make_pair(packet_id, pending_packet{}));
 
@@ -152,7 +157,7 @@ void rudp_peer::send_reliable(ice_data::write& data)
 
 	auto& packet = pair->second;
 
-	packet.data = reliable_data;
+	packet.data = reliable;
 
 	packet.packet_id = packet_id;
 

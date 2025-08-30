@@ -15,11 +15,6 @@ end_point rudp_connection::get_remote_point()
 	return remote_point;
 }
 
-end_point* rudp_connection::get_remote_point_ptr()
-{
-	return &remote_point;
-}
-
 void rudp_connection::update()
 {
 	if (current_state == disconnected) return;

@@ -35,7 +35,7 @@ public:
 
 	public:
 
-		void add_buffer(const char* value, const unsigned short size, bool auto_release = true);
+		void add_buffer(const char* first, const char* last);
 
 		void add_int8(const char& value);
 
@@ -55,7 +55,7 @@ public:
 
 	public:
 
-		read(char* data, const int size, bool auto_release = true);
+		read(char* data, const int size);
 
 		~read();
 

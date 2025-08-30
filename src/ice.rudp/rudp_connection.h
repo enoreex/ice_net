@@ -49,8 +49,6 @@ private:
 
 	end_point get_remote_point();
 
-	end_point* get_remote_point_ptr();
-
 private:
 
 	void update();

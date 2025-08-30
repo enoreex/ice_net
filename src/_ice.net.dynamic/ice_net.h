@@ -93,7 +93,7 @@ ICE_NET_API void server_set_handle(rudp_server* sock, void(*action)(rudp_server*
 
 
 
-ICE_NET_API void server_set_predicate_add_connection(rudp_server* sock, bool(*action)(rudp_server*, end_point*, i_STRING, i_USHORT));
+ICE_NET_API void server_set_predicate_add_connection(rudp_server* sock, bool(*action)(rudp_server*, i_ARRAY, i_USHORT, i_STRING, i_USHORT));
 
 
 
@@ -109,7 +109,7 @@ ICE_NET_API void client_set_disconnected(rudp_client* sock, void(*action)(rudp_c
 
 
 
-ICE_NET_API void server_set_connected(rudp_server* sock, void(*action)(rudp_server*, rudp_connection*, end_point*, i_STRING, i_USHORT));
+ICE_NET_API void server_set_connected(rudp_server* sock, void(*action)(rudp_server*, rudp_connection*, i_STRING, i_USHORT));
 
 ICE_NET_API void server_set_disconnected(rudp_server* sock, void(*action)(rudp_server*, rudp_connection*));
 
@@ -121,9 +121,9 @@ ICE_NET_API void client_send_reliable(rudp_client* sock, i_ARRAY data, i_USHORT 
 
 
 
-ICE_NET_API void server_send_unreliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_point* ep);
+ICE_NET_API void server_send_unreliable(rudp_server* sock, i_ARRAY data, i_USHORT size, rudp_connection* c);
 
-ICE_NET_API void server_send_reliable(rudp_server* sock, i_ARRAY data, i_USHORT size, end_point* ep);
+ICE_NET_API void server_send_reliable(rudp_server* sock, i_ARRAY data, i_USHORT size, rudp_connection* c);
 
 
 

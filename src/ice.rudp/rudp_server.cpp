@@ -91,28 +91,41 @@ void rudp_server::receive()
 		return;
 	}
 
-	if (result.auto_release) delete[] result.recv_arr;
+	if (!(raw_packet_id <= rudp::headers_server::s_connect_confirm)) 
+	{
+		if (result.auto_release) delete[] result.recv_arr;
 
-	if (!(raw_packet_id <= rudp::headers_server::s_connect_confirm && connection == nullptr)) return;
+		return;
+	}
 
-	switch (raw_packet_id)
+	switch (raw_packet_id) 
 	{
 
-	case rudp::headers_server::s_connect_request:
-		_connection_handle_request(result.recv_point);
+	case rudp::headers_server::s_connect_request: 
+	{
+		ice_data::read data(result.recv_arr, result.recv_size);
+		if (result.auto_release) delete[] result.recv_arr;
+		_connection_handle_request(result.recv_point, data);
 		return;
+	}
 
-	case rudp::headers_server::s_connect_confirm:
+	case rudp::headers_server::s_connect_confirm: 
+	{
+		if (result.auto_release) delete[] result.recv_arr;
 		_connection_handle_confirm(result.recv_point);
 		return;
+	}
 
-	default:
+	default: 
+	{
+		if (result.auto_release) delete[] result.recv_arr;
 		return;
+	}
 
 	}
 }
 
-void rudp_server::_connection_handle_request(end_point& remote_point)
+void rudp_server::_connection_handle_request(end_point& remote_point, ice_data::read& data)
 {
 	auto it = connections_pending.find(remote_point.get_hash());
 
@@ -123,7 +136,7 @@ void rudp_server::_connection_handle_request(end_point& remote_point)
 	try
 	{
 		if (predicate_add_connection == nullptr) predicate_result = true;
-		else predicate_result = predicate_add_connection(remote_point);
+		else predicate_result = predicate_add_connection(remote_point, data);
 	}
 
 	catch (const std::exception& exc)
@@ -138,10 +151,10 @@ void rudp_server::_connection_handle_request(end_point& remote_point)
 
 	connections_pending[remote_point.get_hash()] = planner.add([this, remote_point]() { _connection_expired(remote_point); }, connection_expire_timeout);
 
-	ice_data::write data(1);
-	data.set_flag(rudp::headers_client::c_connect_response);
+	ice_data::write response(1);
+	response.set_flag(rudp::headers_client::c_connect_response);
 
-	send(remote_point, data);
+	send(remote_point, response);
 }
 
 void rudp_server::_connection_handle_confirm(end_point& remote_point)
@@ -304,17 +317,6 @@ end_point rudp_server::connection_internal_get_remote_ep(rudp_connection*& conne
 	return remote_point;
 }
 
-end_point* rudp_server::connection_internal_get_remote_ep_ptr(rudp_connection*& connection)
-{
-	auto it = std::find(connections_arr.begin(), connections_arr.end(), connection);
-
-	if (it == connections_arr.end()) return nullptr;
-
-	auto remote_point = connection->get_remote_point_ptr();
-
-	return remote_point;
-}
-
 void rudp_server::connection_callback_handle(rudp_connection*& connection, ice_data::read& data)
 {
 	ext_data_handled(connection, connection->get_remote_point(), data);
@@ -346,6 +348,16 @@ void rudp_server::send_reliable(end_point& ep, ice_data::write& data)
 	if (it == connections.end()) return;
 
 	it->second->send_reliable(data);
+}
+
+void rudp_server::send_unreliable(rudp_connection*& connection, ice_data::write& data)
+{
+	connection->send_unreliable(data);
+}
+
+void rudp_server::send_reliable(rudp_connection*& connection, ice_data::write& data)
+{
+	connection->send_reliable(data);
 }
 
 inline void rudp_server::ext_connection_added(rudp_connection*& c) const

@@ -49,7 +49,7 @@ private:
 
 public:
 
-	std::function<bool(end_point&)> predicate_add_connection;
+	std::function<bool(end_point&, ice_data::read&)> predicate_add_connection;
 
 public:
 
@@ -97,7 +97,7 @@ public:
 
 private:
 
-	void _connection_handle_request(end_point& remote_point);
+	void _connection_handle_request(end_point& remote_point, ice_data::read& data);
 
 	void _connection_handle_confirm(end_point& remote_point);
 
@@ -119,8 +119,6 @@ public:
 
 	end_point connection_internal_get_remote_ep(rudp_connection*& connection);
 
-	end_point* connection_internal_get_remote_ep_ptr(rudp_connection*& connection);
-
 private:
 
 	void connection_callback_handle(rudp_connection*& connection, ice_data::read& data);
@@ -134,6 +132,10 @@ public:
 	void send_unreliable(end_point& ep, ice_data::write& data);
 
 	void send_reliable(end_point& ep, ice_data::write& data);
+
+	void send_unreliable(rudp_connection*& connection, ice_data::write& data);
+
+	void send_reliable(rudp_connection*& connection, ice_data::write& data);
 
 private:
 

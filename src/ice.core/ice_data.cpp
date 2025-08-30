@@ -19,13 +19,9 @@ void ice_data::write::set_flag(const char& value)
     data[0] = value;
 }
 
-void ice_data::write::add_buffer(const char* value, const unsigned short size, bool auto_release)
+void ice_data::write::add_buffer(const char* first, const char* last)
 {
-    for (int i = 0; i < size; i++) data.push_back(value[i]);
-
-    if (auto_release == false) return;
-
-    delete[] value;
+    data.insert(data.end(), first, last);
 }
 
 void ice_data::write::add_int8(const char& value)
@@ -58,7 +54,7 @@ unsigned short ice_data::write::get_buffer_size()
     return static_cast<unsigned short>(data.size());
 }
 
-ice_data::read::read(char* data, const int size, bool auto_release)
+ice_data::read::read(char* data, const int size)
 {
     this->data = std::vector<char>(data, (data + size));
     this->read_position = 0;
