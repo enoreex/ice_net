@@ -2,6 +2,18 @@
 
 
 
+void use_cached_time(bool value)
+{
+	scheduler::use_cached_time = value;
+}
+
+void set_cached_time_to_now()
+{
+	scheduler::cached_time = std::chrono::system_clock::now();
+}
+
+
+
 void logger_set_info(void(*action)(const char*))
 {
 	if (action == nullptr)

@@ -36,15 +36,18 @@
 
 
 
-#define CLIENT_T 1
-
-#define SERVER_T 2
-
 #define i_ARRAY char*
 
 #define i_STRING const char*
 
 #define i_USHORT unsigned short
+
+
+
+ICE_NET_API void use_cached_time(bool value);
+
+ICE_NET_API void set_cached_time_to_now();
+
 
 
 ICE_NET_API void logger_set_info(void(*action)(const char*));
