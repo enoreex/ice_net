@@ -19,7 +19,7 @@ My convoluted implementation of a reliable protocol. If this is to be used, it s
   <li style="font-size: smaller;">The library is cross-platform</li>
 </ul>
 
-<i>If you know enough about CMake, you can even write your own low-level transport (in the ice.aarck folder). You can write your own low-level transport using a_sock as absraction(Btw, I already created useful example, it comes with the library).</i>
+<i>If you know enough about CMake, you can even write your own low-level transport (in the ice.aarck folder). You can write your own low-level transport using udp_sock as absraction(Btw, I already created useful example, it comes with the library).</i>
 
 <h3>CMake (.a) or (.lib) or (.dll) or (.aar): </h3>
 

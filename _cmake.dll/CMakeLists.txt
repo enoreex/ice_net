@@ -11,11 +11,6 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
     "../src/ice.core/ice_logger.h"
     "../src/ice.core/ice_logger.cpp" 
 
-    "../src/ice.rudp/common/transport/a_sock.h"
-    "../src/ice.rudp/common/transport/a_sock.cpp" 
-    "../src/ice.rudp/common/transport/end_point.h" 
-    "../src/ice.rudp/common/transport/end_point.cpp" 
-
     "../src/ice.rudp/common/rudp.h" 
     "../src/ice.rudp/common/rudp.cpp" 
     "../src/ice.rudp/common/rudp_peer.h"
@@ -30,6 +25,8 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
 
     "../src/ice.sock/udp_sock.h"
     "../src/ice.sock/udp_sock.cpp"
+    "../src/ice.sock/end_point.h"
+    "../src/ice.sock/end_point.cpp"
 )
 
 target_compile_definitions(ice_net PRIVATE ICE_NET_EXPORTS)

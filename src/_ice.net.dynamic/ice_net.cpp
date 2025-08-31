@@ -38,7 +38,7 @@ void logger_set_error(void(*action)(const char*))
 
 
 
-a_sock* create_transport(i_USHORT port)
+udp_sock* create_transport(i_USHORT port)
 {
 	udp_sock* sock = new udp_sock();
 	sock->start(end_point(0, port));
@@ -73,12 +73,12 @@ rudp_server* create_server()
 
 
 
-void client_set_transport(rudp_client* sock, a_sock* udp)
+void client_set_transport(rudp_client* sock, udp_sock* udp)
 {
 	sock->socket = udp;
 }
 
-void server_set_transport(rudp_server* sock, a_sock* udp)
+void server_set_transport(rudp_server* sock, udp_sock* udp)
 {
 	sock->socket = udp;
 }
@@ -336,7 +336,7 @@ rudp_server* release_server(rudp_server* sock)
 
 
 
-a_sock* release_transport(a_sock* udp)
+udp_sock* release_transport(udp_sock* udp)
 {
 	if (udp == nullptr) return nullptr;
 

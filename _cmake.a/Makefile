@@ -10,14 +10,12 @@ SRCS := $(wildcard $(SRC_DIR)/*.cpp) \
         $(wildcard $(CORE_DIR)/*.cpp) \
         $(wildcard $(RUDP_DIR)/*.cpp) \
         $(wildcard $(RUDP_DIR)/common/*.cpp) \
-        $(wildcard $(RUDP_DIR)/common/transport/*.cpp) \
         $(wildcard $(SOCK_DIR)/*.cpp)
 
 INCS := -I../src/_ice.net.static \
         -I../src/ice.core \
         -I../src/ice.rudp \
         -I../src/ice.rudp/common \
-        -I../src/ice.rudp/common/transport \
         -I../src/ice.sock
 
 OBJS := $(SRCS:.cpp=.o)

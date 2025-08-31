@@ -6,9 +6,6 @@
 #include "../ice.core/ice_data.h"
 #include "../ice.core/ice_logger.h"
 
-#include "../ice.rudp/common/transport/a_sock.h"
-#include "../ice.rudp/common/transport/end_point.h"
-
 #include "../ice.rudp/common/rudp.h"
 #include "../ice.rudp/common/rudp_peer.h"
 
@@ -17,6 +14,7 @@
 #include "../ice.rudp/rudp_server.h"
 
 #include "../ice.sock/udp_sock.h"
+#include "../ice.sock/end_point.h"
 
 
 
@@ -56,7 +54,7 @@ ICE_NET_API void logger_set_error(void(*action)(const char*));
 
 
 
-ICE_NET_API a_sock* create_transport(i_USHORT port);
+ICE_NET_API udp_sock* create_transport(i_USHORT port);
 
 
 
@@ -72,9 +70,9 @@ ICE_NET_API rudp_server* create_server();
 
 
 
-ICE_NET_API void client_set_transport(rudp_client* sock, a_sock* udp);
+ICE_NET_API void client_set_transport(rudp_client* sock, udp_sock* udp);
 
-ICE_NET_API void server_set_transport(rudp_server* sock, a_sock* udp);
+ICE_NET_API void server_set_transport(rudp_server* sock, udp_sock* udp);
 
 
 
@@ -140,6 +138,6 @@ ICE_NET_API rudp_server* release_server(rudp_server* sock);
 
 
 
-ICE_NET_API a_sock* release_transport(a_sock* udp);
+ICE_NET_API udp_sock* release_transport(udp_sock* udp);
 
 #endif

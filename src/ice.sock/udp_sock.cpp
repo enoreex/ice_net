@@ -1,4 +1,4 @@
-#include "udp_sock.h"
+ #include "udp_sock.h"
 
 end_point udp_sock::get_local_point()
 {
@@ -111,7 +111,7 @@ bool udp_sock::receive_available()
     return (available_data > 0);
 }
 
-a_sock::recv_result udp_sock::receive(recv_predicate predicate)
+udp_sock::recv_result udp_sock::receive(recv_predicate predicate)
 {
     sockaddr_in remote_in;
 
@@ -138,14 +138,14 @@ a_sock::recv_result udp_sock::receive(recv_predicate predicate)
 
     switch (recv_predicate_result)
     {
-        case a_sock::accept:
+        case udp_sock::accept:
             break;
 
-        case a_sock::reject:
+        case udp_sock::reject:
             if (this->recv_mode == single) recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
             return result;    
 
-        case a_sock::temp:
+        case udp_sock::temp:
             recvfrom(sock, buffer, sizeof(buffer), 0, (sockaddr*)&remote_in, &remote_size);
             return result;
     }

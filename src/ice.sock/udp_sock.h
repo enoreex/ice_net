@@ -23,7 +23,7 @@ typedef int SOCKET;
 #endif
 
 #include "../ice.core/ice_logger.h"
-#include "../ice.rudp/common/transport/a_sock.h"
+#include "end_point.h"
 
 #ifdef _WIN32
 
@@ -31,7 +31,7 @@ typedef int SOCKET;
 
 #endif
 
-class udp_sock final : public a_sock
+class udp_sock
 {
 
 private:
@@ -54,7 +54,26 @@ private:
 
 public:
 
-    enum recv_mode 
+    struct recv_result
+    {
+        char* recv_arr = nullptr;
+        unsigned short recv_size = 0;
+        end_point recv_point = end_point(0, 0);
+        bool auto_release = false;
+    };
+
+    enum recv_predicate_code
+    {
+        accept,
+        reject,
+        temp,
+    };
+
+    typedef std::function<recv_predicate_code(char, end_point&)> recv_predicate;
+
+public:
+
+    enum recv_mode
     {
         single,
         shared,
@@ -66,15 +85,15 @@ public:
 
 public:
 
-    end_point get_local_point() override;
+    end_point get_local_point();
 
-    bool start(end_point local_point) override;
+    bool start(end_point local_point);
 
-    bool receive_available() override;
+    bool receive_available();
 
-    recv_result receive(recv_predicate predicate) override;
+    recv_result receive(recv_predicate predicate);
 
-    bool send(const char* data, unsigned short data_size, end_point& remote_point) override;
+    bool send(const char* data, unsigned short data_size, end_point& remote_point);
 
-    void stop() override;
+    void stop();
 };

@@ -5,8 +5,8 @@
 
 #include "../ice.core/ice_data.h"
 #include "../ice.core/ice_logger.h"
+#include "../ice.sock/udp_sock.h"
 
-#include "common/transport/a_sock.h"
 #include "common/rudp_peer.h"
 #include "common/rudp.h"
 	
@@ -23,7 +23,7 @@ public:
 
 public:
 
-	a_sock* socket = nullptr;
+	udp_sock* socket = nullptr;
 
 public:
 

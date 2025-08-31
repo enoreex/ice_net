@@ -5,8 +5,8 @@
 
 #include "../ice.core/ice_data.h"
 #include "../ice.core/ice_logger.h"
+#include "../ice.sock/end_point.h"
 
-#include "common/transport/end_point.h"
 #include "common/rudp_peer.h"
 #include "common/rudp.h"
 
