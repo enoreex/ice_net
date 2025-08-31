@@ -15,11 +15,8 @@ My convoluted implementation of a reliable protocol. If this is to be used, it s
   <li style="font-size: smaller;">Installation and support connections (RUDP functionality) - !!ITS NOT TCP!!</li>
   <li style="font-size: smaller;">Handle/Send reliable packets (RUDP functionality) - !!ITS NOT TCP!!</li>
   <li style="font-size: smaller;">Convenient logging system</li>
-  <li style="font-size: smaller;">Ability to change the low-level transport</li>
   <li style="font-size: smaller;">The library is cross-platform</li>
 </ul>
-
-<i>If you know enough about CMake, you can even write your own low-level transport (in the ice.aarck folder). You can write your own low-level transport using a_sock as absraction(Btw, I already created useful example, it comes with the library).</i>
 
 <h3>CMake (.a) or (.lib) or (.dll) or (.aar): </h3>
 
@@ -68,7 +65,7 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
 
 <ul>
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
-  <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
+  <li style="font-size: smaller;">You have full control over the server and client fields</li>
   <li style="font-size: smaller;">(.a) libraries are very easy to use. <strong>(Only Linux)</strong></li>
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Linux or <a href="https://devblogs.microsoft.com/cppblog/linux-development-with-c-in-visual-studio/">Visual Studio!</a></i></li>
 </ul>
@@ -77,7 +74,7 @@ You may have noticed that library included folders with an ending (.a) (.lib), (
 
 <ul>
   <li style="font-size: smaller;">Everything I've added to the library is available to you.</li>
-  <li style="font-size: smaller;">You have full control over the server and client fields, you can change the low-level transport.</li>
+  <li style="font-size: smaller;">You have full control over the server and client fields</li>
   <li style="font-size: smaller;">(.lib) libraries are very easy to use. <strong>(Only Windows)</strong></li>
   <li style="font-size: smaller;"><i>Build with CMake: you need C++ compiler and Windows!</i></li>
 </ul>
